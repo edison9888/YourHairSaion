@@ -1,0 +1,339 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		D6500A2E164A606100709990 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6500A2D164A606100709990 /* UIKit.framework */; };
+		D6500A30164A606100709990 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6500A2F164A606100709990 /* Foundation.framework */; };
+		D6500A32164A606100709990 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6500A31164A606100709990 /* CoreGraphics.framework */; };
+		D6500A34164A606100709990 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6500A33164A606100709990 /* CoreData.framework */; };
+		D6500A3A164A606100709990 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D6500A38164A606100709990 /* InfoPlist.strings */; };
+		D6500A3C164A606100709990 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D6500A3B164A606100709990 /* main.m */; };
+		D6500A40164A606100709990 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D6500A3F164A606100709990 /* AppDelegate.m */; };
+		D6500A42164A606100709990 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = D6500A41164A606100709990 /* Default.png */; };
+		D6500A44164A606100709990 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D6500A43164A606100709990 /* Default@2x.png */; };
+		D6500A46164A606100709990 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D6500A45164A606100709990 /* Default-568h@2x.png */; };
+		D6500A49164A606100709990 /* MainStoryboard_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D6500A47164A606100709990 /* MainStoryboard_iPhone.storyboard */; };
+		D6500A4C164A606100709990 /* MainStoryboard_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D6500A4A164A606100709990 /* MainStoryboard_iPad.storyboard */; };
+		D6500A4F164A606100709990 /* YourHairSaion.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D6500A4D164A606100709990 /* YourHairSaion.xcdatamodeld */; };
+		D6500A52164A606100709990 /* MasterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D6500A51164A606100709990 /* MasterViewController.m */; };
+		D6500A55164A606100709990 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D6500A54164A606100709990 /* DetailViewController.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		D6500A29164A606100709990 /* YourHairSaion.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YourHairSaion.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D6500A2D164A606100709990 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		D6500A2F164A606100709990 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		D6500A31164A606100709990 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		D6500A33164A606100709990 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		D6500A37164A606100709990 /* YourHairSaion-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "YourHairSaion-Info.plist"; sourceTree = "<group>"; };
+		D6500A39164A606100709990 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		D6500A3B164A606100709990 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		D6500A3D164A606100709990 /* YourHairSaion-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "YourHairSaion-Prefix.pch"; sourceTree = "<group>"; };
+		D6500A3E164A606100709990 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		D6500A3F164A606100709990 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		D6500A41164A606100709990 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
+		D6500A43164A606100709990 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
+		D6500A45164A606100709990 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		D6500A48164A606100709990 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard_iPhone.storyboard; sourceTree = "<group>"; };
+		D6500A4B164A606100709990 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard_iPad.storyboard; sourceTree = "<group>"; };
+		D6500A4E164A606100709990 /* YourHairSaion.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = YourHairSaion.xcdatamodel; sourceTree = "<group>"; };
+		D6500A50164A606100709990 /* MasterViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MasterViewController.h; sourceTree = "<group>"; };
+		D6500A51164A606100709990 /* MasterViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MasterViewController.m; sourceTree = "<group>"; };
+		D6500A53164A606100709990 /* DetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
+		D6500A54164A606100709990 /* DetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		D6500A26164A606100709990 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D6500A2E164A606100709990 /* UIKit.framework in Frameworks */,
+				D6500A30164A606100709990 /* Foundation.framework in Frameworks */,
+				D6500A32164A606100709990 /* CoreGraphics.framework in Frameworks */,
+				D6500A34164A606100709990 /* CoreData.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		D6500A1E164A606100709990 = {
+			isa = PBXGroup;
+			children = (
+				D6500A35164A606100709990 /* YourHairSaion */,
+				D6500A2C164A606100709990 /* Frameworks */,
+				D6500A2A164A606100709990 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		D6500A2A164A606100709990 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D6500A29164A606100709990 /* YourHairSaion.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		D6500A2C164A606100709990 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D6500A2D164A606100709990 /* UIKit.framework */,
+				D6500A2F164A606100709990 /* Foundation.framework */,
+				D6500A31164A606100709990 /* CoreGraphics.framework */,
+				D6500A33164A606100709990 /* CoreData.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		D6500A35164A606100709990 /* YourHairSaion */ = {
+			isa = PBXGroup;
+			children = (
+				D6500A3E164A606100709990 /* AppDelegate.h */,
+				D6500A3F164A606100709990 /* AppDelegate.m */,
+				D6500A47164A606100709990 /* MainStoryboard_iPhone.storyboard */,
+				D6500A4A164A606100709990 /* MainStoryboard_iPad.storyboard */,
+				D6500A50164A606100709990 /* MasterViewController.h */,
+				D6500A51164A606100709990 /* MasterViewController.m */,
+				D6500A53164A606100709990 /* DetailViewController.h */,
+				D6500A54164A606100709990 /* DetailViewController.m */,
+				D6500A4D164A606100709990 /* YourHairSaion.xcdatamodeld */,
+				D6500A36164A606100709990 /* Supporting Files */,
+			);
+			path = YourHairSaion;
+			sourceTree = "<group>";
+		};
+		D6500A36164A606100709990 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				D6500A37164A606100709990 /* YourHairSaion-Info.plist */,
+				D6500A38164A606100709990 /* InfoPlist.strings */,
+				D6500A3B164A606100709990 /* main.m */,
+				D6500A3D164A606100709990 /* YourHairSaion-Prefix.pch */,
+				D6500A41164A606100709990 /* Default.png */,
+				D6500A43164A606100709990 /* Default@2x.png */,
+				D6500A45164A606100709990 /* Default-568h@2x.png */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		D6500A28164A606100709990 /* YourHairSaion */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D6500A58164A606100709990 /* Build configuration list for PBXNativeTarget "YourHairSaion" */;
+			buildPhases = (
+				D6500A25164A606100709990 /* Sources */,
+				D6500A26164A606100709990 /* Frameworks */,
+				D6500A27164A606100709990 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = YourHairSaion;
+			productName = YourHairSaion;
+			productReference = D6500A29164A606100709990 /* YourHairSaion.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D6500A20164A606100709990 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0450;
+				ORGANIZATIONNAME = "chen loman";
+			};
+			buildConfigurationList = D6500A23164A606100709990 /* Build configuration list for PBXProject "YourHairSaion" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = D6500A1E164A606100709990;
+			productRefGroup = D6500A2A164A606100709990 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				D6500A28164A606100709990 /* YourHairSaion */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		D6500A27164A606100709990 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D6500A3A164A606100709990 /* InfoPlist.strings in Resources */,
+				D6500A42164A606100709990 /* Default.png in Resources */,
+				D6500A44164A606100709990 /* Default@2x.png in Resources */,
+				D6500A46164A606100709990 /* Default-568h@2x.png in Resources */,
+				D6500A49164A606100709990 /* MainStoryboard_iPhone.storyboard in Resources */,
+				D6500A4C164A606100709990 /* MainStoryboard_iPad.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		D6500A25164A606100709990 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D6500A3C164A606100709990 /* main.m in Sources */,
+				D6500A40164A606100709990 /* AppDelegate.m in Sources */,
+				D6500A4F164A606100709990 /* YourHairSaion.xcdatamodeld in Sources */,
+				D6500A52164A606100709990 /* MasterViewController.m in Sources */,
+				D6500A55164A606100709990 /* DetailViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		D6500A38164A606100709990 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D6500A39164A606100709990 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		D6500A47164A606100709990 /* MainStoryboard_iPhone.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D6500A48164A606100709990 /* en */,
+			);
+			name = MainStoryboard_iPhone.storyboard;
+			sourceTree = "<group>";
+		};
+		D6500A4A164A606100709990 /* MainStoryboard_iPad.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D6500A4B164A606100709990 /* en */,
+			);
+			name = MainStoryboard_iPad.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		D6500A56164A606100709990 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		D6500A57164A606100709990 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		D6500A59164A606100709990 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "YourHairSaion/YourHairSaion-Prefix.pch";
+				INFOPLIST_FILE = "YourHairSaion/YourHairSaion-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		D6500A5A164A606100709990 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "YourHairSaion/YourHairSaion-Prefix.pch";
+				INFOPLIST_FILE = "YourHairSaion/YourHairSaion-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		D6500A23164A606100709990 /* Build configuration list for PBXProject "YourHairSaion" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D6500A56164A606100709990 /* Debug */,
+				D6500A57164A606100709990 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D6500A58164A606100709990 /* Build configuration list for PBXNativeTarget "YourHairSaion" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D6500A59164A606100709990 /* Debug */,
+				D6500A5A164A606100709990 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		D6500A4D164A606100709990 /* YourHairSaion.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				D6500A4E164A606100709990 /* YourHairSaion.xcdatamodel */,
+			);
+			currentVersion = D6500A4E164A606100709990 /* YourHairSaion.xcdatamodel */;
+			path = YourHairSaion.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = D6500A20164A606100709990 /* Project object */;
+}
