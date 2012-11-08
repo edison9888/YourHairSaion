@@ -22,6 +22,15 @@
 		D6500A4F164A606100709990 /* YourHairSaion.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D6500A4D164A606100709990 /* YourHairSaion.xcdatamodeld */; };
 		D6500A52164A606100709990 /* MasterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D6500A51164A606100709990 /* MasterViewController.m */; };
 		D6500A55164A606100709990 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D6500A54164A606100709990 /* DetailViewController.m */; };
+		D6500A67164A8CE300709990 /* DBManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D6500A66164A8CE300709990 /* DBManager.m */; };
+		D6500A79164BB36B00709990 /* ProductPic.m in Sources */ = {isa = PBXBuildFile; fileRef = D6500A78164BB36B00709990 /* ProductPic.m */; };
+		D6500A7C164BB36C00709990 /* ProductAttr.m in Sources */ = {isa = PBXBuildFile; fileRef = D6500A7B164BB36C00709990 /* ProductAttr.m */; };
+		D6500A7F164BB36C00709990 /* ProductPricing.m in Sources */ = {isa = PBXBuildFile; fileRef = D6500A7E164BB36C00709990 /* ProductPricing.m */; };
+		D6500A85164BB36E00709990 /* Organization.m in Sources */ = {isa = PBXBuildFile; fileRef = D6500A84164BB36E00709990 /* Organization.m */; };
+		D6500A88164BB36E00709990 /* ProductType.m in Sources */ = {isa = PBXBuildFile; fileRef = D6500A87164BB36E00709990 /* ProductType.m */; };
+		D6500A8B164BB36E00709990 /* ProductAmount.m in Sources */ = {isa = PBXBuildFile; fileRef = D6500A8A164BB36E00709990 /* ProductAmount.m */; };
+		D6500A94164BC02300709990 /* ProductBase.m in Sources */ = {isa = PBXBuildFile; fileRef = D6500A93164BC02300709990 /* ProductBase.m */; };
+		D6500A97164BC9C900709990 /* DataAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = D6500A96164BC9C900709990 /* DataAdapter.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,6 +55,24 @@
 		D6500A51164A606100709990 /* MasterViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MasterViewController.m; sourceTree = "<group>"; };
 		D6500A53164A606100709990 /* DetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
 		D6500A54164A606100709990 /* DetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
+		D6500A65164A8CE300709990 /* DBManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBManager.h; sourceTree = "<group>"; };
+		D6500A66164A8CE300709990 /* DBManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBManager.m; sourceTree = "<group>"; };
+		D6500A77164BB36B00709990 /* ProductPic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductPic.h; sourceTree = "<group>"; };
+		D6500A78164BB36B00709990 /* ProductPic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductPic.m; sourceTree = "<group>"; };
+		D6500A7A164BB36C00709990 /* ProductAttr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductAttr.h; sourceTree = "<group>"; };
+		D6500A7B164BB36C00709990 /* ProductAttr.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductAttr.m; sourceTree = "<group>"; };
+		D6500A7D164BB36C00709990 /* ProductPricing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductPricing.h; sourceTree = "<group>"; };
+		D6500A7E164BB36C00709990 /* ProductPricing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductPricing.m; sourceTree = "<group>"; };
+		D6500A83164BB36E00709990 /* Organization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Organization.h; sourceTree = "<group>"; };
+		D6500A84164BB36E00709990 /* Organization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Organization.m; sourceTree = "<group>"; };
+		D6500A86164BB36E00709990 /* ProductType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductType.h; sourceTree = "<group>"; };
+		D6500A87164BB36E00709990 /* ProductType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductType.m; sourceTree = "<group>"; };
+		D6500A89164BB36E00709990 /* ProductAmount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductAmount.h; sourceTree = "<group>"; };
+		D6500A8A164BB36E00709990 /* ProductAmount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductAmount.m; sourceTree = "<group>"; };
+		D6500A92164BC02300709990 /* ProductBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductBase.h; sourceTree = "<group>"; };
+		D6500A93164BC02300709990 /* ProductBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductBase.m; sourceTree = "<group>"; };
+		D6500A95164BC9C900709990 /* DataAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataAdapter.h; sourceTree = "<group>"; };
+		D6500A96164BC9C900709990 /* DataAdapter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataAdapter.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,6 +121,7 @@
 		D6500A35164A606100709990 /* YourHairSaion */ = {
 			isa = PBXGroup;
 			children = (
+				D6500A64164A8C9F00709990 /* Database */,
 				D6500A3E164A606100709990 /* AppDelegate.h */,
 				D6500A3F164A606100709990 /* AppDelegate.m */,
 				D6500A47164A606100709990 /* MainStoryboard_iPhone.storyboard */,
@@ -120,6 +148,31 @@
 				D6500A45164A606100709990 /* Default-568h@2x.png */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		D6500A64164A8C9F00709990 /* Database */ = {
+			isa = PBXGroup;
+			children = (
+				D6500A65164A8CE300709990 /* DBManager.h */,
+				D6500A66164A8CE300709990 /* DBManager.m */,
+				D6500A86164BB36E00709990 /* ProductType.h */,
+				D6500A87164BB36E00709990 /* ProductType.m */,
+				D6500A89164BB36E00709990 /* ProductAmount.h */,
+				D6500A8A164BB36E00709990 /* ProductAmount.m */,
+				D6500A83164BB36E00709990 /* Organization.h */,
+				D6500A84164BB36E00709990 /* Organization.m */,
+				D6500A7D164BB36C00709990 /* ProductPricing.h */,
+				D6500A7E164BB36C00709990 /* ProductPricing.m */,
+				D6500A7A164BB36C00709990 /* ProductAttr.h */,
+				D6500A7B164BB36C00709990 /* ProductAttr.m */,
+				D6500A77164BB36B00709990 /* ProductPic.h */,
+				D6500A78164BB36B00709990 /* ProductPic.m */,
+				D6500A92164BC02300709990 /* ProductBase.h */,
+				D6500A93164BC02300709990 /* ProductBase.m */,
+				D6500A95164BC9C900709990 /* DataAdapter.h */,
+				D6500A96164BC9C900709990 /* DataAdapter.m */,
+			);
+			name = Database;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -194,6 +247,15 @@
 				D6500A4F164A606100709990 /* YourHairSaion.xcdatamodeld in Sources */,
 				D6500A52164A606100709990 /* MasterViewController.m in Sources */,
 				D6500A55164A606100709990 /* DetailViewController.m in Sources */,
+				D6500A67164A8CE300709990 /* DBManager.m in Sources */,
+				D6500A79164BB36B00709990 /* ProductPic.m in Sources */,
+				D6500A7C164BB36C00709990 /* ProductAttr.m in Sources */,
+				D6500A7F164BB36C00709990 /* ProductPricing.m in Sources */,
+				D6500A85164BB36E00709990 /* Organization.m in Sources */,
+				D6500A88164BB36E00709990 /* ProductType.m in Sources */,
+				D6500A8B164BB36E00709990 /* ProductAmount.m in Sources */,
+				D6500A94164BC02300709990 /* ProductBase.m in Sources */,
+				D6500A97164BC9C900709990 /* DataAdapter.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -281,9 +343,11 @@
 		D6500A59164A606100709990 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "YourHairSaion/YourHairSaion-Prefix.pch";
 				INFOPLIST_FILE = "YourHairSaion/YourHairSaion-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -292,9 +356,11 @@
 		D6500A5A164A606100709990 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "YourHairSaion/YourHairSaion-Prefix.pch";
 				INFOPLIST_FILE = "YourHairSaion/YourHairSaion-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
