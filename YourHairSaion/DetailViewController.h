@@ -8,10 +8,15 @@
 
 #import <UIKit/UIKit.h>
 #import "ProductShowingDetail.h"
-#import "MainSplitViewController.h"
+@class ProductViewController;
+@class RootViewController;
 
 @interface DetailViewController : UIViewController
-@property (nonatomic, strong) MainSplitViewController* rootViewController;
+@property (nonatomic, strong) RootViewController* rootViewController;
+@property (nonatomic, strong) ProductViewController* productViewController;
 - (void)fillData:(ProductShowingDetail*)psd;
 - (void)addProduct2Buy:(id)sender;
+@property (strong, nonatomic) id dataObject;
+
+- (NSUInteger)indexInPage;
 @end

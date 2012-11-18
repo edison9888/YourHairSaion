@@ -281,7 +281,25 @@
 
     self.productBasesWithFilter = [NSArray arrayWithArray:result];
     }
-   
+}
+
+- (void)setFilterByTypeId:(NSString *)productTypeId
+{
+    if (nil == productTypeId)
+    {
+        [self setFilter:nil];
+    }
+    else
+    {
+        for (ProductType* type in self.productTypes)
+        {
+            if ([productTypeId isEqualToString:type.productType])
+            {
+                [self setFilter:type];
+                return;
+            }
+        }
+    }
 }
 
 - (ProductBase*)objectAtIndex:(NSInteger)index

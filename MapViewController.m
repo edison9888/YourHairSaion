@@ -21,7 +21,7 @@
 
 @implementation MapViewController
 
-@synthesize orgItems;
+@synthesize orgItems, detailOnMap;
 
 - (id)init {
 	if (!(self = [super initWithNibName:@"GIKMapView" bundle:nil])) {
@@ -35,6 +35,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.mapView.frame = CGRectMake(20, 20, self.mapView.frame.size.width - 20, self.mapView.frame.size.height - 20);
 	
 	
 }
@@ -84,6 +85,7 @@
 // Data object for the detail view of the callout.
 - (void)detailController:(UIViewController *)detailController detailForAnnotation:(id)annotation {
 	[(OrgDetailViewController *)detailController setOrgItem:[(OrgAnnotation *)annotation orgItem]];
+    [self.detailOnMap setOrgItem:orgItems];
 }
 
 

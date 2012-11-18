@@ -7,7 +7,10 @@
 //
 
 #define MARGIN 8.0
-
+#define IMG_X 123
+#define IMG_Y 40
+#define IMG_W 180
+#define IMG_H 240
 #import "DetailView.h"
 @interface DetailView()
 @property (nonatomic, retain) UIImageView *imageView;
@@ -23,9 +26,7 @@ captionLabel = _captionLabel;
 {
     self = [super initWithFrame:frame];
     if (self)
-    {
-        self.backgroundColor = [UIColor whiteColor];
-        
+    {        
         self.imageView = [[UIImageView alloc] initWithFrame:CGRectZero];
         self.imageView.clipsToBounds = YES;
         [self addSubview:self.imageView];
@@ -33,8 +34,9 @@ captionLabel = _captionLabel;
         self.captionLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         self.captionLabel.font = [UIFont boldSystemFontOfSize:14.0];
         self.captionLabel.numberOfLines = 0;
+        self.captionLabel.text = @"TEST";
         [self addSubview:self.captionLabel];
-        self.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"background.png"]];
+        self.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bgRight.png"]];
         self.alwaysBounceVertical = YES;
     }
     return self;
@@ -43,10 +45,10 @@ captionLabel = _captionLabel;
 - (void)layoutSubviews {
     [super layoutSubviews];
     
-    CGFloat width = self.frame.size.width - MARGIN * 2;
-    CGFloat totalHeigh = MARGIN *2;
-    CGFloat top = MARGIN;
-    CGFloat left = MARGIN;
+    CGFloat width = IMG_W;
+    CGFloat totalHeigh = IMG_Y;
+    CGFloat top = IMG_Y;
+    CGFloat left = IMG_X;
     
     // Image
     CGFloat objectWidth = self.imageView.image.size.width;

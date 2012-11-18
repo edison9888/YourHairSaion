@@ -8,11 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import "GIKMapViewController.h"
-
+@class OrgDetailViewController;
 @interface MapViewController : GIKMapViewController <GIKCalloutDetailDataSource> {
 	NSArray *orgItems;
 }
-
+@property (nonatomic, strong)OrgDetailViewController* detailOnMap;
 @end
 
 

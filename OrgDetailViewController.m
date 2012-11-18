@@ -38,7 +38,11 @@ typedef enum {
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-	
+	UILabel* labelTitle = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 328, 30)];
+    labelTitle.text = @"女士 - 短发";
+    labelTitle.backgroundColor = [UIColor grayColor];
+    [self.view addSubview:labelTitle];
+
 	self.table.backgroundColor = [UIColor clearColor];
 	UIImage *backgroundImage = [[UIImage imageNamed:@"CalloutTableBackground.png"] stretchableImageWithLeftCapWidth:0 topCapHeight:6];
 	UIImageView *backgroundImageView = [[UIImageView alloc] initWithImage:backgroundImage];
@@ -191,6 +195,7 @@ typedef enum {
 		orgItem = newHotel;
 	}
 	[self.table reloadData];
+    //[self.view layoutSubviews];
 }
 
 - (NSArray *)directions {

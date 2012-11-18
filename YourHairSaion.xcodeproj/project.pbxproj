@@ -96,6 +96,14 @@
 		D620D8F4164FEB0F004785D3 /* UIViewController+NGTabBarItem.m in Sources */ = {isa = PBXBuildFile; fileRef = D620D8F0164FEB0F004785D3 /* UIViewController+NGTabBarItem.m */; };
 		D620D8FA16508C0E004785D3 /* ProductPricing.m in Sources */ = {isa = PBXBuildFile; fileRef = D620D8F916508C0D004785D3 /* ProductPricing.m */; };
 		D620D8FD16508C80004785D3 /* ProductBase.m in Sources */ = {isa = PBXBuildFile; fileRef = D620D8FC16508C80004785D3 /* ProductBase.m */; };
+		D628A8D91658C55700A83CFC /* OrgMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D628A8D81658C55600A83CFC /* OrgMapViewController.m */; };
+		D628A8F21658DDC600A83CFC /* GIKAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = D628A8E51658DDC600A83CFC /* GIKAnnotation.m */; };
+		D628A8F31658DDC600A83CFC /* GIKAnnotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = D628A8E71658DDC600A83CFC /* GIKAnnotationView.m */; };
+		D628A8F41658DDC600A83CFC /* GIKCalloutAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = D628A8E91658DDC600A83CFC /* GIKCalloutAnnotation.m */; };
+		D628A8F51658DDC600A83CFC /* GIKCalloutContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = D628A8EB1658DDC600A83CFC /* GIKCalloutContentView.m */; };
+		D628A8F61658DDC600A83CFC /* GIKCalloutView.m in Sources */ = {isa = PBXBuildFile; fileRef = D628A8ED1658DDC600A83CFC /* GIKCalloutView.m */; };
+		D628A8F71658DDC600A83CFC /* GIKMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D628A8EF1658DDC600A83CFC /* GIKMapViewController.m */; };
+		D628A8F81658DDC600A83CFC /* GIKPinAnnotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = D628A8F11658DDC600A83CFC /* GIKPinAnnotationView.m */; };
 		D6500A2E164A606100709990 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6500A2D164A606100709990 /* UIKit.framework */; };
 		D6500A30164A606100709990 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6500A2F164A606100709990 /* Foundation.framework */; };
 		D6500A32164A606100709990 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6500A31164A606100709990 /* CoreGraphics.framework */; };
@@ -115,16 +123,7 @@
 		D68D23211654E05600FBB2DE /* MGSplitDividerView.m in Sources */ = {isa = PBXBuildFile; fileRef = D68D231D1654E05600FBB2DE /* MGSplitDividerView.m */; };
 		D68D23221654E05600FBB2DE /* MGSplitCornersView.m in Sources */ = {isa = PBXBuildFile; fileRef = D68D231F1654E05600FBB2DE /* MGSplitCornersView.m */; };
 		D68D23241654E45500FBB2DE /* Window.xib in Resources */ = {isa = PBXBuildFile; fileRef = D68D23231654E45500FBB2DE /* Window.xib */; };
-		D68D232E1654ED9000FBB2DE /* MainSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D68D232C1654ED9000FBB2DE /* MainSplitViewController.m */; };
-		D68D232F1654ED9000FBB2DE /* MainSplitViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D68D232D1654ED9000FBB2DE /* MainSplitViewController.xib */; };
 		D68D233216550CE200FBB2DE /* MyToolBar.m in Sources */ = {isa = PBXBuildFile; fileRef = D68D233116550CE100FBB2DE /* MyToolBar.m */; };
-		D6B6C9AD1653452100EAA43F /* GIKAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = D6B6C9A01653452100EAA43F /* GIKAnnotation.m */; };
-		D6B6C9AE1653452100EAA43F /* GIKAnnotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = D6B6C9A21653452100EAA43F /* GIKAnnotationView.m */; };
-		D6B6C9AF1653452100EAA43F /* GIKCalloutAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = D6B6C9A41653452100EAA43F /* GIKCalloutAnnotation.m */; };
-		D6B6C9B01653452100EAA43F /* GIKCalloutContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = D6B6C9A61653452100EAA43F /* GIKCalloutContentView.m */; };
-		D6B6C9B11653452100EAA43F /* GIKCalloutView.m in Sources */ = {isa = PBXBuildFile; fileRef = D6B6C9A81653452100EAA43F /* GIKCalloutView.m */; };
-		D6B6C9B21653452100EAA43F /* GIKMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D6B6C9AA1653452100EAA43F /* GIKMapViewController.m */; };
-		D6B6C9B31653452100EAA43F /* GIKPinAnnotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = D6B6C9AC1653452100EAA43F /* GIKPinAnnotationView.m */; };
 		D6B6C9BE1653453700EAA43F /* AnimatedCalloutAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D6B6C9B51653453700EAA43F /* AnimatedCalloutAppDelegate.m */; };
 		D6B6C9BF1653453700EAA43F /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D6B6C9B71653453700EAA43F /* MapViewController.m */; };
 		D6B6C9C01653453700EAA43F /* OrgAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = D6B6C9B91653453700EAA43F /* OrgAnnotation.m */; };
@@ -156,6 +155,14 @@
 		D6B6CA0016549B4700EAA43F /* babaibang3.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = D6B6C9FC16549B4700EAA43F /* babaibang3.jpeg */; };
 		D6B6CA0216549D6100EAA43F /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = D6B6CA0116549D5F00EAA43F /* Default.png */; };
 		D6B6CA0616549FCD00EAA43F /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = D6B6CA0516549FCC00EAA43F /* icon.png */; };
+		D6B7EC7E1656820B002E5B6D /* MyTabBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D6B7EC7D1656820B002E5B6D /* MyTabBarViewController.m */; };
+		D6B7EC81165685DD002E5B6D /* PageViewStoryBoard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D6B7EC80165685DD002E5B6D /* PageViewStoryBoard.storyboard */; };
+		D6B7EC8916568711002E5B6D /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D6B7EC8416568711002E5B6D /* RootViewController.m */; };
+		D6B7EC8B16568711002E5B6D /* ModelController.m in Sources */ = {isa = PBXBuildFile; fileRef = D6B7EC8816568711002E5B6D /* ModelController.m */; };
+		D6B7EC8F165687FB002E5B6D /* background.JPG in Resources */ = {isa = PBXBuildFile; fileRef = D6B7EC8C165687FB002E5B6D /* background.JPG */; };
+		D6B7EC90165687FB002E5B6D /* bgRight.png in Resources */ = {isa = PBXBuildFile; fileRef = D6B7EC8D165687FB002E5B6D /* bgRight.png */; };
+		D6B7EC91165687FB002E5B6D /* bgLeft.png in Resources */ = {isa = PBXBuildFile; fileRef = D6B7EC8E165687FB002E5B6D /* bgLeft.png */; };
+		D6B7EC9316573B7F002E5B6D /* btnProduct.png in Resources */ = {isa = PBXBuildFile; fileRef = D6B7EC9216573B7F002E5B6D /* btnProduct.png */; };
 		D6B8780316527165004059B3 /* shopping_cart.png in Resources */ = {isa = PBXBuildFile; fileRef = D6B8780216527165004059B3 /* shopping_cart.png */; };
 		D6B8780A16527911004059B3 /* ShoppingCartViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D6B8780916527911004059B3 /* ShoppingCartViewController.m */; };
 		D6DEB1AF16509E86004BF860 /* 32_full.JPG in Resources */ = {isa = PBXBuildFile; fileRef = D6DEB1A116509E86004BF860 /* 32_full.JPG */; };
@@ -302,6 +309,22 @@
 		D620D8F916508C0D004785D3 /* ProductPricing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductPricing.m; sourceTree = "<group>"; };
 		D620D8FB16508C7F004785D3 /* ProductBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductBase.h; sourceTree = "<group>"; };
 		D620D8FC16508C80004785D3 /* ProductBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductBase.m; sourceTree = "<group>"; };
+		D628A8D71658C55600A83CFC /* OrgMapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrgMapViewController.h; sourceTree = "<group>"; };
+		D628A8D81658C55600A83CFC /* OrgMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrgMapViewController.m; sourceTree = "<group>"; };
+		D628A8E41658DDC600A83CFC /* GIKAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GIKAnnotation.h; sourceTree = "<group>"; };
+		D628A8E51658DDC600A83CFC /* GIKAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GIKAnnotation.m; sourceTree = "<group>"; };
+		D628A8E61658DDC600A83CFC /* GIKAnnotationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GIKAnnotationView.h; sourceTree = "<group>"; };
+		D628A8E71658DDC600A83CFC /* GIKAnnotationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GIKAnnotationView.m; sourceTree = "<group>"; };
+		D628A8E81658DDC600A83CFC /* GIKCalloutAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GIKCalloutAnnotation.h; sourceTree = "<group>"; };
+		D628A8E91658DDC600A83CFC /* GIKCalloutAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GIKCalloutAnnotation.m; sourceTree = "<group>"; };
+		D628A8EA1658DDC600A83CFC /* GIKCalloutContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GIKCalloutContentView.h; sourceTree = "<group>"; };
+		D628A8EB1658DDC600A83CFC /* GIKCalloutContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GIKCalloutContentView.m; sourceTree = "<group>"; };
+		D628A8EC1658DDC600A83CFC /* GIKCalloutView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GIKCalloutView.h; sourceTree = "<group>"; };
+		D628A8ED1658DDC600A83CFC /* GIKCalloutView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GIKCalloutView.m; sourceTree = "<group>"; };
+		D628A8EE1658DDC600A83CFC /* GIKMapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GIKMapViewController.h; sourceTree = "<group>"; };
+		D628A8EF1658DDC600A83CFC /* GIKMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GIKMapViewController.m; sourceTree = "<group>"; };
+		D628A8F01658DDC600A83CFC /* GIKPinAnnotationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GIKPinAnnotationView.h; sourceTree = "<group>"; };
+		D628A8F11658DDC600A83CFC /* GIKPinAnnotationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GIKPinAnnotationView.m; sourceTree = "<group>"; };
 		D6500A29164A606100709990 /* YourHairSaion.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YourHairSaion.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6500A2D164A606100709990 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		D6500A2F164A606100709990 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -334,25 +357,8 @@
 		D68D231E1654E05600FBB2DE /* MGSplitCornersView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGSplitCornersView.h; sourceTree = "<group>"; };
 		D68D231F1654E05600FBB2DE /* MGSplitCornersView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGSplitCornersView.m; sourceTree = "<group>"; };
 		D68D23231654E45500FBB2DE /* Window.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Window.xib; sourceTree = "<group>"; };
-		D68D232B1654ED8F00FBB2DE /* MainSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MainSplitViewController.h; path = ../MainSplitViewController.h; sourceTree = "<group>"; };
-		D68D232C1654ED9000FBB2DE /* MainSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MainSplitViewController.m; path = ../MainSplitViewController.m; sourceTree = "<group>"; };
-		D68D232D1654ED9000FBB2DE /* MainSplitViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = MainSplitViewController.xib; path = ../MainSplitViewController.xib; sourceTree = "<group>"; };
 		D68D233016550CE000FBB2DE /* MyToolBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyToolBar.h; sourceTree = "<group>"; };
 		D68D233116550CE100FBB2DE /* MyToolBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyToolBar.m; sourceTree = "<group>"; };
-		D6B6C99F1653452100EAA43F /* GIKAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GIKAnnotation.h; sourceTree = "<group>"; };
-		D6B6C9A01653452100EAA43F /* GIKAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GIKAnnotation.m; sourceTree = "<group>"; };
-		D6B6C9A11653452100EAA43F /* GIKAnnotationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GIKAnnotationView.h; sourceTree = "<group>"; };
-		D6B6C9A21653452100EAA43F /* GIKAnnotationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GIKAnnotationView.m; sourceTree = "<group>"; };
-		D6B6C9A31653452100EAA43F /* GIKCalloutAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GIKCalloutAnnotation.h; sourceTree = "<group>"; };
-		D6B6C9A41653452100EAA43F /* GIKCalloutAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GIKCalloutAnnotation.m; sourceTree = "<group>"; };
-		D6B6C9A51653452100EAA43F /* GIKCalloutContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GIKCalloutContentView.h; sourceTree = "<group>"; };
-		D6B6C9A61653452100EAA43F /* GIKCalloutContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GIKCalloutContentView.m; sourceTree = "<group>"; };
-		D6B6C9A71653452100EAA43F /* GIKCalloutView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GIKCalloutView.h; sourceTree = "<group>"; };
-		D6B6C9A81653452100EAA43F /* GIKCalloutView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GIKCalloutView.m; sourceTree = "<group>"; };
-		D6B6C9A91653452100EAA43F /* GIKMapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GIKMapViewController.h; sourceTree = "<group>"; };
-		D6B6C9AA1653452100EAA43F /* GIKMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GIKMapViewController.m; sourceTree = "<group>"; };
-		D6B6C9AB1653452100EAA43F /* GIKPinAnnotationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GIKPinAnnotationView.h; sourceTree = "<group>"; };
-		D6B6C9AC1653452100EAA43F /* GIKPinAnnotationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GIKPinAnnotationView.m; sourceTree = "<group>"; };
 		D6B6C9B41653453700EAA43F /* AnimatedCalloutAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimatedCalloutAppDelegate.h; sourceTree = "<group>"; };
 		D6B6C9B51653453700EAA43F /* AnimatedCalloutAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnimatedCalloutAppDelegate.m; sourceTree = "<group>"; };
 		D6B6C9B61653453700EAA43F /* MapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapViewController.h; sourceTree = "<group>"; };
@@ -391,6 +397,17 @@
 		D6B6C9FC16549B4700EAA43F /* babaibang3.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = babaibang3.jpeg; path = images/org/babaibang3.jpeg; sourceTree = "<group>"; };
 		D6B6CA0116549D5F00EAA43F /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		D6B6CA0516549FCC00EAA43F /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
+		D6B7EC7C1656820B002E5B6D /* MyTabBarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyTabBarViewController.h; sourceTree = "<group>"; };
+		D6B7EC7D1656820B002E5B6D /* MyTabBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyTabBarViewController.m; sourceTree = "<group>"; };
+		D6B7EC80165685DD002E5B6D /* PageViewStoryBoard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = PageViewStoryBoard.storyboard; sourceTree = "<group>"; };
+		D6B7EC8316568711002E5B6D /* RootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
+		D6B7EC8416568711002E5B6D /* RootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
+		D6B7EC8716568711002E5B6D /* ModelController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModelController.h; sourceTree = "<group>"; };
+		D6B7EC8816568711002E5B6D /* ModelController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModelController.m; sourceTree = "<group>"; };
+		D6B7EC8C165687FB002E5B6D /* background.JPG */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = background.JPG; sourceTree = "<group>"; };
+		D6B7EC8D165687FB002E5B6D /* bgRight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bgRight.png; sourceTree = "<group>"; };
+		D6B7EC8E165687FB002E5B6D /* bgLeft.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bgLeft.png; sourceTree = "<group>"; };
+		D6B7EC9216573B7F002E5B6D /* btnProduct.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btnProduct.png; sourceTree = "<group>"; };
 		D6B8780216527165004059B3 /* shopping_cart.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shopping_cart.png; sourceTree = "<group>"; };
 		D6B8780816527911004059B3 /* ShoppingCartViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShoppingCartViewController.h; sourceTree = "<group>"; };
 		D6B8780916527911004059B3 /* ShoppingCartViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShoppingCartViewController.m; sourceTree = "<group>"; };
@@ -650,6 +667,7 @@
 		D6500A1E164A606100709990 = {
 			isa = PBXGroup;
 			children = (
+				D6B7EC80165685DD002E5B6D /* PageViewStoryBoard.storyboard */,
 				D68D23181654E00100FBB2DE /* MGSplitViewController */,
 				D620D8E4164FEAEF004785D3 /* NGTarbar */,
 				D620D805164FE8F5004785D3 /* PSCollectionView */,
@@ -684,11 +702,9 @@
 		D6500A35164A606100709990 /* YourHairSaion */ = {
 			isa = PBXGroup;
 			children = (
+				D6B7EC82165686F7002E5B6D /* PageViewController */,
 				D68D233016550CE000FBB2DE /* MyToolBar.h */,
 				D68D233116550CE100FBB2DE /* MyToolBar.m */,
-				D68D232B1654ED8F00FBB2DE /* MainSplitViewController.h */,
-				D68D232C1654ED9000FBB2DE /* MainSplitViewController.m */,
-				D68D232D1654ED9000FBB2DE /* MainSplitViewController.xib */,
 				D6EC13FC1650CD730067D75A /* TabBarViewRight */,
 				D620D80D164FE926004785D3 /* TabBarViewLeft */,
 				D620D82C164FE96C004785D3 /* ProductShowingDetail.h */,
@@ -699,6 +715,8 @@
 				D68D23231654E45500FBB2DE /* Window.xib */,
 				D6500A4D164A606100709990 /* YourHairSaion.xcdatamodeld */,
 				D6500A36164A606100709990 /* Supporting Files */,
+				D6B7EC7C1656820B002E5B6D /* MyTabBarViewController.h */,
+				D6B7EC7D1656820B002E5B6D /* MyTabBarViewController.m */,
 			);
 			path = YourHairSaion;
 			sourceTree = "<group>";
@@ -709,6 +727,10 @@
 				D620D856164FE9A5004785D3 /* images */,
 				D6500A37164A606100709990 /* YourHairSaion-Info.plist */,
 				D6B6CA0116549D5F00EAA43F /* Default.png */,
+				D6B7EC8C165687FB002E5B6D /* background.JPG */,
+				D6B7EC9216573B7F002E5B6D /* btnProduct.png */,
+				D6B7EC8D165687FB002E5B6D /* bgRight.png */,
+				D6B7EC8E165687FB002E5B6D /* bgLeft.png */,
 				D6B6CA0516549FCC00EAA43F /* icon.png */,
 				D6500A38164A606100709990 /* InfoPlist.strings */,
 				D6500A3B164A606100709990 /* main.m */,
@@ -776,6 +798,8 @@
 				D6B6C99E1653450F00EAA43F /* GIK */,
 				D6B6C9ED1653C20A00EAA43F /* ImageTableCell.h */,
 				D6B6C9EE1653C20D00EAA43F /* ImageTableCell.m */,
+				D628A8D71658C55600A83CFC /* OrgMapViewController.h */,
+				D628A8D81658C55600A83CFC /* OrgMapViewController.m */,
 			);
 			name = MapView;
 			sourceTree = "<group>";
@@ -783,20 +807,20 @@
 		D6B6C99E1653450F00EAA43F /* GIK */ = {
 			isa = PBXGroup;
 			children = (
-				D6B6C99F1653452100EAA43F /* GIKAnnotation.h */,
-				D6B6C9A01653452100EAA43F /* GIKAnnotation.m */,
-				D6B6C9A11653452100EAA43F /* GIKAnnotationView.h */,
-				D6B6C9A21653452100EAA43F /* GIKAnnotationView.m */,
-				D6B6C9A31653452100EAA43F /* GIKCalloutAnnotation.h */,
-				D6B6C9A41653452100EAA43F /* GIKCalloutAnnotation.m */,
-				D6B6C9A51653452100EAA43F /* GIKCalloutContentView.h */,
-				D6B6C9A61653452100EAA43F /* GIKCalloutContentView.m */,
-				D6B6C9A71653452100EAA43F /* GIKCalloutView.h */,
-				D6B6C9A81653452100EAA43F /* GIKCalloutView.m */,
-				D6B6C9A91653452100EAA43F /* GIKMapViewController.h */,
-				D6B6C9AA1653452100EAA43F /* GIKMapViewController.m */,
-				D6B6C9AB1653452100EAA43F /* GIKPinAnnotationView.h */,
-				D6B6C9AC1653452100EAA43F /* GIKPinAnnotationView.m */,
+				D628A8E41658DDC600A83CFC /* GIKAnnotation.h */,
+				D628A8E51658DDC600A83CFC /* GIKAnnotation.m */,
+				D628A8E61658DDC600A83CFC /* GIKAnnotationView.h */,
+				D628A8E71658DDC600A83CFC /* GIKAnnotationView.m */,
+				D628A8E81658DDC600A83CFC /* GIKCalloutAnnotation.h */,
+				D628A8E91658DDC600A83CFC /* GIKCalloutAnnotation.m */,
+				D628A8EA1658DDC600A83CFC /* GIKCalloutContentView.h */,
+				D628A8EB1658DDC600A83CFC /* GIKCalloutContentView.m */,
+				D628A8EC1658DDC600A83CFC /* GIKCalloutView.h */,
+				D628A8ED1658DDC600A83CFC /* GIKCalloutView.m */,
+				D628A8EE1658DDC600A83CFC /* GIKMapViewController.h */,
+				D628A8EF1658DDC600A83CFC /* GIKMapViewController.m */,
+				D628A8F01658DDC600A83CFC /* GIKPinAnnotationView.h */,
+				D628A8F11658DDC600A83CFC /* GIKPinAnnotationView.m */,
 			);
 			name = GIK;
 			sourceTree = "<group>";
@@ -831,6 +855,17 @@
 				D6B6C9FC16549B4700EAA43F /* babaibang3.jpeg */,
 			);
 			name = org;
+			sourceTree = "<group>";
+		};
+		D6B7EC82165686F7002E5B6D /* PageViewController */ = {
+			isa = PBXGroup;
+			children = (
+				D6B7EC8316568711002E5B6D /* RootViewController.h */,
+				D6B7EC8416568711002E5B6D /* RootViewController.m */,
+				D6B7EC8716568711002E5B6D /* ModelController.h */,
+				D6B7EC8816568711002E5B6D /* ModelController.m */,
+			);
+			name = PageViewController;
 			sourceTree = "<group>";
 		};
 		D6EC13FC1650CD730067D75A /* TabBarViewRight */ = {
@@ -1029,7 +1064,11 @@
 				D6B6CA0216549D6100EAA43F /* Default.png in Resources */,
 				D6B6CA0616549FCD00EAA43F /* icon.png in Resources */,
 				D68D23241654E45500FBB2DE /* Window.xib in Resources */,
-				D68D232F1654ED9000FBB2DE /* MainSplitViewController.xib in Resources */,
+				D6B7EC81165685DD002E5B6D /* PageViewStoryBoard.storyboard in Resources */,
+				D6B7EC8F165687FB002E5B6D /* background.JPG in Resources */,
+				D6B7EC90165687FB002E5B6D /* bgRight.png in Resources */,
+				D6B7EC91165687FB002E5B6D /* bgLeft.png in Resources */,
+				D6B7EC9316573B7F002E5B6D /* btnProduct.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1082,13 +1121,6 @@
 				D6EC14001650CDBD0067D75A /* DetailViewController.m in Sources */,
 				D6EC1413165235B10067D75A /* DetailView.m in Sources */,
 				D6B8780A16527911004059B3 /* ShoppingCartViewController.m in Sources */,
-				D6B6C9AD1653452100EAA43F /* GIKAnnotation.m in Sources */,
-				D6B6C9AE1653452100EAA43F /* GIKAnnotationView.m in Sources */,
-				D6B6C9AF1653452100EAA43F /* GIKCalloutAnnotation.m in Sources */,
-				D6B6C9B01653452100EAA43F /* GIKCalloutContentView.m in Sources */,
-				D6B6C9B11653452100EAA43F /* GIKCalloutView.m in Sources */,
-				D6B6C9B21653452100EAA43F /* GIKMapViewController.m in Sources */,
-				D6B6C9B31653452100EAA43F /* GIKPinAnnotationView.m in Sources */,
 				D6B6C9BE1653453700EAA43F /* AnimatedCalloutAppDelegate.m in Sources */,
 				D6B6C9BF1653453700EAA43F /* MapViewController.m in Sources */,
 				D6B6C9C01653453700EAA43F /* OrgAnnotation.m in Sources */,
@@ -1099,8 +1131,18 @@
 				D68D23201654E05600FBB2DE /* MGSplitViewController.m in Sources */,
 				D68D23211654E05600FBB2DE /* MGSplitDividerView.m in Sources */,
 				D68D23221654E05600FBB2DE /* MGSplitCornersView.m in Sources */,
-				D68D232E1654ED9000FBB2DE /* MainSplitViewController.m in Sources */,
 				D68D233216550CE200FBB2DE /* MyToolBar.m in Sources */,
+				D6B7EC7E1656820B002E5B6D /* MyTabBarViewController.m in Sources */,
+				D6B7EC8916568711002E5B6D /* RootViewController.m in Sources */,
+				D6B7EC8B16568711002E5B6D /* ModelController.m in Sources */,
+				D628A8D91658C55700A83CFC /* OrgMapViewController.m in Sources */,
+				D628A8F21658DDC600A83CFC /* GIKAnnotation.m in Sources */,
+				D628A8F31658DDC600A83CFC /* GIKAnnotationView.m in Sources */,
+				D628A8F41658DDC600A83CFC /* GIKCalloutAnnotation.m in Sources */,
+				D628A8F51658DDC600A83CFC /* GIKCalloutContentView.m in Sources */,
+				D628A8F61658DDC600A83CFC /* GIKCalloutView.m in Sources */,
+				D628A8F71658DDC600A83CFC /* GIKMapViewController.m in Sources */,
+				D628A8F81658DDC600A83CFC /* GIKPinAnnotationView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

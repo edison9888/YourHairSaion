@@ -5,12 +5,34 @@
 //  Created by Peter Shih on 5/25/12.
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
+#define FRAME_W (512.0f - 120.0f)
+#define FRAME_H (768.0f - 120.0f)
+#define FRAME_Content_X 30.0f
+#define FRAME_Content_Y 30.0f
+#define FRAME_Content_W (FRAME_W - (2 * FRAME_Content_X))
+#define FRAME_Content_H (FRAME_H - FRAME_Content_X)
+
+#define FRAME_Content_Label_W FRAME_Content_W
+#define FRAME_Content_Label_H 30.0f
+#define FRAME_Content_Margin 20.0f
+#define FRAME_Buttom_X FRAME_Content_X
+#define FRAME_Buttom_W FRAME_Content_W
+#define FRAME_Buttom_H 30.0f
+#define FRAME_Content_CollectView_Y (FRAME_Content_Y + FRAME_Content_Label_H + FRAME_Content_Margin)
+#define FRAME_Content_CollectView_X FRAME_Content_X
+#define FRAME_Content_CollectView_W FRAME_Content_W
+#define FRAME_Content_CollectView_H (FRAME_Content_H - FRAME_Content_Label_H - FRAME_Buttom_H - (2 * FRAME_Content_Margin))
+#define FRAME_Buttom_Y (FRAME_Content_CollectView_Y + FRAME_Content_CollectView_H + FRAME_Content_Margin)
+
+
+
 
 #import "ProductViewController.h"
 #import "PSBroView.h"
 #import "ProductShowingDetail.h"
 #import "DataAdapter.h"
 #import "DetailViewController.h"
+
 
 /**
  This is an example of a controller that uses PSCollectionView
@@ -29,11 +51,17 @@ static BOOL isDeviceIPad() {
 }
 
 @interface ProductViewController ()
-
+{
+    int fromIndex;
+    int toIndex;
+}
 @property (nonatomic, strong) NSMutableArray *items;
 @property (nonatomic, strong) PSCollectionView *collectionView;
 @property (nonatomic, assign) NSInteger lastSelectedIndex;
 @property (nonatomic, strong) UIColor* selectedColor;
+@property (nonatomic, strong) UILabel* labelTitle;
+@property (nonatomic, strong) UIImageView* buttomImageView;
+
 
 - (void)restoreSelected:(PSCollectionView *)collectionView;
 - (void)setupNavBar;
@@ -48,7 +76,7 @@ items = _items,
 collectionView = _collectionView;
 @synthesize lastSelectedIndex;
 @synthesize selectedColor;
-@synthesize rootview;
+@synthesize rootViewController, labelTitle, buttomImageView, detailViewController;
 
 #pragma mark - Init
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
@@ -82,10 +110,18 @@ collectionView = _collectionView;
 */
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    self.view.backgroundColor = [UIColor lightGrayColor];
-    
-    self.collectionView = [[PSCollectionView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+    self.view.clipsToBounds = YES;
+    NSLog(@"x=%f, y=%f, w=%f, h=%f", FRAME_Content_X, FRAME_Content_Y, FRAME_Content_Label_W, FRAME_Content_Label_H);
+    NSLog(@"x=%f, y=%f, w=%f, h=%f", FRAME_Content_CollectView_X, FRAME_Content_CollectView_Y, FRAME_Content_CollectView_W, FRAME_Content_CollectView_H);
+    NSLog(@"x=%f, y=%f, w=%f, h=%f", FRAME_Buttom_X, FRAME_Buttom_Y, FRAME_Buttom_W, FRAME_Buttom_H);
+    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bgLeft.png"]];
+    self.labelTitle = [[UILabel alloc]initWithFrame:CGRectMake(FRAME_Content_X, FRAME_Content_Y, FRAME_Content_Label_W, FRAME_Content_Label_H)];
+    self.labelTitle.text = @"女士 - 短发";
+    self.labelTitle.backgroundColor = [UIColor grayColor];
+    [self.view addSubview:self.labelTitle];
+    self.collectionView = [[PSCollectionView alloc] initWithFrame:CGRectMake(FRAME_Content_CollectView_X, FRAME_Content_CollectView_Y, 500-124+332, 768-392+518)];
+    //self.collectionView = [[PSCollectionView alloc] initWithFrame:self.view.bounds];
+    self.collectionView.alwaysBounceHorizontal = NO;
     [self.view addSubview:self.collectionView];
     self.collectionView.collectionViewDelegate = self;
     self.collectionView.collectionViewDataSource = self;
@@ -106,39 +142,21 @@ collectionView = _collectionView;
     self.collectionView.loadingView = loadingLabel;
     self.lastSelectedIndex = 0;
     self.selectedColor = [UIColor colorWithRed:0.65098041296005249 green:0.90196084976196289 blue:0.92549026012420654 alpha:1];
+    self.buttomImageView = [[UIImageView alloc]initWithFrame:CGRectMake(FRAME_Buttom_X, FRAME_Buttom_Y, FRAME_Buttom_W, FRAME_Buttom_H)];
+    self.buttomImageView.image = [UIImage imageNamed:@"Default-568h@2x.png"];
+    self.buttomImageView.clipsToBounds = YES;
+    [self.view addSubview:self.buttomImageView];
+    
     [self loadDataSource];
-    [self setupNavBar];
+   // [self setupNavBar];
 
 }
 
 - (void)loadDataSource {
-    // Request
-    /*
-    NSString *URLPath = [NSString stringWithFormat:@"http://imgur.com/gallery.json"];
-    NSURL *URL = [NSURL URLWithString:URLPath];
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
-    
-    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-        
-        NSInteger responseCode = [(NSHTTPURLResponse *)response statusCode];
-        
-        if (!error && responseCode == 200) {
-            id res = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-            if (res && [res isKindOfClass:[NSDictionary class]]) {
-                self.items = [res objectForKey:@"data"];
-                [self dataSourceDidLoad];
-            } else {
-                [self dataSourceDidError];
-            }
-        } else {
-            [self dataSourceDidError];
-        }
-    }];
-     */
     [self.items removeAllObjects];
     DataAdapter* dataAdapter = [DataAdapter shareInstance];
     int count = [dataAdapter  count];
-    for (int i = 0; i < count; i++)
+    for (int i = fromIndex; i <= toIndex; i++)
     {
         ProductShowingDetail* item = [ProductShowingDetail initByIndex:i];
         [self.items addObject:item];
@@ -157,7 +175,7 @@ collectionView = _collectionView;
 
 #pragma mark - PSCollectionViewDelegate and DataSource
 - (NSInteger)numberOfViewsInCollectionView:(PSCollectionView *)collectionView {
-    return [self.items count];
+    return toIndex - fromIndex + 1;//[self.items count];
 }
 
 - (PSCollectionViewCell *)collectionView:(PSCollectionView *)collectionView viewAtIndex:(NSInteger)index {
@@ -184,13 +202,12 @@ collectionView = _collectionView;
     [self restoreSelected:collectionView];
     view.backgroundColor = self.selectedColor;
     self.lastSelectedIndex = index;
-    NGTabBarController* tarBarControllerRight =     rootview.viewControllers[1];
-    UINavigationController* nav1 = tarBarControllerRight.viewControllers[0];
-    DetailViewController* detailVC =  (DetailViewController*)nav1.topViewController;
+    //NGTabBarController* tarBarControllerRight =     rootview.viewControllers[1];
+    //UINavigationController* nav1 = tarBarControllerRight.viewControllers[0];
     ProductShowingDetail* is = [self.items objectAtIndex:index];
-    nav1.title = is.productName;
-    [detailVC fillData:is];
-    [nav1.view drawRect:nav1.view.frame];
+    //nav1.title = is.productName;
+    [self.detailViewController fillData:is];
+    //[self.detailViewController.view drawRect:self.detailViewController.view.frame];
 }
 
 - (void)restoreSelected:(PSCollectionView *)collectionView
@@ -240,12 +257,35 @@ collectionView = _collectionView;
     }
     else
     {
-    ProductType* productType = dataAdapter.productTypes[item.tag];
-    NSLog(@"set filter----%@", productType.typeName);
+        ProductType* productType = dataAdapter.productTypes[item.tag];
+        NSLog(@"set filter----%@", productType.typeName);
         [dataAdapter setFilter:productType];
 
     }
     [self loadDataSource];
     [self restoreSelected:self.collectionView];
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+{
+    //return toInterfaceOrientation == UIInterfaceOrientationLandscapeLeft || toInterfaceOrientation == UIInterfaceOrientationLandscapeRight;
+    return UIInterfaceOrientationIsLandscape(toInterfaceOrientation);
+}
+
+- (id)initProductViewControllerFromIndex:(NSUInteger)beginIndex endIndex:(NSUInteger)endIndex withDetailViewController:(DetailViewController*)detailViewController
+{
+    self = [super init];
+    if (self) {
+        fromIndex = beginIndex;
+        toIndex = endIndex;
+        self.items = [NSMutableArray arrayWithCapacity:(endIndex - beginIndex + 1)];
+        self.detailViewController = detailViewController;
+    }
+    return self;
+}
+
+- (NSUInteger)indexInPage
+{
+    return ((toIndex + 1) / ITEMS_PER_PAGE - 1) * 2;
 }
 @end

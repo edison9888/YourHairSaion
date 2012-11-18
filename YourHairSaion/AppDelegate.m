@@ -11,15 +11,15 @@
 #import "DBManager.h"
 
 @implementation AppDelegate
-@synthesize window, splitViewController;
+@synthesize window;
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
+    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
     [DBManager test];
-    window.rootViewController = splitViewController;
-    [window makeKeyAndVisible];
+   // window.rootViewController = splitViewController;
+    //[window makeKeyAndVisible];
     // Override point for customization after application launch.
     /*
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {

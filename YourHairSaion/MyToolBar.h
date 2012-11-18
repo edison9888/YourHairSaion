@@ -7,7 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ModelController.h"
+#import "RootViewController.h"
 
 @interface MyToolBar : UIToolbar
-
+- (id)initAll:(CGRect)frame andVcType:(enumViewControllerType)enumVcType andSubType:(NSString*)subType andImgName:(NSString*)imgName andRvc:(RootViewController*)rvc;
 @end

@@ -10,11 +10,14 @@
 #import "DetailView.h"
 #import "MyToolBar.h"
 #import "ShoppingCartViewController.h"
+#import "ProductViewController.h"
 
-#define FRAME_REAL_X 512
-#define FRAME_REAL_Y 20
-#define FRAME_REAL_W 512
-#define FRAME_REAL_H 748
+#define FRAME_W (512.0f - 120.0f)
+#define FRAME_H (768.0f - 120.0f)
+#define FRAME_Detail_IMG_X 0
+#define FRAME_Detail_IMG_Y 0
+#define FRAME_Detail_IMG_W 180
+#define FRAME_Detail_IMG_H 230
 #define FRAME_NAV_BAR_H 40
 
 #define TAB_BAR_W 50
@@ -31,7 +34,8 @@
 @synthesize detailView = _detailView;
 @synthesize currentProductId;
 @synthesize toolBar = _toolBar;
-@synthesize rootViewController;
+@synthesize rootViewController, productViewController;
+@synthesize dataObject;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -48,6 +52,10 @@
     [self configView];
 }
 
+- (void)viewDidUnload
+{
+    NSLog(@"unload aaaaaa");
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -56,14 +64,10 @@
 
 - (void)configView
 {
-    [UIView beginAnimations:nil context:NULL];
-    [UIView setAnimationDuration:0.30f];
-    
-    [UIView commitAnimations];
-    self.detailView = [[DetailView alloc]initWithFrame:CGRectMake(0, 0, FRAME_REAL_W - TAB_BAR_W, FRAME_REAL_H - FRAME_NAV_BAR_H)];
+    self.detailView = [[DetailView alloc]initWithFrame:CGRectMake(0, 0, FRAME_W, FRAME_H)];
     [self.view addSubview:self.detailView];
     
-    self.toolBar = [[MyToolBar alloc]initWithFrame:CGRectMake(512-50-80 , 650, 50, 50)];
+    self.toolBar = [[MyToolBar alloc]initWithFrame:CGRectMake(FRAME_W-50 , FRAME_H - 50, 50, 50)];
     self.toolBar.barStyle = UIBarStyleBlackTranslucent;
  
     UIBarButtonItem *buyItem = [[UIBarButtonItem alloc]initWithTitle:@"BUY" style:UIBarButtonSystemItemBookmarks target:self action:@selector(addProduct2Buy:)];
@@ -87,12 +91,14 @@
 {
     [[DataAdapter shareInstance]addProductToBuy:self.currentProductId];
     [self scaleToolbarItem];
+    /*
     NGTabBarController* leftTabBarController = self.rootViewController.leftTabBarController;
     if (leftTabBarController.selectedIndex == LeftTabBarViewControllerShoppingCart)
     {
         UINavigationController* nav = leftTabBarController.viewControllers[LeftTabBarViewControllerShoppingCart];
         [((ShoppingCartViewController*)nav.topViewController) refresh];
     }
+     */
 }
 
 - (void)scaleToolbarItem
@@ -107,4 +113,16 @@
         item.title = @"BUY";
     }
 }
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+{
+    //return toInterfaceOrientation == UIInterfaceOrientationLandscapeLeft || toInterfaceOrientation == UIInterfaceOrientationLandscapeRight;
+    return UIInterfaceOrientationIsLandscape(toInterfaceOrientation);
+}
+
+- (NSUInteger)indexInPage
+{
+    return [self.productViewController indexInPage] + 1;
+}
+
 @end

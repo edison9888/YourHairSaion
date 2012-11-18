@@ -38,5 +38,6 @@
 - (void)addProductToBuy:(NSString*)productId;
 - (NSString*)ProductIdAtIndex:(NSInteger)index;
 - (BOOL)productIsInShoppingCart:(NSString*)productId;
+- (void)setFilterByTypeId:(NSString*)productTypeId;
 
 @end

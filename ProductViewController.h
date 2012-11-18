@@ -7,11 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "ModelController.h"
 #import "PSCollectionView.h"
-#import "MainSplitViewController.h"
-
+#import "DetailViewController.h"
+@class RootViewController;
 @interface ProductViewController : UIViewController <PSCollectionViewDelegate, PSCollectionViewDataSource>
-@property (nonatomic, strong)MainSplitViewController* rootview;
+@property (nonatomic, strong)RootViewController* rootViewController;
 
+@property (nonatomic, strong) DetailViewController* detailViewController;
+
+- (id)initProductViewControllerFromIndex:(NSUInteger)beginIndex endIndex:(NSUInteger)endIndex withDetailViewController:(DetailViewController*)detailViewController;
+
+- (NSUInteger)indexInPage;
 @end

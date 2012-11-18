@@ -68,7 +68,7 @@ captionLabel = _captionLabel;
     //UIImage* uiObj = self.object;
     ProductShowingDetail* is = self.object;
     CGFloat objectWidth = is.uiImg.size.width;
-    CGFloat objectHeight = is.uiImg.size.height;
+    CGFloat objectHeight = objectWidth + 20;//is.uiImg.size.height;
     //CGFloat scaledHeight = floorf(objectHeight / (objectWidth / width));
     CGFloat scaledHeight = 0.0f;
     if (objectHeight < 0.01 || objectWidth < 0.01)
@@ -87,7 +87,7 @@ captionLabel = _captionLabel;
     labelSize = [self.captionLabel.text sizeWithFont:self.captionLabel.font constrainedToSize:CGSizeMake(width, INT_MAX) lineBreakMode:self.captionLabel.lineBreakMode];
     top = self.imageView.frame.origin.y + self.imageView.frame.size.height + MARGIN;
     
-    self.captionLabel.frame = CGRectMake(left, top, self.imageView.frame.size.width, labelSize.height);
+    self.captionLabel.frame = CGRectZero;//CGRectMake(left, top, self.imageView.frame.size.width, labelSize.height);
 }
 
 - (void)fillViewWithObject:(id)object {
@@ -113,7 +113,7 @@ captionLabel = _captionLabel;
     height += MARGIN;
     ProductShowingDetail* is = object;
     CGFloat objectWidth = is.uiImg.size.width;
-    CGFloat objectHeight = is.uiImg.size.height;
+    CGFloat objectHeight = objectWidth + 20;//is.uiImg.size.height;
     CGFloat scaledHeight = floorf(objectHeight / (objectWidth / width));
     height += scaledHeight;
     

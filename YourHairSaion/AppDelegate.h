@@ -7,11 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "MainSplitViewController.h"
 
-@interface AppDelegate : NSObject <UIApplicationDelegate>
+@interface AppDelegate : UIResponder <UIApplicationDelegate>
 
-@property (nonatomic, strong) IBOutlet UIWindow *window;
-@property (strong, nonatomic) IBOutlet MainSplitViewController* splitViewController;
+@property (nonatomic, strong)  UIWindow *window;
 
 @end
