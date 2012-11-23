@@ -7,7 +7,7 @@
 //
 
 
-#define ITEMS_PER_PAGE 9
+#define ITEMS_PER_PAGE 6
 
 #import <UIKit/UIKit.h>
 
@@ -15,7 +15,8 @@ typedef enum {
     ViewControllerProduct = 0,
     ViewControllerDetail,
     ViewControllerMap,
-    ViewControllerPolicy
+    ViewControllerPolicy,
+    ViewControllerShoppingCart
 } enumViewControllerType;
 
 @class RootViewController;
@@ -26,4 +27,5 @@ typedef enum {
 @property (nonatomic, strong) RootViewController* rootViewController;
 
 - (void)setVcType:(enumViewControllerType)enumVcType andSubType:(NSString*)subType;
+- (NSUInteger)pageCount;
 @end

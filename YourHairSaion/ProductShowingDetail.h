@@ -19,6 +19,9 @@
 @property (nonatomic, strong) NSNumber* price;
 @property (nonatomic, strong) NSString* productTypeName;
 @property (nonatomic, strong) NSNumber* priceAfterDiscount;
+@property (nonatomic, assign) NSUInteger index;
+@property (nonatomic, assign) NSUInteger buyCount;
+
 
 + (ProductShowingDetail*)initByIndex:(NSInteger)index;
 + (ProductShowingDetail*)initByProductBase:(ProductBase*)productBase;

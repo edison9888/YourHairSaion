@@ -13,6 +13,7 @@
 #import "DataAdapter.h"
 #import "MapViewController.h"
 #import "OrgDetailViewController.h"
+#import "OrgMapViewController.h"
 
 /*
  A controller object that manages a simple model -- a collection of month names.
@@ -70,6 +71,7 @@
     int recodeCount = [[DataAdapter shareInstance] count];
     int fromIndex = index / 2 * itemsPerPage;
     int toIndex = fromIndex + itemsPerPage - 1;
+    toIndex = toIndex >= recodeCount ? recodeCount - 1 : toIndex;
     NSLog(@"record count[%d], page count[%d], current page[%d], record from[%d], to[%d], index[%d]", recodeCount, pageCount, currentPage, fromIndex, toIndex, index);
     if (currentVcType == ViewControllerProduct)
     {
@@ -80,12 +82,14 @@
             if (nil == dvc)
             {
                 dvc = [[DetailViewController alloc]init];
+                dvc.rootViewController = self.rootViewController;
                 //gen the product VC at the left side
                 NSString* keyForLeft = [self genKey:index - 1 andVcType:ViewControllerProduct andSubType:currentFilter];
                 ProductViewController* pvc = [self.leftViewController objectForKey:keyForLeft];
                 if ( nil == pvc)
                 {
                     pvc = [[ProductViewController alloc]initProductViewControllerFromIndex:fromIndex endIndex:toIndex withDetailViewController:dvc];
+                    pvc.rootViewController = self.rootViewController;
                     [self.leftViewController setObject:pvc forKey:keyForLeft];
                     
                 }
@@ -111,10 +115,14 @@
                 if ( nil == dvc)
                 {
                     dvc = [[DetailViewController alloc]init];
+                    dvc.rootViewController = self.rootViewController;
                     
                 }
                 pvc = [[ProductViewController alloc]initProductViewControllerFromIndex:fromIndex endIndex:toIndex withDetailViewController:dvc];
+                [pvc setPageCount:pageCount];
                 dvc.productViewController = pvc;
+                pvc.rootViewController = self.rootViewController;
+                
                 [self.rightViewController setObject:dvc forKey:keyForRight];
                 [self.leftViewController setObject:pvc forKey:key];
             }
@@ -183,7 +191,7 @@
 {
 //    [((DetailViewController*)viewController) fillData:nil];
     NSUInteger index = [self indexOfViewController:viewController];
-    if ((index == 0) || (index == NSNotFound) || index / 2 >= pageCount - 1)
+    if ((index == 0) || (index == NSNotFound) || index > (pageCount - 1) * 2 )
     {
         return nil;
     }
@@ -237,4 +245,8 @@
     }
 }
 
+- (NSUInteger)pageCount
+{
+    return pageCount;
+}
 @end

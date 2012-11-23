@@ -38,21 +38,23 @@ typedef enum {
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-	UILabel* labelTitle = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 328, 30)];
-    labelTitle.text = @"女士 - 短发";
-    labelTitle.backgroundColor = [UIColor grayColor];
-    [self.view addSubview:labelTitle];
 
+    self.view.backgroundColor = [[UIColor alloc]initWithPatternImage:[UIImage imageNamed:@"bgRight.png"]];
 	self.table.backgroundColor = [UIColor clearColor];
 	UIImage *backgroundImage = [[UIImage imageNamed:@"CalloutTableBackground.png"] stretchableImageWithLeftCapWidth:0 topCapHeight:6];
 	UIImageView *backgroundImageView = [[UIImageView alloc] initWithImage:backgroundImage];
 	backgroundImageView.frame = self.view.bounds;
 	self.table.backgroundView = backgroundImageView;
+    //self.orgItem = [[OrganizationItem alloc]initWithObject:[DataAdapter shareInstance].organizations[0]];
+    //self.table.bounds = CGRectMake(20, 20, 200, 200);
+    //self.table.center = self.view.center;
 }
 
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
+    self.table.bounds = CGRectMake(0, 0, 340, 600);
+    self.table.center = self.view.center;
 	[self.table reloadData];
 }
 
@@ -156,7 +158,7 @@ typedef enum {
 
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-	return NUMBER_OF_SECTIONS;
+	return self.orgItem == nil ? 0 : NUMBER_OF_SECTIONS;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -196,6 +198,7 @@ typedef enum {
 	}
 	[self.table reloadData];
     //[self.view layoutSubviews];
+    [self.table setNeedsDisplay];
 }
 
 - (NSArray *)directions {

@@ -27,6 +27,11 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    MapViewController* mvc = [[MapViewController alloc]init];
+    self.view.frame = CGRectMake(0, 0, 20, 20);
+    [self.view sizeToFit];
+    [self.view addSubview:mvc.view];
+    
 }
 
 - (void)didReceiveMemoryWarning

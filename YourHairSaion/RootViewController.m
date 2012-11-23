@@ -21,17 +21,21 @@
 #import "MapViewController.h"
 #import "MyTabBarViewController.h"
 #import "MyToolBar.h"
+#import "MyUIButton.h"
+#import "ImgFullViewController.h"
+#import "L1Button.h"
+#import "L2Button.h"
 
 
-#define FRAME_LSide_ToolBar_W 60
+#define FRAME_LSide_ToolBar_W 35
 #define FRAME_LSide_ToolBar_H 110
-#define FRAME_LSide_ToolBar_First_X 77
-#define FRAME_LSide_ToolBar_Frist_Y 179
+#define FRAME_LSide_ToolBar_First_X 65
+#define FRAME_LSide_ToolBar_Frist_Y 160
 
-#define FRAME_RSide_ToolBar_W 60
-#define FRAME_RSide_ToolBar_H 110
-#define FRAME_RSide_ToolBar_First_X 1024 - 77
-#define FRAME_RSide_ToolBar_Frist_Y 179
+#define FRAME_RSide_ToolBar_W FRAME_LSide_ToolBar_W
+#define FRAME_RSide_ToolBar_H FRAME_LSide_ToolBar_H
+#define FRAME_RSide_ToolBar_First_X (SCREEN_W - FRAME_LSide_ToolBar_First_X - FRAME_RSide_ToolBar_W)
+#define FRAME_RSide_ToolBar_Frist_Y FRAME_LSide_ToolBar_Frist_Y
 
 
 @interface RootViewController ()
@@ -50,10 +54,9 @@
 @synthesize leftToolBar;
 - (void)viewDidLoad
 {
-    [super viewDidLoad];
-    
+    [super viewDidLoad];    
     DetailViewController *detailViewController= [[DetailViewController alloc]init];
-    ProductViewController* productViewController = [[ProductViewController alloc]initProductViewControllerFromIndex:0 endIndex:8 withDetailViewController:detailViewController];
+    ProductViewController* productViewController = [[ProductViewController alloc]initProductViewControllerFromIndex:0 endIndex:ITEMS_PER_PAGE-1 withDetailViewController:detailViewController];
     detailViewController.productViewController = productViewController;
     [productViewController viewDidLoad];
     //[self loadTabbarController];
@@ -74,19 +77,18 @@
     [self.pageViewController setViewControllers:@[productViewController, detailViewController] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:NULL];
 
     self.pageViewController.dataSource = self.modelController;
-    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"background.JPG"]];
+    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"rootBackground.png"]];
     [self addChildViewController:self.pageViewController];
     [self.view addSubview:self.pageViewController.view];
 
     // Set the page view controller's bounds using an inset rect so that self's view is visible around the edges of the pages.
     CGRect pageViewRect = self.view.bounds;//CGRectMake(120, 60, 600, 600);//self.view.bounds;
-    pageViewRect = CGRectInset(pageViewRect, 120, 60);
+    pageViewRect = CGRectInset(pageViewRect, RECT_INSET_W, RECT_INSET_H);
     
     self.pageViewController.view.frame = pageViewRect;
-    self.pageViewController.view.center = CGPointMake(384, 530);
+    self.pageViewController.view.center = CGPointMake(382, 540);
     self.pageViewController.view.clipsToBounds = YES;
     [self.pageViewController didMoveToParentViewController:self];
-
     // Add the page view controller's gesture recognizers to the book view controller's view so that the gestures are started more easily.
     //self.view.gestureRecognizers = self.pageViewController.gestureRecognizers;
 }
@@ -123,12 +125,13 @@
         return nil;
     }
 
+    [self setVcType:ViewControllerProduct andSubType:nil];
     DetailViewController *detailViewController= [[DetailViewController alloc]init];
-    ProductViewController* productViewController = [[ProductViewController alloc]initProductViewControllerFromIndex:0 endIndex:8 withDetailViewController:detailViewController];
+    ProductViewController* productViewController = [[ProductViewController alloc]initProductViewControllerFromIndex:0 endIndex:ITEMS_PER_PAGE - 1 withDetailViewController:detailViewController];
+    [productViewController setPageCount:[self.modelController pageCount]];
     detailViewController.productViewController = productViewController;
     [self.pageViewController setViewControllers:@[productViewController, detailViewController] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:NULL];
     
-
     return UIPageViewControllerSpineLocationMid;
 }
 
@@ -141,21 +144,55 @@
 
 - (void)setVcType:(enumViewControllerType)enumVcType andSubType:(NSString *)subType
 {
+    
     [self.modelController setVcType:enumVcType andSubType:subType];
     UIViewController* vc1 = [self.modelController viewControllerAtIndex:0 storyboard:self.storyboard];
     UIViewController* vc2 = [self.modelController viewControllerAtIndex:1 storyboard:self.storyboard];
-    [self.pageViewController setViewControllers:@[vc1, vc2] direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:nil];
+    [self.pageViewController setViewControllers:@[vc1, vc2] direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:^(BOOL finished)
+     {
+     }];
 }
 
 - (void)loadToolBar
 {
-    MyToolBar* toolBarProduct1 = [[MyToolBar alloc]initAll:CGRectMake(FRAME_LSide_ToolBar_First_X, FRAME_LSide_ToolBar_Frist_Y, FRAME_LSide_ToolBar_W, FRAME_LSide_ToolBar_H) andVcType:ViewControllerProduct andSubType:((ProductType*)[DataAdapter shareInstance].productTypes[0]).productType andImgName:@"btnProduct.png" andRvc:self];
-    [self.view addSubview:toolBarProduct1];
-    MyToolBar* toolBarProduct2 = [[MyToolBar alloc]initAll:CGRectMake(FRAME_LSide_ToolBar_First_X, FRAME_LSide_ToolBar_Frist_Y+FRAME_LSide_ToolBar_H, FRAME_LSide_ToolBar_W, FRAME_LSide_ToolBar_H) andVcType:ViewControllerProduct andSubType:((ProductType*)[DataAdapter shareInstance].productTypes[1]).productType andImgName:@"btnProduct.png" andRvc:self];
-    [self.view addSubview:toolBarProduct2];
+    DataAdapter* da = [DataAdapter shareInstance];
+    NSArray* rootProductType = [da productTypeForParent:PRODUCT_TYPE_ROOT];
+    int counter = 0;
+    for (ProductType* type in rootProductType)
+    {
+        L1Button *btnL1 = [[L1Button alloc]initAll:CGRectMake(FRAME_LSide_ToolBar_First_X, FRAME_LSide_ToolBar_Frist_Y+FRAME_LSide_ToolBar_H*counter++, FRAME_LSide_ToolBar_W, FRAME_LSide_ToolBar_H) andVcType:ViewControllerProduct andSubType:type.productType andTitle:type.typeName andStyle:MyUIButtonStyleLeft andImgName:@"defaultL1Btn.png" andRvc:self];
+        [self.view addSubview:btnL1];
+    }
     
-    MyToolBar* toolBarMap = [[MyToolBar alloc]initAll:CGRectMake(FRAME_RSide_ToolBar_First_X, FRAME_RSide_ToolBar_Frist_Y+FRAME_RSide_ToolBar_H, FRAME_RSide_ToolBar_W, FRAME_RSide_ToolBar_H) andVcType:ViewControllerMap andSubType:nil andImgName:@"btnProduct.png" andRvc:self];
+    
+    MyUIButton* toolBarMap = [[MyUIButton alloc]initAll:CGRectMake(FRAME_RSide_ToolBar_First_X, FRAME_RSide_ToolBar_Frist_Y, FRAME_RSide_ToolBar_W, FRAME_RSide_ToolBar_H) andVcType:ViewControllerMap andSubType:nil andTitle:@"分店介绍" andStyle:MyUIButtonStyleRight andImgName:@"defaultL1Btn.png" andRvc:self];
     [self.view addSubview:toolBarMap];
+    MyUIButton* btnPolicy = [[MyUIButton alloc]initAll:CGRectMake(FRAME_RSide_ToolBar_First_X, FRAME_RSide_ToolBar_Frist_Y+FRAME_RSide_ToolBar_H, FRAME_RSide_ToolBar_W, FRAME_RSide_ToolBar_H) andVcType:ViewControllerPolicy andSubType:nil andTitle:@"优惠政策" andStyle:MyUIButtonStyleRight andImgName:@"defaultL1Btn.png" andRvc:self];
+    [self.view addSubview:btnPolicy];
+    MyUIButton* btnShoppingCart = [[MyUIButton alloc]initAll:CGRectMake(FRAME_RSide_ToolBar_First_X, FRAME_RSide_ToolBar_Frist_Y+FRAME_RSide_ToolBar_H*2, FRAME_RSide_ToolBar_W, FRAME_RSide_ToolBar_H) andVcType:ViewControllerShoppingCart andSubType:nil andTitle:@"购物车" andStyle:MyUIButtonStyleRight andImgName:@"defaultL1Btn.png" andRvc:self];
+    [self.view addSubview:btnShoppingCart];
+    /*
+    btn.backgroundColor = [[UIColor alloc]initWithPatternImage:[UIImage imageNamed:@"btnProduct.png"]];
+    btn.titleLabel.text = @"AAAAABBBBCCCC";
+    btn.titleLabel.numberOfLines = 0;
+    [btn setTitle:@"女\n士\n发\n型" forState:UIControlStateNormal];
+   // btn.titleLabel.textAlignment = UITextAlignmentRight;
+    //btn.titleLabel.bounds = CGRectMake(0,0,20,btn.titleLabel.bounds.size.width);
+    btn.titleLabel.center = CGPointMake(btn.center.x+20, btn.center.y+20);
+    btn.titleLabel.lineBreakMode = NSLineBreakByCharWrapping;
+    btn.titleLabel.textColor = [UIColor blackColor];
+    btn.titleLabel.font = [UIFont boldSystemFontOfSize:20];
+    [btn.titleLabel sizeToFit];
+     */
+
+    
+    
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    self.navigationController.navigationBarHidden = YES;
 }
 
 @end

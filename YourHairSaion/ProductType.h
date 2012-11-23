@@ -19,4 +19,6 @@
 @property (nonatomic, retain) NSString * typePricingId;
 - (void)show;
 
+- (BOOL)isSubType:(ProductType*)type;
+
 @end

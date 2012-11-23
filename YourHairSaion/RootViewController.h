@@ -23,6 +23,7 @@ typedef enum {
 #define SPLIT_POSITION_MID 512.0f
 #define SPLIT_POSITION_RIGHT_END 1024.0f
 
+
 @interface RootViewController : UIViewController <UIPageViewControllerDelegate>
 
 @property (strong, nonatomic) UIPageViewController *pageViewController;
@@ -31,6 +32,7 @@ typedef enum {
 @property (nonatomic, strong) ProductViewController* productViewController;
 @property (nonatomic, strong) DetailViewController* detailViewController;
 @property (nonatomic, strong) MyToolBar* leftToolBar;
+
 
 
 - (void)setVcType:(enumViewControllerType)enumVcType andSubType:(NSString*)subType;

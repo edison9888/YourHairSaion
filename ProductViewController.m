@@ -5,24 +5,7 @@
 //  Created by Peter Shih on 5/25/12.
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
-#define FRAME_W (512.0f - 120.0f)
-#define FRAME_H (768.0f - 120.0f)
-#define FRAME_Content_X 30.0f
-#define FRAME_Content_Y 30.0f
-#define FRAME_Content_W (FRAME_W - (2 * FRAME_Content_X))
-#define FRAME_Content_H (FRAME_H - FRAME_Content_X)
 
-#define FRAME_Content_Label_W FRAME_Content_W
-#define FRAME_Content_Label_H 30.0f
-#define FRAME_Content_Margin 20.0f
-#define FRAME_Buttom_X FRAME_Content_X
-#define FRAME_Buttom_W FRAME_Content_W
-#define FRAME_Buttom_H 30.0f
-#define FRAME_Content_CollectView_Y (FRAME_Content_Y + FRAME_Content_Label_H + FRAME_Content_Margin)
-#define FRAME_Content_CollectView_X FRAME_Content_X
-#define FRAME_Content_CollectView_W FRAME_Content_W
-#define FRAME_Content_CollectView_H (FRAME_Content_H - FRAME_Content_Label_H - FRAME_Buttom_H - (2 * FRAME_Content_Margin))
-#define FRAME_Buttom_Y (FRAME_Content_CollectView_Y + FRAME_Content_CollectView_H + FRAME_Content_Margin)
 
 
 
@@ -32,6 +15,7 @@
 #import "ProductShowingDetail.h"
 #import "DataAdapter.h"
 #import "DetailViewController.h"
+#import "RootViewController.h"
 
 
 /**
@@ -66,6 +50,7 @@ static BOOL isDeviceIPad() {
 - (void)restoreSelected:(PSCollectionView *)collectionView;
 - (void)setupNavBar;
 - (void)filterByType:(id)sender;
+- (void)loadFooter;
 
 @end
 
@@ -76,7 +61,7 @@ items = _items,
 collectionView = _collectionView;
 @synthesize lastSelectedIndex;
 @synthesize selectedColor;
-@synthesize rootViewController, labelTitle, buttomImageView, detailViewController;
+@synthesize rootViewController, labelTitle, buttomImageView, detailViewController, pageCount;
 
 #pragma mark - Init
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
@@ -111,15 +96,15 @@ collectionView = _collectionView;
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.clipsToBounds = YES;
-    NSLog(@"x=%f, y=%f, w=%f, h=%f", FRAME_Content_X, FRAME_Content_Y, FRAME_Content_Label_W, FRAME_Content_Label_H);
+    //NSLog(@"x=%f, y=%f, w=%f, h=%f", FRAME_Content_X, FRAME_Content_Y, FRAME_Content_Label_W, FRAME_Content_Label_H);
     NSLog(@"x=%f, y=%f, w=%f, h=%f", FRAME_Content_CollectView_X, FRAME_Content_CollectView_Y, FRAME_Content_CollectView_W, FRAME_Content_CollectView_H);
-    NSLog(@"x=%f, y=%f, w=%f, h=%f", FRAME_Buttom_X, FRAME_Buttom_Y, FRAME_Buttom_W, FRAME_Buttom_H);
-    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bgLeft.png"]];
+    //NSLog(@"x=%f, y=%f, w=%f, h=%f", FRAME_Buttom_X, FRAME_Buttom_Y, FRAME_Buttom_W, FRAME_Buttom_H);
+    self.view.backgroundColor = [UIColor blueColor];
     self.labelTitle = [[UILabel alloc]initWithFrame:CGRectMake(FRAME_Content_X, FRAME_Content_Y, FRAME_Content_Label_W, FRAME_Content_Label_H)];
     self.labelTitle.text = @"女士 - 短发";
     self.labelTitle.backgroundColor = [UIColor grayColor];
     [self.view addSubview:self.labelTitle];
-    self.collectionView = [[PSCollectionView alloc] initWithFrame:CGRectMake(FRAME_Content_CollectView_X, FRAME_Content_CollectView_Y, 500-124+332, 768-392+518)];
+    self.collectionView = [[PSCollectionView alloc] initWithFrame:CGRectMake(FRAME_Content_CollectView_X, FRAME_Content_CollectView_Y, 500-124+FRAME_Content_Label_W, 768-392+518)];
     //self.collectionView = [[PSCollectionView alloc] initWithFrame:self.view.bounds];
     self.collectionView.alwaysBounceHorizontal = NO;
     [self.view addSubview:self.collectionView];
@@ -129,8 +114,8 @@ collectionView = _collectionView;
     self.collectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
     if (isDeviceIPad()) {
-        self.collectionView.numColsPortrait = 3;
-        self.collectionView.numColsLandscape = 3;
+        self.collectionView.numColsPortrait = 2;
+        self.collectionView.numColsLandscape = 2;
     } else {
         self.collectionView.numColsPortrait = 2;
         self.collectionView.numColsLandscape = 3;
@@ -142,10 +127,8 @@ collectionView = _collectionView;
     self.collectionView.loadingView = loadingLabel;
     self.lastSelectedIndex = 0;
     self.selectedColor = [UIColor colorWithRed:0.65098041296005249 green:0.90196084976196289 blue:0.92549026012420654 alpha:1];
-    self.buttomImageView = [[UIImageView alloc]initWithFrame:CGRectMake(FRAME_Buttom_X, FRAME_Buttom_Y, FRAME_Buttom_W, FRAME_Buttom_H)];
-    self.buttomImageView.image = [UIImage imageNamed:@"Default-568h@2x.png"];
-    self.buttomImageView.clipsToBounds = YES;
-    [self.view addSubview:self.buttomImageView];
+    
+    
     
     [self loadDataSource];
    // [self setupNavBar];
@@ -163,6 +146,14 @@ collectionView = _collectionView;
     }
     [self dataSourceDidLoad];
     
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [super viewWillAppear:animated];
+    NSLog(@"ProductFrame!!!x=%f, y=%f, w=%f, h=%f", self.view.bounds.origin.x, self.view.bounds.origin.y, self.view.bounds.size.width, self.view.bounds.size.height);
+
 }
 
 - (void)dataSourceDidLoad {
@@ -185,7 +176,7 @@ collectionView = _collectionView;
     if (!v) {
         v = [[PSBroView alloc] initWithFrame:CGRectZero];
     }
-    
+    v.productBuyingDelegate = self;
     [v fillViewWithObject:item];
     
     return v;
@@ -200,8 +191,12 @@ collectionView = _collectionView;
 - (void)collectionView:(PSCollectionView *)collectionView didSelectView:(PSCollectionViewCell *)view atIndex:(NSInteger)index {
 
     [self restoreSelected:collectionView];
-    view.backgroundColor = self.selectedColor;
+    [view setBackgroundColor:selectedColor];
     self.lastSelectedIndex = index;
+    if ([self canBuy:view])
+    {
+        [self prepareToBuy:view];
+    }
     //NGTabBarController* tarBarControllerRight =     rootview.viewControllers[1];
     //UINavigationController* nav1 = tarBarControllerRight.viewControllers[0];
     ProductShowingDetail* is = [self.items objectAtIndex:index];
@@ -212,13 +207,25 @@ collectionView = _collectionView;
 
 - (void)restoreSelected:(PSCollectionView *)collectionView
 {
-        for (PSCollectionViewCell* cell in collectionView.subviews)
+    
+    for (UIView* cell in collectionView.subviews)
+    {
+        if ([cell isKindOfClass:[PSBroView class]])
         {
-            if (![cell.backgroundColor isEqual:[UIColor whiteColor]])
+            if (![((PSBroView*)cell).backgroundColor isEqual:[UIColor whiteColor]])
             {
-                cell.backgroundColor = [UIColor whiteColor];
+                [((PSBroView*)cell) setBackgroundColor:[UIColor whiteColor]];
+                [((PSBroView*)cell) finishToBuy];
             }
         }
+    }
+    
+    /*
+    PSBroView* cell = [self collectionView:self.collectionView viewAtIndex:self.lastSelectedIndex];
+    [cell setBackgroundColor:[UIColor whiteColor]];
+    [cell finishToBuy];
+     */
+    
 }
 
 - (void)setupNavBar
@@ -286,6 +293,60 @@ collectionView = _collectionView;
 
 - (NSUInteger)indexInPage
 {
-    return ((toIndex + 1) / ITEMS_PER_PAGE - 1) * 2;
+    int index = (toIndex + 1) / ITEMS_PER_PAGE;
+    if (index*ITEMS_PER_PAGE <= toIndex)
+    {
+        return index * 2;
+    }
+    else
+    {
+        return (index - 1)*2;
+    }
 }
+
+- (void)setPageCount:(NSUInteger)count
+{
+    pageCount = count;
+    [self loadFooter];
+    
+}
+
+- (void)loadFooter
+{
+    int currentPage = [self indexInPage] / 2;
+
+    UIPageControl *pc = [[UIPageControl alloc]initWithFrame:CGRectMake(FRAME_Buttom_X , FRAME_Buttom_Y, FRAME_Buttom_W+300, FRAME_Buttom_H)];
+    pc.numberOfPages = self.pageCount;
+    pc.currentPage = currentPage;
+    pc.backgroundColor = [UIColor blueColor];
+    //pc.center = CGPointMake(self.view.center.x, FRAME_Buttom_Y);
+    //NSLog(@"center x[%f], y[%f]", (FRAME_Buttom_W+FRAME_Buttom_X)/2, FRAME_Buttom_Y);
+    [self.view addSubview:pc];
+    [self.view setNeedsDisplay];
+}
+
+
+- (BOOL)canBuy:(PSCollectionViewCell *)cell
+{
+    return YES;
+}
+- (void)prepareToBuy:(PSCollectionViewCell *)cell
+{
+    [((PSBroView*)cell) prepareToBuy];
+}
+- (void)productAdd:(PSCollectionViewCell *)cell
+{
+    NSLog(@"buy");
+
+}
+- (void)productReduct:(PSCollectionViewCell *)cell
+{
+    NSLog(@"reduce");
+}
+- (void)finishToBuy:(PSCollectionViewCell *)cell
+{
+    [((PSBroView*)cell) prepareToBuy];
+}
+
+
 @end

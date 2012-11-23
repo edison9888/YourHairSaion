@@ -70,7 +70,16 @@
 
 - (void)onToolBar:(id)sender
 {
+    
     [rvc setVcType:vcType andSubType:self.subType];
+    for (UIView* view in self.rvc.view.subviews)
+    {
+        if ([view isKindOfClass:[MyToolBar class]])
+        {
+            [self.rvc.view sendSubviewToBack:view];
+        }
+    }
+    [self.rvc.view bringSubviewToFront:self];
 }
 
 

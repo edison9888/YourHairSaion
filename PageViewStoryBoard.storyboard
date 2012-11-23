@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="2840" systemVersion="11G63" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" initialViewController="ht1-t1-osI">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="2840" systemVersion="11G63" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" initialViewController="Plx-W7-Jo6">
     <dependencies>
         <deployment version="1296" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="1926"/>
@@ -10,11 +10,11 @@
             <objects>
                 <viewController id="ht1-t1-osI" customClass="RootViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="5MA-ux-XE6">
-                        <rect key="frame" x="0.0" y="20" width="768" height="955"/>
+                        <rect key="frame" x="0.0" y="0.0" width="1024" height="719"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <toolbar clearsContextBeforeDrawing="NO" contentMode="scaleToFill" restorationIdentifier="leftToolBar" id="d3v-OC-lKH" customClass="MyToolBar">
-                                <rect key="frame" x="-96" y="57" width="188" height="44"/>
+                                <rect key="frame" x="-96" y="-179" width="444" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                 <items>
                                     <barButtonItem title="Item" id="3Lx-v4-cjp"/>
@@ -23,15 +23,18 @@
                         </subviews>
                         <color key="backgroundColor" red="0.60000002379999995" green="0.40000000600000002" blue="0.20000000300000001" alpha="1" colorSpace="calibratedRGB"/>
                         <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="blackTranslucent"/>
+                        <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     </view>
+                    <navigationItem key="navigationItem" id="pLK-1R-J5R"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="leftToolBar" destination="d3v-OC-lKH" id="SWv-Ng-H9C"/>
+                        <segue destination="jEe-Ca-MD6" kind="push" id="OVJ-dO-h6m"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="r11-9E-s5q" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="397" y="-287"/>
+            <point key="canvasLocation" x="553" y="-371"/>
         </scene>
         <!--Product View Controller-->
         <scene sceneID="TXm-ht-ax4">
@@ -45,7 +48,43 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2a0-BZ-5Qq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1220" y="-298"/>
+            <point key="canvasLocation" x="1220" y="-402"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="Ens-5y-Vty">
+            <objects>
+                <navigationController definesPresentationContext="YES" navigationBarHidden="YES" id="Plx-W7-Jo6" sceneMemberID="viewController">
+                    <nil key="simulatedStatusBarMetrics"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="blackTranslucent" id="D9Q-FH-P91">
+                        <rect key="frame" x="0.0" y="-44" width="0.0" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="ht1-t1-osI" kind="relationship" relationship="rootViewController" id="0rW-Kf-bMW"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="7SB-Uq-UA5" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-198" y="-365"/>
+        </scene>
+        <!--Img Full View Controller-->
+        <scene sceneID="5rR-Gv-qZJ">
+            <objects>
+                <viewController id="jEe-Ca-MD6" customClass="ImgFullViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="rPp-UO-OfW">
+                        <rect key="frame" x="0.0" y="0.0" width="1024" height="719"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="9lu-XH-kEM"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="nRa-D6-nGA" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="59" y="106"/>
         </scene>
         <!--Detail View Controller-->
         <scene sceneID="Xvc-3D-OCy">
@@ -65,6 +104,12 @@
     <classes>
         <class className="DetailViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/DetailViewController.h"/>
+        </class>
+        <class className="ImgFullViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ImgFullViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="mainScrollView" candidateClass="UIScrollView"/>
+            </relationships>
         </class>
         <class className="MyToolBar" superclassName="UIToolbar">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/MyToolBar.h"/>

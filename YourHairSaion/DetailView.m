@@ -11,17 +11,20 @@
 #define IMG_Y 40
 #define IMG_W 180
 #define IMG_H 240
+#import "RootViewController.h"
 #import "DetailView.h"
+#import "ImgFullViewController.h"
 @interface DetailView()
 @property (nonatomic, retain) UIImageView *imageView;
 @property (nonatomic, retain) UILabel *captionLabel;
 - (void)formatLabel:(ProductShowingDetail*)psd;
+- (void)imgTouchInside:(id)sender;
 @end
 @implementation DetailView
 @synthesize
 imageView = _imageView,
 captionLabel = _captionLabel;
-
+@synthesize detailViewController;
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
@@ -36,8 +39,13 @@ captionLabel = _captionLabel;
         self.captionLabel.numberOfLines = 0;
         self.captionLabel.text = @"TEST";
         [self addSubview:self.captionLabel];
-        self.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bgRight.png"]];
+        self.backgroundColor = [UIColor yellowColor];
         self.alwaysBounceVertical = YES;
+        UITapGestureRecognizer *tapReconizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(imgTouchInside:)];
+        [tapReconizer setNumberOfTouchesRequired:1];
+        //tapReconizer.delegate = self;
+        self.imageView.userInteractionEnabled = YES;
+        [self.imageView addGestureRecognizer:tapReconizer];
     }
     return self;
 }
@@ -85,13 +93,20 @@ captionLabel = _captionLabel;
 - (void)fillData:(ProductShowingDetail *)psd
 {
     [self formatLabel:psd];
-    self.imageView.image = [UIImage imageNamed:psd.fullFileName];
+    self.imageView.image = [UIImage imageWithContentsOfFile:psd.fullFileName];
     [self layoutSubviews];
 }
 
 - (void)formatLabel:(ProductShowingDetail*)psd
 {
     self.captionLabel.text = psd.productDetail;
+}
+
+- (void)imgTouchInside:(id)sender
+{
+    self.detailViewController.rootViewController.navigationController.navigationBarHidden = NO;
+
+    [self.detailViewController.rootViewController.navigationController pushViewController:[[ImgFullViewController alloc]init] animated:YES];
 }
 
 @end

@@ -20,4 +20,9 @@
 {
     NSLog(@"type id=%@, name=%@, parent=%@, pricingid=%@", self.productType, self.typeName, self.typeParent, self.typePricingId);
 }
+
+- (BOOL)isSubType:(ProductType *)type
+{
+    return [type.typeParent isEqualToString:self.productType];
+}
 @end

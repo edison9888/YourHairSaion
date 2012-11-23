@@ -8,6 +8,10 @@
 
 #import "DataAdapter.h"
 
+@interface DataAdapter()
+- (void)setCurrentFilter:(ProductType*)type;
+- (NSArray*)productsInType:(NSArray*)products filterByType:(ProductType*)type;
+@end
 @implementation DataAdapter
 @synthesize productPricings;
 @synthesize productAttrs;
@@ -41,6 +45,7 @@
         if ([self loadData])
         {
             productsToBuy = [[NSMutableDictionary alloc]init];
+            self.currentFilterLink = [[NSMutableArray alloc]init];
             return self;
         }
         
@@ -265,21 +270,23 @@
     }
     else
     {
-    self.filterFlag = YES;
-    NSMutableArray* result = [[NSMutableArray alloc]init];
-    for (ProductBase* product in self.productBases)
-    {
-        for (ProductType* type in product.productTypes)
+        
+        NSArray* result = nil;
+        [self setCurrentFilter:productType];
+        if (0 == [self.currentFilterLink count])
         {
-            if ([productType.productType isEqualToString:type.productType])
-            {
-                [result addObject:product];
-                break;
-            }
+            self.filterFlag = NO;
+            return;
         }
-    }
-
-    self.productBasesWithFilter = [NSArray arrayWithArray:result];
+        
+        self.filterFlag = YES;
+        result = self.productBases;
+        for (ProductType* type in self.currentFilterLink)
+        {
+            result = [self productsInType:result filterByType:type];
+        }
+        
+        self.productBasesWithFilter = [NSArray arrayWithArray:result];
     }
 }
 
@@ -350,4 +357,69 @@
     return YES;
 }
 
+- (void)setCurrentFilter:(ProductType*)type
+{
+    int count = [self.currentFilterLink count];
+    if (count == 0)
+    {
+        [self.currentFilterLink addObject:type];
+    }
+    else
+    {
+        int insertIndex = 0;
+        BOOL isFindSubType = 0;
+        for (int i = 0; i < count; i++)
+        {
+            if ([((ProductType*)self.currentFilterLink[i]) isSubType:type])
+            {
+                [self.currentFilterLink setObject:type atIndexedSubscript:i+1];
+                insertIndex = i+1;
+                isFindSubType = YES;
+            }
+            
+            if (isFindSubType && i > insertIndex)
+            {
+                [self.currentFilterLink removeObjectAtIndex:i];
+            }
+        }
+        if (NO == isFindSubType)
+        {
+            [self.currentFilterLink setObject:type atIndexedSubscript:0];
+            [self.currentFilterLink removeObjectsInRange:NSMakeRange(1, count-1)];
+        }
+    }
+    
+}
+
+- (NSArray*)productsInType:(NSArray *)products filterByType:(ProductType *)type
+{
+    NSMutableArray* result = [[NSMutableArray alloc]init];
+    for (ProductBase* product in products)
+    {
+        for (ProductType* productType in product.productTypes)
+        {
+            if ([productType.productType isEqualToString:type.productType])
+            {
+                [result addObject:product];
+                break;
+            }
+        }
+    }
+    
+    return result;
+}
+
+- (NSArray*)productTypeForParent:(NSString *)productTypeId
+{
+    NSMutableArray* resutl = [[NSMutableArray alloc]init];
+    for (ProductType* productType in self.productTypes)
+    {
+        if ([productTypeId isEqualToString:productType.typeParent])
+        {
+            [resutl addObject:productType];
+            [productType show];
+        }
+    }
+    return resutl;
+}
 @end

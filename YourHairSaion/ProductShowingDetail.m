@@ -17,7 +17,7 @@
 @synthesize price;
 @synthesize productTypeName;
 @synthesize priceAfterDiscount;
-@synthesize productId;
+@synthesize productId, index, buyCount;
 
 + (ProductShowingDetail*)initByIndex:(NSInteger)index
 {
@@ -25,8 +25,11 @@
     DataAdapter *da = [DataAdapter shareInstance];
     this.productId = [da ProductIdAtIndex:index];
     this.productName = [da captionAtIndex:index];
+    this.index = index;
     //this.productDetail = [da detailAtIndex:index];
-    this.uiImg = [UIImage imageNamed:[da ImageLinkAtIndex:index andType:PRODUCT_PIC_TYPE_THUMB]];
+    //[UIImage imageWithContentsOfFile:<#(NSString *)#>]
+    
+    this.uiImg = [UIImage imageWithContentsOfFile:[da ImageLinkAtIndex:index andType:PRODUCT_PIC_TYPE_THUMB]];
     this.fullFileName = [da ImageLinkAtIndex:index andType:PRODUCT_PIC_TYPE_FULL];
     this.price = [da priceAtIndex:index];
     
@@ -46,7 +49,7 @@
         
         this.productDetail = [NSString stringWithFormat:@"%@\n原价:%@ %@:%d折\n折后价:%@",[da detailAtIndex:index], this.price, pricing.discountName, calcValue/10 , this.priceAfterDiscount ];
     }
-    
+    this.buyCount = 0;
     return this;
 }
 
@@ -84,6 +87,7 @@
         
         this.productDetail = [NSString stringWithFormat:@"%@\n原价:%@ %@:%d折\n折后价:%@",productBase.productDetail, this.price, pricing.discountName, calcValue/10 , this.priceAfterDiscount ];
     }
+    this.buyCount = 0;
     
     return this;
 }

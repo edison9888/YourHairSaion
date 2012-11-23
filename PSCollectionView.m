@@ -78,24 +78,24 @@ static inline NSInteger PSCollectionIndexForKey(NSString *key) {
 }
 
 - (CGFloat)width {
-    NSLog(@"width() = %f", self.frame.size.width);
-    return 332;//self.frame.size.width;
+   // NSLog(@"width() = %f", self.frame.size.width);
+    return FRAME_Content_CollectView_W;//self.frame.size.width;
 }
 
 - (void)setWidth:(CGFloat)width {
-    NSLog(@"setwidth() = %f", width);
+   // NSLog(@"setwidth() = %f", width);
     CGRect frame = self.frame;
     frame.size.width = width;
     self.frame = frame;
 }
 
 - (CGFloat)height {
-    NSLog(@"height() = %f", self.frame.size.height);
-    return 518;//self.frame.size.height;
+  //  NSLog(@"height() = %f", self.frame.size.height);
+    return FRAME_Content_CollectView_H;//self.frame.size.height;
 }
 
 - (void)setHeight:(CGFloat)height {
-    NSLog(@"setHeight() = %f", height);
+  //  NSLog(@"setHeight() = %f", height);
     CGRect frame = self.frame;
     frame.size.height = height;
     self.frame = frame;

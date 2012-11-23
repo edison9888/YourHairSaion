@@ -51,7 +51,7 @@
 - (NSArray*) allProduct;
 
 - (void)insertNewProductType:(NSString*)productType andName:(NSString*)typeName andParent:(NSString*)parent andPricingId:(NSString*)pricingId;
-
+- (NSString*)insertNewProductType:(NSString*)typeName andParent:(NSString*)parent andPricingId:(NSString*)pricingId;
 - (void)insertNewProductPic:(NSString*)productId andPicType:(NSNumber*)picType andValue:(NSData*)value andLink:(NSString*)link;
 
 - (void)insertNewProductAmount:(NSString*)productId andAmount:(NSNumber*)amount;

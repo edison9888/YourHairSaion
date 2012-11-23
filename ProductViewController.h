@@ -6,17 +6,21 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
+
 #import <UIKit/UIKit.h>
 #import "ModelController.h"
 #import "PSCollectionView.h"
 #import "DetailViewController.h"
+@protocol ProductBuyingDelegate;
 @class RootViewController;
-@interface ProductViewController : UIViewController <PSCollectionViewDelegate, PSCollectionViewDataSource>
+@interface ProductViewController : UIViewController <PSCollectionViewDelegate, PSCollectionViewDataSource, ProductBuyingDelegate>
 @property (nonatomic, strong)RootViewController* rootViewController;
 
 @property (nonatomic, strong) DetailViewController* detailViewController;
-
+@property (nonatomic, assign) NSUInteger pageCount;
 - (id)initProductViewControllerFromIndex:(NSUInteger)beginIndex endIndex:(NSUInteger)endIndex withDetailViewController:(DetailViewController*)detailViewController;
 
 - (NSUInteger)indexInPage;
+
+
 @end

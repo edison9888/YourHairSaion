@@ -8,7 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "ProductShowingDetail.h"
-
+@class DetailViewController;
 @interface DetailView : UIScrollView
+@property (nonatomic, strong)DetailViewController* detailViewController;
 - (void)fillData:(ProductShowingDetail*)psd;
+
 @end

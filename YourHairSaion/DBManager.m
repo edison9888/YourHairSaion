@@ -207,6 +207,41 @@
     return result;
 }
 
+- (NSString*)insertNewProductType:(NSString *)typeName andParent:(NSString *)parent andPricingId:(NSString *)pricingId
+{
+    NSString* result = nil;
+    if (nil == typeName || nil == pricingId)
+    {
+        NSLog(@"Parameter error!");
+    }
+    else
+    {
+        ProductType *type = [NSEntityDescription insertNewObjectForEntityForName:@"ProductType" inManagedObjectContext:self.managedObjectContext];
+        if (type)
+        {
+            type.productType = [self generateProductType];
+            type.typeName = typeName;
+            type.typeParent = parent;
+            type.typePricingId = pricingId;
+            NSError * error = nil;
+            if ([self.managedObjectContext save:&error])
+            {
+                NSLog(@"insert type success!");
+                result = type.productType;
+            }
+            else
+            {
+                NSLog(error);
+            }
+        }
+        else
+        {
+            NSLog(@"DB error!");
+            
+        }
+    }
+    return result;
+}
 - (void)insertNewProductType:(NSString*)productType andName:(NSString*)typeName andParent:(NSString*)parent andPricingId:(NSString*)pricingId;
 {
     
@@ -412,13 +447,24 @@
     int typecount = [[[DBManager shareInstance]getAll:@"ProductType"] count];
     if (typecount < 7)
     {
-    [[DBManager shareInstance] insertNewProductType:[[DBManager shareInstance] generateProductType] andName:@"男士" andParent:PRODUCT_TYPE_ROOT andPricingId:@"1211081018589888"];
-    [[DBManager shareInstance] insertNewProductType:[[DBManager shareInstance] generateProductType] andName:@"女士" andParent:PRODUCT_TYPE_ROOT andPricingId:@"1211081018589888"];
-    [[DBManager shareInstance] insertNewProductType:[[DBManager shareInstance] generateProductType] andName:@"流行" andParent:PRODUCT_TYPE_ROOT andPricingId:@"1211081018589888"];
-    [[DBManager shareInstance] insertNewProductType:[[DBManager shareInstance] generateProductType] andName:@"平头" andParent:PRODUCT_TYPE_ROOT andPricingId:@"1211081018589888"];
-    [[DBManager shareInstance] insertNewProductType:[[DBManager shareInstance] generateProductType] andName:@"可爱" andParent:PRODUCT_TYPE_ROOT andPricingId:@"1211081018589888"];
-    [[DBManager shareInstance] insertNewProductType:[[DBManager shareInstance] generateProductType] andName:@"卷发" andParent:PRODUCT_TYPE_ROOT andPricingId:@"1211081018589888"];
-    [[DBManager shareInstance] insertNewProductType:[[DBManager shareInstance] generateProductType] andName:@"烫染" andParent:PRODUCT_TYPE_ROOT andPricingId:@"1211081018589888"];
+        NSString* typeGirl = [[DBManager shareInstance] insertNewProductType:@"女士发型" andParent:PRODUCT_TYPE_ROOT andPricingId:@"1211081018589888"];
+        NSString* typeMan = [[DBManager shareInstance] insertNewProductType:@"男士发型" andParent:PRODUCT_TYPE_ROOT andPricingId:@"1211081018589888"];
+        NSString* typePop = [[DBManager shareInstance] insertNewProductType:@"流行发型" andParent:PRODUCT_TYPE_ROOT andPricingId:@"1211081018589888"];
+        NSString* typeOther = [[DBManager shareInstance] insertNewProductType:@"护发产品" andParent:PRODUCT_TYPE_ROOT andPricingId:@"1211081018589888"];
+        [[DBManager shareInstance] insertNewProductType:[[DBManager shareInstance] generateProductType] andName:@"平头" andParent:typeMan andPricingId:@"1211081018589888"];
+        [[DBManager shareInstance] insertNewProductType:[[DBManager shareInstance] generateProductType] andName:@"烫染" andParent:typeMan andPricingId:@"1211081018589888"];
+        [[DBManager shareInstance] insertNewProductType:[[DBManager shareInstance] generateProductType] andName:@"长发" andParent:typeMan andPricingId:@"1211081018589888"];
+        [[DBManager shareInstance] insertNewProductType:[[DBManager shareInstance] generateProductType] andName:@"短发" andParent:typeMan andPricingId:@"1211081018589888"];
+        [[DBManager shareInstance] insertNewProductType:[[DBManager shareInstance] generateProductType] andName:@"可爱" andParent:typeGirl andPricingId:@"1211081018589888"];
+        [[DBManager shareInstance] insertNewProductType:[[DBManager shareInstance] generateProductType] andName:@"卷发" andParent:typeGirl andPricingId:@"1211081018589888"];
+        [[DBManager shareInstance] insertNewProductType:[[DBManager shareInstance] generateProductType] andName:@"烫染" andParent:typeGirl andPricingId:@"1211081018589888"];
+        [[DBManager shareInstance] insertNewProductType:[[DBManager shareInstance] generateProductType] andName:@"长发" andParent:typeGirl andPricingId:@"1211081018589888"];
+        [[DBManager shareInstance] insertNewProductType:[[DBManager shareInstance] generateProductType] andName:@"短发" andParent:typeGirl andPricingId:@"1211081018589888"];
+        [[DBManager shareInstance] insertNewProductType:[[DBManager shareInstance] generateProductType] andName:@"女士" andParent:typePop andPricingId:@"1211081018589888"];
+        [[DBManager shareInstance] insertNewProductType:[[DBManager shareInstance] generateProductType] andName:@"男士" andParent:typePop andPricingId:@"1211081018589888"];
+        [[DBManager shareInstance] insertNewProductType:[[DBManager shareInstance] generateProductType] andName:@"洗发水" andParent:typeOther andPricingId:@"1211081018589888"];
+        [[DBManager shareInstance] insertNewProductType:[[DBManager shareInstance] generateProductType] andName:@"发蜡" andParent:typeOther andPricingId:@"1211081018589888"];
+        [[DBManager shareInstance] insertNewProductType:[[DBManager shareInstance] generateProductType] andName:@"焗油" andParent:typeOther andPricingId:@"1211081018589888"];
     }
     
     NSMutableArray* orgIds = [[NSMutableArray alloc]initWithCapacity:4];
@@ -442,8 +488,8 @@
         {
             NSString* productID = nil;
             int imgNo = arc4random()%46;
-            NSString* picLink = [NSString stringWithFormat:@"%d.JPG", imgNo];
-            NSString* picFullLink = [NSString stringWithFormat:@"%d_full.JPG", imgNo];
+            NSString* picLink = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%d.JPG", imgNo]];
+            NSString* picFullLink = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%d_full.JPG", imgNo]];
             NSString* productName = [@"飞机头" stringByAppendingFormat:@"%d", arc4random()%9999];
             NSString* productdDetail = [@"很飞机的头,来不来，来不来，不来干死你，搞搞搞，搞不搞，不搞做了你" stringByAppendingFormat:@"%d", arc4random()%9999];
             productID = [[DBManager shareInstance] insertNewProduct:productName andDetail:productdDetail andState:[NSNumber numberWithInt:0] andType:[[DBManager shareInstance]buildProductType] andPricingId:@"1211081018589888" andPrice:[NSNumber numberWithInt:arc4random()%10000] andPriority:[NSNumber numberWithInt:0] andOrgId:[orgIds objectAtIndex:arc4random()%4] allowCustomize:[NSNumber numberWithInt:0] andEffDate:[NSDate date] andExpDate:[NSDate date]];

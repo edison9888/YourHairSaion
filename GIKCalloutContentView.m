@@ -60,7 +60,7 @@
 	[self setClipsToBounds:YES];
 	
 	[self addSubview:self.textLabel];
-	[self addSubview:self.rightAccessoryView];
+	//[self addSubview:self.rightAccessoryView];
 	return self;
 }
 

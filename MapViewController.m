@@ -6,6 +6,8 @@
 //  Copyright 2011 GeeksInKilts. All rights reserved.
 //
 
+#define MAGRIN 30
+
 #import "MapViewController.h"
 #import "OrganizationItem.h"
 #import "OrgAnnotation.h"
@@ -35,7 +37,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.mapView.frame = CGRectMake(20, 20, self.mapView.frame.size.width - 20, self.mapView.frame.size.height - 20);
+    [self.view sizeToFit];
+    
+    
 	
 	
 }
@@ -85,7 +89,7 @@
 // Data object for the detail view of the callout.
 - (void)detailController:(UIViewController *)detailController detailForAnnotation:(id)annotation {
 	[(OrgDetailViewController *)detailController setOrgItem:[(OrgAnnotation *)annotation orgItem]];
-    [self.detailOnMap setOrgItem:orgItems];
+    [self.detailOnMap setOrgItem:[(OrgAnnotation *)annotation orgItem]];
 }
 
 
@@ -106,6 +110,18 @@
 {
     [super viewWillAppear:animated];
     [self showOrganizations];
+    UILabel *label1 = [[UILabel alloc]initWithFrame:CGRectMake(0,0,self.view.frame.size.width,MAGRIN)];
+    label1.backgroundColor = [UIColor whiteColor];
+    [self.view addSubview:label1];
+    UILabel *label2 = [[UILabel alloc]initWithFrame:CGRectMake(0,self.view.frame.size.height-MAGRIN,self.view.frame.size.width,MAGRIN)];
+    label2.backgroundColor = [UIColor whiteColor];
+    [self.view addSubview:label2];
+    UILabel *label3 = [[UILabel alloc]initWithFrame:CGRectMake(0,0,MAGRIN,self.view.frame.size.height)];
+    label3.backgroundColor = [UIColor whiteColor];
+    [self.view addSubview:label3];
+    UILabel *label4 = [[UILabel alloc]initWithFrame:CGRectMake(self.view.frame.size.width-MAGRIN,0,MAGRIN,self.view.frame.size.height)];
+    label4.backgroundColor = [UIColor whiteColor];
+    [self.view addSubview:label4];
 }
 
 

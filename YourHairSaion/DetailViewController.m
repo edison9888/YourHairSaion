@@ -12,8 +12,7 @@
 #import "ShoppingCartViewController.h"
 #import "ProductViewController.h"
 
-#define FRAME_W (512.0f - 120.0f)
-#define FRAME_H (768.0f - 120.0f)
+
 #define FRAME_Detail_IMG_X 0
 #define FRAME_Detail_IMG_Y 0
 #define FRAME_Detail_IMG_W 180
@@ -61,10 +60,18 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [super viewWillAppear:animated];
+    NSLog(@"DetailFrame!!!x=%f, y=%f, w=%f, h=%f", self.view.bounds.origin.x, self.view.bounds.origin.y, self.view.bounds.size.width, self.view.bounds.size.height);
+    
+}
 
 - (void)configView
 {
     self.detailView = [[DetailView alloc]initWithFrame:CGRectMake(0, 0, FRAME_W, FRAME_H)];
+    self.detailView.detailViewController = self;
     [self.view addSubview:self.detailView];
     
     self.toolBar = [[MyToolBar alloc]initWithFrame:CGRectMake(FRAME_W-50 , FRAME_H - 50, 50, 50)];
@@ -74,9 +81,6 @@
     NSMutableArray* items = [[NSMutableArray alloc]initWithObjects:buyItem, nil];
     [self.toolBar setItems:items animated:YES];
     [self.view addSubview:self.toolBar];
-    
-
-
 }
 
 - (void)fillData:(ProductShowingDetail *)psd

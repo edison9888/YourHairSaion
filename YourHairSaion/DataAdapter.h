@@ -20,6 +20,7 @@
 @property (nonatomic, strong) NSArray* productBasesWithFilter;
 @property (nonatomic, strong) NSMutableDictionary* productsToBuy;
 @property (nonatomic, assign) BOOL filterFlag;
+@property (nonatomic, strong) NSMutableArray* currentFilterLink;
 + (DataAdapter*)shareInstance;
 - (BOOL)loadData;
 
@@ -39,5 +40,6 @@
 - (NSString*)ProductIdAtIndex:(NSInteger)index;
 - (BOOL)productIsInShoppingCart:(NSString*)productId;
 - (void)setFilterByTypeId:(NSString*)productTypeId;
+- (NSArray*)productTypeForParent:(NSString*)productTypeId;
 
 @end

@@ -21,6 +21,23 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+#define FRAME_Content_X 20.0f
+#define FRAME_Content_Y 20.0f
+#define FRAME_Content_W (FRAME_W - (2 * FRAME_Content_X))
+#define FRAME_Content_H (FRAME_H - FRAME_Content_X)
+
+#define FRAME_Content_Label_W FRAME_Content_W
+#define FRAME_Content_Label_H 30.0f
+#define FRAME_Content_Margin 20.0f
+#define FRAME_Buttom_X FRAME_Content_X
+#define FRAME_Buttom_W FRAME_Content_W
+#define FRAME_Buttom_H 30.0f
+#define FRAME_Content_CollectView_Y (FRAME_Content_Y + FRAME_Content_Label_H + FRAME_Content_Margin)
+#define FRAME_Content_CollectView_X FRAME_Content_X
+#define FRAME_Content_CollectView_W FRAME_Content_W
+#define FRAME_Content_CollectView_H (FRAME_Content_H - FRAME_Content_Label_H - FRAME_Buttom_H - (2 * FRAME_Content_Margin))
+#define FRAME_Buttom_Y (FRAME_Content_CollectView_Y + FRAME_Content_CollectView_H + FRAME_Content_Margin)
+
 #import <UIKit/UIKit.h>
 
 @class PSCollectionViewCell;
