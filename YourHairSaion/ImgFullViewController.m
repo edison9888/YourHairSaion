@@ -9,10 +9,16 @@
 #import "ImgFullViewController.h"
 #import "MyScrollView.h"
 #import "DataAdapter.h"
+#import "ProductShowingDetail.h"
 
 @interface ImgFullViewController ()
 @property (nonatomic, assign)NSUInteger totalPage;
-- (void)loadImg;
+@property (nonatomic, strong)NSMutableDictionary* imageDic;
+@property (nonatomic, strong)NSString* currentFilter;
+@property (nonatomic, assign)BOOL filterChanged;
+- (void)loadImg:(NSUInteger)index;
+- (void)loadImgNearBy;
+
 @end
 
 @implementation ImgFullViewController
@@ -26,7 +32,15 @@
     }
     return self;
 }
-
+- (ImgFullViewController*)initWithObject:(ProductShowingDetail *)psd
+{
+    self = [super init];
+    if (self)
+    {
+        self.lastPage = psd.index;
+    }
+    return self;
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -34,9 +48,10 @@
     self.view.backgroundColor = [UIColor blackColor];
     self.mainScrollView.showsHorizontalScrollIndicator = NO;
     self.mainScrollView.decelerationRate = UIScrollViewDecelerationRateFast;
-    self.totalPage = 0;
-        
-    self.lastPage = 0;
+    
+    self.imageDic = [[NSMutableDictionary alloc]init];
+    self.currentFilter = [[DataAdapter shareInstance]currentFilter];
+    self.filterChanged = NO;
 }
 - (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
 {
@@ -59,6 +74,7 @@
         self.lastPage = self.totalPage - 1;
     }
     targetContentOffset->x = lastPage * 1024;
+    [self loadImgNearBy];
     
 }
 #pragma mark -
@@ -73,9 +89,6 @@
 //	CGFloat pageWidth = scrollView.frame.size.width;
 //	NSInteger page = floor((scrollView.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
 	//NSLog(@"page = %d, lastPage = %d", page, lastPage);
-	
-		((MyScrollView *)[self.mainScrollView viewWithTag:100+lastPage+1]).zoomScale = 1.0;
-        ((MyScrollView *)[self.mainScrollView viewWithTag:100+lastPage-1]).zoomScale = 1.0;
 }
 
 
@@ -88,23 +101,80 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self loadImg];
-    
-}
-
-- (void)loadImg
-{
     DataAdapter* da = [DataAdapter shareInstance];
     int count = [da count];
     self.totalPage = count;
     self.mainScrollView.contentSize = CGSizeMake(1024*count, 480);
-    for (int i = 0; i < count; i ++)
+    if (self.filterChanged)
     {
-            MyScrollView *ascrView = [[MyScrollView alloc] initWithFrame:CGRectMake(1024*i, 0, 1024, 748)];
-            NSString *imgPath = [da ImageLinkAtIndex:i andType:PRODUCT_PIC_TYPE_FULL];
-            ascrView.image = [UIImage imageWithContentsOfFile:imgPath];
-            ascrView.tag = 100+i;
+        NSArray* views = [self.imageDic allValues];
+        for (UIView* view in views)
+        {
+            [view removeFromSuperview];
+        }
+    }
+    [self loadImgNearBy];
+    [self.mainScrollView setContentOffset:CGPointMake(self.lastPage*1024, 0) animated:NO];
+}
+
+- (void)loadImg:(NSUInteger)index
+{
+    DataAdapter* da = [DataAdapter shareInstance];
+    
+    NSString *key = [da ProductIdAtIndex:index];
+    MyScrollView *ascrView = [self.imageDic objectForKey:key];
+    if (nil == ascrView)
+    {
+        ascrView = [[MyScrollView alloc] initWithFrame:CGRectMake(1024*index, 0, 1024, 748)];
+        NSString *imgPath = [da ImageLinkAtIndex:index andType:PRODUCT_PIC_TYPE_FULL];
+        ascrView.image = [UIImage imageWithContentsOfFile:imgPath];
+        ascrView.tag = 100+index;
+        [self.mainScrollView addSubview:ascrView];
+        [self.imageDic setObject:ascrView forKey:key];
+    }
+    else
+    {
+        if (self.filterChanged && ![self.mainScrollView.subviews containsObject:ascrView])
+        {
+            ascrView.frame = CGRectMake(1024*index, 0, 1024, 748);
             [self.mainScrollView addSubview:ascrView];
+        }
+        ((MyScrollView *)[self.mainScrollView viewWithTag:100+index]).zoomScale = 1.0;
+    }
+}
+
+- (void)loadImgNearBy
+{
+    [self loadImg:self.lastPage];
+    if (self.lastPage >= self.totalPage)
+    {
+        [self loadImg:self.lastPage - 1];
+    }
+    else if (self.lastPage <= 0)
+    {
+        [self loadImg:self.lastPage + 1];
+    }
+    else
+    {
+        [self loadImg:self.lastPage - 1];
+        [self loadImg:self.lastPage + 1];
+    }
+}
+
+
+- (void)setData:(ProductShowingDetail *)psd
+{
+    self.lastPage = psd.index;
+    NSString* currentFilter = [[DataAdapter shareInstance] currentFilter];
+    if (![self.currentFilter isEqualToString:currentFilter])
+    {
+        self.currentFilter = currentFilter;
+        self.filterChanged = YES;
+    }
+    else
+    {
+        self.filterChanged = NO;
+        
     }
 }
 @end

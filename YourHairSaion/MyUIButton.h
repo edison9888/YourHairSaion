@@ -27,5 +27,5 @@ typedef enum
 @property (nonatomic, strong) RootViewController* rvc;
 
 
-- (id)initAll:(CGRect)frame andVcType:(enumViewControllerType)enumVcType andSubType:(NSString*)subType andTitle:(NSString*)title andStyle:(MyUIButtonStyle)style andImgName:(NSString*)imgName andRvc:(RootViewController*)rvc;
+- (UIButton*)initAll:(CGRect)frame andVcType:(enumViewControllerType)enumVcType andSubType:(NSString*)subType andTitle:(NSString*)title andStyle:(MyUIButtonStyle)style andImgName:(NSString*)imgName andRvc:(RootViewController*)rvc;
 @end

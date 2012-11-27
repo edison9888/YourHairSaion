@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1810" systemVersion="11G63" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="DiscountCard" representedClassName="DiscountCard" syncable="YES">
+        <attribute name="cardId" attributeType="String" syncable="YES"/>
+        <attribute name="detail" attributeType="String" syncable="YES"/>
+        <attribute name="imgLink" attributeType="String" syncable="YES"/>
+        <attribute name="name" attributeType="String" syncable="YES"/>
+        <attribute name="overlay" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="type" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+    </entity>
     <entity name="Organization" representedClassName="Organization" syncable="YES">
         <attribute name="city" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="email" optional="YES" attributeType="String" syncable="YES"/>
@@ -70,5 +78,6 @@
         <element name="ProductPic" positionX="259" positionY="-72" width="128" height="105"/>
         <element name="ProductPricing" positionX="529" positionY="261" width="128" height="120"/>
         <element name="ProductType" positionX="160" positionY="192" width="128" height="105"/>
+        <element name="DiscountCard" positionX="160" positionY="192" width="128" height="135"/>
     </elements>
 </model>

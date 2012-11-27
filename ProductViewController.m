@@ -16,6 +16,8 @@
 #import "DataAdapter.h"
 #import "DetailViewController.h"
 #import "RootViewController.h"
+#import <QuartzCore/QuartzCore.h>
+
 
 
 /**
@@ -51,7 +53,8 @@ static BOOL isDeviceIPad() {
 - (void)setupNavBar;
 - (void)filterByType:(id)sender;
 - (void)loadFooter;
-
+- (void)imageViewDidStop:(NSString *)paraAnimationId finished:(NSString *)paraFinished context:(void *)paraContext;
+- (void)doAnimationMoveToShoppingCart:(PSBroView*)cell;
 @end
 
 @implementation ProductViewController
@@ -293,6 +296,10 @@ collectionView = _collectionView;
 
 - (NSUInteger)indexInPage
 {
+    if (toIndex < 0)
+    {
+        return 0;
+    }
     int index = (toIndex + 1) / ITEMS_PER_PAGE;
     if (index*ITEMS_PER_PAGE <= toIndex)
     {
@@ -336,17 +343,68 @@ collectionView = _collectionView;
 }
 - (void)productAdd:(PSCollectionViewCell *)cell
 {
-    NSLog(@"buy");
-
+    [[DataAdapter shareInstance]addProductToBuy:((ProductShowingDetail*)((PSBroView*)cell).object).productId];
+    [((PSBroView*)cell) productAdd];
+    
+    [self doAnimationMoveToShoppingCart:(PSBroView*)cell];
+    
 }
 - (void)productReduct:(PSCollectionViewCell *)cell
 {
-    NSLog(@"reduce");
+    if ([[DataAdapter shareInstance] numInShoppingCart:((ProductShowingDetail*)((PSBroView*)cell).object).productId] > 0)
+    {
+    
+        [[DataAdapter shareInstance]reduceProductToBuy:((ProductShowingDetail*)((PSBroView*)cell).object).productId];
+        [((PSBroView*)cell) productReduct];
+    }
+    
 }
 - (void)finishToBuy:(PSCollectionViewCell *)cell
 {
     [((PSBroView*)cell) prepareToBuy];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    for (UIView* cell in self.collectionView.subviews)
+    {
+        if ([cell isKindOfClass:[PSBroView class]])
+        {
+            [((PSBroView*)cell) reflash];
+        }
+    }
+}
 
+- (void)reloadData
+{
+    [self loadDataSource];
+}
+
+- (void)setRangWithFromIndex:(NSUInteger)from toIndex:(NSUInteger)to
+{
+    fromIndex = from;
+    toIndex = to;
+}
+
+- (void)imageViewDidStop:(NSString *)paraAnimationId finished:(NSString *)paraFinished context:(void *)paraContext
+{
+    [((__bridge UIImageView*)paraContext) removeFromSuperview];
+}
+
+- (void)doAnimationMoveToShoppingCart:(PSBroView *)cell
+{    
+    UIImageView* tmp = [cell imageViewCopy];
+    [self.rootViewController.view addSubview:tmp];
+    [UIView beginAnimations:@"animationID" context:nil];
+    [UIView setAnimationDuration:1]; //动画时长
+    [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+    [UIView setAnimationTransition: UIViewAnimationTransitionFlipFromLeft forView:tmp cache:YES];
+    [UIView setAnimationDidStopSelector:@selector(imageViewDidStop:finished:context:)];
+    [UIView setAnimationDelegate:self];
+    tmp.frame = CGRectMake(900, 600, tmp.frame.size.width, tmp.frame.size.width);
+    tmp.alpha = 0;
+    tmp.transform = CGAffineTransformMakeScale(0.3, 0.3);
+    [UIView commitAnimations];
+}
 @end

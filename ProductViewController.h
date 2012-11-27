@@ -22,5 +22,7 @@
 
 - (NSUInteger)indexInPage;
 
+- (void)reloadData;
+- (void)setRangWithFromIndex:(NSUInteger)from toIndex:(NSUInteger)to;
 
 @end

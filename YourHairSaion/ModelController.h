@@ -19,6 +19,9 @@ typedef enum {
     ViewControllerShoppingCart
 } enumViewControllerType;
 
+#define MAP_SUBTYPE_MAP   @"MAP"
+#define MAP_SUBTYPE_LIST  @"LIST"
+
 @class RootViewController;
 @interface ModelController : NSObject <UIPageViewControllerDataSource>
 
@@ -28,4 +31,6 @@ typedef enum {
 
 - (void)setVcType:(enumViewControllerType)enumVcType andSubType:(NSString*)subType;
 - (NSUInteger)pageCount;
+- (enumViewControllerType)currentVCType;
+- (NSString*)currentSubType;
 @end

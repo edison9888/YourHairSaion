@@ -104,7 +104,7 @@ collectionView = _collectionView;
     NSArray* products = [dataAdapter.productsToBuy allValues];
     for (int i = 0; i < count; i++)
     {
-        ProductShowingDetail* item = [ProductShowingDetail initByProductBase:products[i]];
+        ProductShowingDetail* item = [ProductShowingDetail initByProductBase:[dataAdapter productBaseByProduceId:products[i]]];
         [self.items addObject:item];
     }
     [self dataSourceDidLoad];

@@ -421,6 +421,45 @@
     return orgId;
 }
 
+- (NSString*)insertNewDiscountCard:(NSString *)name andType:(NSNumber *)type andDetail:(NSString *)detail andOverlay:(NSNumber *)overlay andImgLink:(NSString *)imgLink
+{
+    NSString* cardId = nil;
+    if (nil == name || nil == type || nil == detail || nil == overlay || nil == imgLink)
+    {
+        NSLog(@"Parameter error!");
+    }
+    else
+    {
+        DiscountCard *dc = [NSEntityDescription insertNewObjectForEntityForName:@"DiscountCard" inManagedObjectContext:self.managedObjectContext];
+        if (dc)
+        {
+            dc.cardId = [self generateProductId];
+            dc.name = name;
+            dc.type = type;
+            dc.detail = detail;
+            dc.overlay = overlay;
+            dc.imgLink = imgLink;
+            NSError * error = nil;
+            if ([self.managedObjectContext save:&error])
+            {
+                NSLog(@"insert discountcard success!");
+                cardId =dc.cardId;
+            }
+            else
+            {
+                NSLog([error description]);
+            }
+        }
+        else
+        {
+            NSLog(@"DB error!");
+            
+        }
+    }
+    
+    return cardId;
+}
+
 - (NSArray*)getAll:(NSString *)entityName
 {
     if (nil == entityName)
@@ -444,8 +483,33 @@
 + (void) test
 {
     //ProductBase *product = [[ProductBase alloc] init];
+    int vipcardcount = [[[DBManager shareInstance]getAll:@"DiscountCard"]count];
+    if (vipcardcount < 7)
+    {
+        NSString* cardId = [[DBManager shareInstance] insertNewDiscountCard:@"会员卡" andType:PRODUCT_DISCOUNT_TYPE_CUT andDetail:@"就是很普通的会员卡" andOverlay:DISCOUNT_CARD_NO_OVERLAY andImgLink:@"vipcard1.png"];
+        [[DBManager shareInstance] insertNewProductPricing:cardId andProductType:@""  andDiscountType:PRODUCT_DISCOUNT_TYPE_CUT andDiscountName:@"立减" andCalcValue:[NSString stringWithFormat:@"%d", arc4random()%100+100]];
+        
+        cardId = [[DBManager shareInstance] insertNewDiscountCard:@"会员卡蓝卡" andType:PRODUCT_DISCOUNT_TYPE_CUT andDetail:@"比普通的会员卡高一级" andOverlay:DISCOUNT_CARD_NO_OVERLAY andImgLink:@"vipcard2.png"];
+        [[DBManager shareInstance] insertNewProductPricing:cardId andProductType:@""  andDiscountType:PRODUCT_DISCOUNT_TYPE_CUT andDiscountName:@"立减" andCalcValue:[NSString stringWithFormat:@"%d", arc4random()%100+120]];
+        
+        cardId = [[DBManager shareInstance] insertNewDiscountCard:@"贵宾卡" andType:PRODUCT_DISCOUNT_TYPE_PERCENT andDetail:@"很普通的贵宾卡" andOverlay:DISCOUNT_CARD_NO_OVERLAY andImgLink:@"vipcard3.png"];
+        [[DBManager shareInstance] insertNewProductPricing:cardId andProductType:@""  andDiscountType:PRODUCT_DISCOUNT_TYPE_PERCENT andDiscountName:@"折扣" andCalcValue:[NSString stringWithFormat:@"%d", (arc4random()%8+1)*10]];
+        
+        cardId = [[DBManager shareInstance] insertNewDiscountCard:@"贵宾卡蓝卡" andType:PRODUCT_DISCOUNT_TYPE_CUT andDetail:@"比普通的贵宾卡高一级" andOverlay:DISCOUNT_CARD_NO_OVERLAY andImgLink:@"vipcard4.png"];
+        [[DBManager shareInstance] insertNewProductPricing:cardId andProductType:@""  andDiscountType:PRODUCT_DISCOUNT_TYPE_PERCENT andDiscountName:@"折扣" andCalcValue:[NSString stringWithFormat:@"%d", (arc4random()%7+1)*10]];
+        
+        cardId = [[DBManager shareInstance] insertNewDiscountCard:@"贵宾金卡" andType:PRODUCT_DISCOUNT_TYPE_PERCENT andDetail:@"最吊的卡最吊的卡最吊的卡最吊的卡最吊的卡最吊的卡最吊的卡最吊的卡最吊的卡最吊的卡最吊的卡最吊的卡最吊的卡最吊的卡" andOverlay:DISCOUNT_CARD_CAN_OVERLAY andImgLink:@"vipcard5.png"];
+        [[DBManager shareInstance] insertNewProductPricing:cardId andProductType:@""  andDiscountType:PRODUCT_DISCOUNT_TYPE_PERCENT andDiscountName:@"折扣" andCalcValue:[NSString stringWithFormat:@"%d", (arc4random()%3+1)*10]];
+        
+        cardId = [[DBManager shareInstance] insertNewDiscountCard:@"贵宾卡黑卡" andType:PRODUCT_DISCOUNT_TYPE_CUT andDetail:@"比贵宾卡蓝卡高一级" andOverlay:DISCOUNT_CARD_NO_OVERLAY andImgLink:@"vipcard6.png"];
+        [[DBManager shareInstance] insertNewProductPricing:cardId andProductType:@""  andDiscountType:PRODUCT_DISCOUNT_TYPE_PERCENT andDiscountName:@"折扣" andCalcValue:[NSString stringWithFormat:@"%d", (arc4random()%6+1)*10]];
+        
+        cardId = [[DBManager shareInstance] insertNewDiscountCard:@"会员卡黑卡" andType:PRODUCT_DISCOUNT_TYPE_CUT andDetail:@"比普通会员卡蓝卡高一级" andOverlay:DISCOUNT_CARD_NO_OVERLAY andImgLink:@"vipcard7.png"];
+        [[DBManager shareInstance] insertNewProductPricing:cardId andProductType:@""  andDiscountType:PRODUCT_DISCOUNT_TYPE_CUT andDiscountName:@"立减" andCalcValue:[NSString stringWithFormat:@"%d", arc4random()%100+140]];
+
+    }
     int typecount = [[[DBManager shareInstance]getAll:@"ProductType"] count];
-    if (typecount < 7)
+    if (typecount < 18)
     {
         NSString* typeGirl = [[DBManager shareInstance] insertNewProductType:@"女士发型" andParent:PRODUCT_TYPE_ROOT andPricingId:@"1211081018589888"];
         NSString* typeMan = [[DBManager shareInstance] insertNewProductType:@"男士发型" andParent:PRODUCT_TYPE_ROOT andPricingId:@"1211081018589888"];

@@ -12,6 +12,7 @@
 
 #import "PSBroView.h"
 #import "ProductShowingDetail.h"
+#import <QuartzCore/QuartzCore.h>
 
 #define FRAME_BUTTON_W 27
 #define FRAME_BUTTON_H FRAME_BUTTON_W
@@ -84,7 +85,7 @@ captionLabel = _captionLabel;
         self.btnNum = [[UIButton alloc]init];
         //[self.btnNum setImage:[UIImage imageNamed:@"imgNum.png"] forState:UIControlStateNormal];
         //[self.btnNum addTarget:self action:@selector(productAdd:) forControlEvents:UIControlEventTouchUpInside];
-        [self.btnNum setTitle:@"1" forState:UIControlStateNormal];
+        [self.btnNum setTitle:@"0" forState:UIControlStateNormal];
         self.btnNum.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"imgNum.png"]];
         [self addSubview:self.btnNum];
         //display the number had buy
@@ -126,16 +127,11 @@ captionLabel = _captionLabel;
 */
 - (void)layoutSubviews {
     [super layoutSubviews];
+    [self reflash];
+        
     self.btnAdd.frame = CGRectMake(0, 0, FRAME_BUTTON_W, FRAME_BUTTON_H);
     self.btnReduct.frame = CGRectMake(self.frame.size.width-FRAME_BUTTON_W, 0, FRAME_BUTTON_W, FRAME_BUTTON_H);
     self.btnNum.frame = CGRectMake(self.frame.size.width-FRAME_BUTTON_W, 0, FRAME_BUTTON_W, FRAME_BUTTON_H);
-    [self.btnAdd setHidden:YES];
-    [self.btnReduct setHidden:YES];
-    [self.btnNum setHidden:YES];
-    self.buyNumberView.frame = CGRectMake(self.frame.size.width-FRAME_BUTTON_W, 0, FRAME_BUTTON_W, FRAME_BUTTON_H);
-    self.buyNumberIv.frame = CGRectMake(self.frame.size.width-FRAME_BUTTON_W, 0, FRAME_BUTTON_W, FRAME_BUTTON_H);
-    self.buyNumberLabel.text = @"88";
-    
     
     CGFloat width = self.frame.size.width - FRAME_BUTTON_W;
     CGFloat top = FRAME_BUTTON_H/2;
@@ -229,31 +225,112 @@ captionLabel = _captionLabel;
 
 - (void)productReduce:(id)sender
 {
-    [self.productBuyingDelegate productAdd:self];
+    [self.productBuyingDelegate productReduct:self];
 }
 
 - (void)productAdd:(id)sender
 {
+    /*
+    CATransition *animation = [CATransition animation];
+    animation.delegate = self;
+    animation.duration = 1;
+    animation.timingFunction = UIViewAnimationCurveEaseInOut;
+    animation.fillMode = kCAFillModeBackwards;
+    animation.removedOnCompletion = NO;
+    animation.type = kCATransitionReveal;//@"suckEffect";//这个就是你想要的效果
+    animation.subtype = kCATransitionFromTop;
+    
+    [self.content.layer addAnimation:animation forKey:@"animation"];
+    */
     [self.productBuyingDelegate productAdd:self];
+    
 }
 
 - (void)prepareToBuy
 {
     [self.btnAdd setHidden:NO];
     [self.btnReduct setHidden:NO];
-    [self.btnNum setHidden:YES];
+    self.btnNum.frame = CGRectMake((self.frame.size.width-FRAME_BUTTON_W)/2, 0, FRAME_BUTTON_W, FRAME_BUTTON_H);
+    [self.btnNum setHidden:NO];
+    
 }
 
 - (void)finishToBuy
 {
     [self.btnAdd setHidden:YES];
     [self.btnReduct setHidden:YES];
-    ProductShowingDetail* psd = self.object;
-    if (psd.buyCount > 0)
+    self.btnNum.frame = CGRectMake(self.frame.size.width-FRAME_BUTTON_W, 0, FRAME_BUTTON_W, FRAME_BUTTON_H);
+    NSUInteger buyCount = [[DataAdapter shareInstance]numInShoppingCart:((ProductShowingDetail*)self.object).productId];
+    if (buyCount > 0)
     {
-        [self.btnNum setTitle:[NSString stringWithFormat:@"%d", psd.buyCount] forState:UIControlStateNormal];
         [self.btnNum setHidden:NO];
     }
+    else
+    {
+        [self.btnNum setHidden:YES];
+    }
     
+}
+
+- (void)productAdd
+{
+    NSUInteger buyCount = [[DataAdapter shareInstance]numInShoppingCart:((ProductShowingDetail*)self.object).productId];
+    [self.btnNum setTitle:[NSString stringWithFormat:@"%d", buyCount] forState:UIControlStateNormal];
+}
+
+- (void)productReduct
+{
+    NSUInteger buyCount = [[DataAdapter shareInstance]numInShoppingCart:((ProductShowingDetail*)self.object).productId];
+    [self.btnNum setTitle:[NSString stringWithFormat:@"%d", buyCount] forState:UIControlStateNormal];
+    
+    CATransition *animation = [CATransition animation];
+    animation.delegate = self;
+    animation.duration = 1;
+    animation.timingFunction = UIViewAnimationCurveEaseInOut;
+    animation.fillMode = kCAFillModeBackwards;
+    animation.removedOnCompletion = NO;
+    animation.type = kCATransitionReveal;//@"suckEffect";//这个就是你想要的效果
+    animation.subtype = kCATransitionFromBottom;
+    
+    [self.content.layer addAnimation:animation forKey:@"animation"];
+}
+
+- (void)reflash
+{
+    self.backgroundColor = [UIColor clearColor];
+    self.content.backgroundColor = [UIColor whiteColor];
+    self.btnNum.frame = CGRectMake(self.frame.size.width-FRAME_BUTTON_W, 0, FRAME_BUTTON_W, FRAME_BUTTON_H);
+    [self.btnAdd setHidden:YES];
+    [self.btnReduct setHidden:YES];
+    NSUInteger buyCount = [[DataAdapter shareInstance]numInShoppingCart:((ProductShowingDetail*)self.object).productId];
+    if (buyCount > 0)
+    {
+        [self.btnNum setHidden:NO];
+        [self.btnNum setTitle:[NSString stringWithFormat:@"%d", buyCount] forState:UIControlStateNormal];
+    }
+    else
+    {
+        [self.btnNum setHidden:YES];
+    }
+}
+
+
+- (CGPoint)realImgViewCenter
+{
+    NSLog(@"ori x=%f,y=%f", self.imageView.center.x, self.imageView.center.y);
+    CGPoint real = [self.imageView convertPoint:self.imageView.center toView:self.superview.superview.superview.superview];
+    NSLog(@"real x=%f,y=%f", real.x, real.y);
+    return real;
+}
+
+- (UIImageView*)imageViewCopy
+{
+    UIImageView* tmp = [[UIImageView alloc]initWithFrame:self.imageView.frame];
+    NSLog(@"x=%f, y=%f", self.imageView.frame.origin.x, self.imageView.frame.origin.y);
+    tmp.image = self.imageView.image;
+    tmp.clipsToBounds = YES;
+    tmp.center = [self realImgViewCenter];
+    return tmp;
+
 }
 @end

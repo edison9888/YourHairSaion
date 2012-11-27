@@ -36,11 +36,11 @@
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    NSLog(@"width=%f", self.frame.size.width);
+    NSLog(@"width=%f", self.bounds.size.width);
     CGFloat imageHeight = self.imageView.image.size.height;
     CGFloat imageWidth = self.imageView.image.size.width;
     
-    CGFloat width = self.frame.size.width - CELL_MARGIN;
+    CGFloat width = 360;//self.frame.size.width - CELL_MARGIN;
     CGFloat height = floorf(imageHeight / (imageWidth / width));
     
     self.imageView.frame = (CGRectMake(0, 0, width, height));

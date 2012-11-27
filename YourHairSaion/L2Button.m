@@ -31,20 +31,22 @@
 
 - (void)onTouchUp:(id)sender
 {
-    [self.rvc setVcType:self.vcType andSubType:self.subType];
-    for (UIView* view in self.rvc.view.subviews)
+    if (self.vcType != [self.rvc currentVCType] || ![self.subType isEqualToString:[self.rvc currentSubType]])
     {
-        if ([view isKindOfClass:[L2Button class]])
+        [self.rvc setVcType:self.vcType andSubType:self.subType];
+        for (UIView* view in self.rvc.view.subviews)
         {
-            [self.rvc.view sendSubviewToBack:view];
-            //self.titleLabel.textColor = [UIColor whiteColor];
-            
+            if ([view isKindOfClass:[L2Button class]])
+            {
+                [self.rvc.view sendSubviewToBack:view];
+                //self.titleLabel.textColor = [UIColor whiteColor];
+                
+            }
         }
+        [self.rvc.view bringSubviewToFront:self];
+        //self.titleLabel.textColor = [UIColor blackColor];
+        //self.tintColor = [UIColor blackColor];
     }
-    [self.rvc.view bringSubviewToFront:self];
-    //self.titleLabel.textColor = [UIColor blackColor];
-    //self.tintColor = [UIColor blackColor];
-    
 }
 
 @end

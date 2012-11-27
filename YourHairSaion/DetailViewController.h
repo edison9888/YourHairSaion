@@ -8,10 +8,12 @@
 
 #import <UIKit/UIKit.h>
 #import "ProductShowingDetail.h"
+#import "DetailView.h"
+
 @class ProductViewController;
 @class RootViewController;
 
-@interface DetailViewController : UIViewController
+@interface DetailViewController : UIViewController<DetailViewDelegate>
 @property (nonatomic, strong) RootViewController* rootViewController;
 @property (nonatomic, strong) ProductViewController* productViewController;
 - (void)fillData:(ProductShowingDetail*)psd;

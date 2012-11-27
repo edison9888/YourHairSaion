@@ -10,20 +10,7 @@
 #import "RootViewController.h"
 #import "L2Button.h"
 
-#define FRAME_L2LSide_Btn_W 30
-#define FRAME_L2LSide_Btn_H 79
-#define FRAME_L2LSide_Btn_First_X 250
-#define FRAME_L2LSide_Btn_Frist_Y 18
-
-#define FRAME_L2Btn_Margin 10
-
-#define FRAME_L2RSide_Btn_W 60
-#define FRAME_L2RSide_Btn_H 110
-#define FRAME_L2RSide_Btn_First_X 1024 - 77
-#define FRAME_L2RSide_Btn_Frist_Y 179
-
 @interface L1Button()
-@property (nonatomic, strong)NSMutableArray* L2Btns;
 @end
 
 @implementation L1Button
@@ -45,7 +32,7 @@
 }
 */
 
-- (id)initAll:(CGRect)frame andVcType:(enumViewControllerType)enumVcType andSubType:(NSString *)subType andTitle:(NSString *)title andStyle:(MyUIButtonStyle)style andImgName:(NSString *)imgName andRvc:(RootViewController *)rvc
+- (L1Button*)initAll:(CGRect)frame andVcType:(enumViewControllerType)enumVcType andSubType:(NSString *)subType andTitle:(NSString *)title andStyle:(MyUIButtonStyle)style andImgName:(NSString *)imgName andRvc:(RootViewController *)rvc
 {
     self = [super initAll:frame andVcType:enumVcType andSubType:subType andTitle:title andStyle:style andImgName:imgName andRvc:rvc];
     if (self)
@@ -71,28 +58,25 @@
 
 - (void)onTouchUp:(id)sender
 {
-    [self.rvc setVcType:self.vcType andSubType:self.subType];
-    for (UIView* view in self.rvc.view.subviews)
-    {
-        if ([view isKindOfClass:[L1Button class]])
+if (self.vcType != [self.rvc currentVCType] || ![self.subType isEqualToString:[self.rvc currentSubType]])
+{
+        [self.rvc setVcType:self.vcType andSubType:self.subType];
+        for (UIView* view in self.rvc.view.subviews)
         {
-            [self.rvc.view sendSubviewToBack:view];
-            //self.titleLabel.textColor = [UIColor whiteColor];
-            
+            if ([view isKindOfClass:[L1Button class]])
+            {
+                [self.rvc.view sendSubviewToBack:view];
+            }
+            if ([view isKindOfClass:[L2Button class]])
+            {
+                [view setHidden:YES];
+            }
         }
-        if ([view isKindOfClass:[L2Button class]])
+        [self.rvc.view bringSubviewToFront:self];
+        for (L2Button* l2Btn in self.L2Btns)
         {
-            [view setHidden:YES];
-            //self.titleLabel.textColor = [UIColor whiteColor];
-            
+            [l2Btn setHidden:NO];
         }
-    }
-    [self.rvc.view bringSubviewToFront:self];
-    //self.titleLabel.textColor = [UIColor blackColor];
-    //self.tintColor = [UIColor blackColor];
-    for (L2Button* l2Btn in self.L2Btns)
-    {
-        [l2Btn setHidden:NO];
     }
 }
 

@@ -9,29 +9,16 @@
 #import <Foundation/Foundation.h>
 #import <MapKit/MapKit.h>
 #import "DataAdapter.h"
+#import "PsDataItem.h"
 
-@interface OrganizationItem : NSObject {
-	NSString *name;
-	NSString *street;
-	NSString *city;
-	NSString *state;
-	NSString *zip;
-	NSString *phone;
-	NSString *url;
-    NSString* imgLink;
-    
-	CLLocationDegrees latitude;
-	CLLocationDegrees longitude;
-}
+@interface OrganizationItem : PsDataItem
 
-@property (nonatomic, copy) NSString *name;
 @property (nonatomic, copy) NSString *street;
 @property (nonatomic, copy) NSString *city;
 @property (nonatomic, copy) NSString *state;
 @property (nonatomic, copy) NSString *zip;
 @property (nonatomic, copy) NSString *phone;
 @property (nonatomic, copy) NSString *url;
-@property (nonatomic, copy) NSString* imgLink;
 
 @property (nonatomic, assign) CLLocationDegrees latitude;
 @property (nonatomic, assign) CLLocationDegrees longitude;

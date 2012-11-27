@@ -13,7 +13,9 @@
 #import "DataAdapter.h"
 #import "MapViewController.h"
 #import "OrgDetailViewController.h"
-#import "OrgMapViewController.h"
+#import "MapPsViewController.h"
+#import "DiscountCardDetailViewController.h"
+#import "DiscountPsViewController.h"
 
 /*
  A controller object that manages a simple model -- a collection of month names.
@@ -65,7 +67,7 @@
 
 
 - (UIViewController *)viewControllerAtIndex:(NSUInteger)index storyboard:(UIStoryboard *)storyboard
-{   
+{
     
     // Create a new view controller and pass suitable data.
     int recodeCount = [[DataAdapter shareInstance] count];
@@ -131,37 +133,217 @@
     }
     else if (ViewControllerMap == currentVcType)
     {
-        if (index % 2)
+        if ([[self currentSubType] isEqualToString:MAP_SUBTYPE_MAP])
         {
-            return [self.rightViewController objectForKey:[self genKey:index andVcType:ViewControllerMap andSubType:self.currentFilter]];
+            if (index % 2)
+            {
+                return [self.rightViewController objectForKey:[self genKey:index andVcType:currentVcType andSubType:self.currentFilter]];
+            }
+            else
+            {
+                NSString* key = [self genKey:index andVcType:currentVcType andSubType:currentFilter];
+                MapViewController* mvc = [self.leftViewController objectForKey:key];
+                if (nil == mvc)
+                {
+                    mvc = [[MapViewController alloc]init];
+                    NSString* keyForRight = [self genKey:index+1 andVcType:currentVcType andSubType:self.currentFilter];
+                    OrgDetailViewController* ovc = [self.rightViewController objectForKey:keyForRight];
+                    if (nil == ovc)
+                    {
+                        ovc = [[OrgDetailViewController alloc] initWithNibName:@"OrgDetailTableView" bundle:nil];
+                    }
+                    mvc.detailOnMap = ovc;
+                    [self.rightViewController setObject:ovc forKey:keyForRight];
+                    [self.leftViewController setObject:mvc forKey:key];
+                }
+                return mvc;
+            }
         }
         else
         {
-            NSString* key = [self genKey:index andVcType:ViewControllerMap andSubType:currentFilter];
-            MapViewController* mvc = [self.leftViewController objectForKey:key];
-            if (nil == mvc)
+            recodeCount = [[DataAdapter shareInstance].organizations count];
+            fromIndex = index / 2 * itemsPerPage;
+            toIndex = fromIndex + itemsPerPage - 1;
+            toIndex = toIndex >= recodeCount ? recodeCount - 1 : toIndex;
+            NSLog(@"record count[%d], page count[%d], current page[%d], record from[%d], to[%d], index[%d]", recodeCount, pageCount, currentPage, fromIndex, toIndex, index);
+            if (index % 2) //right side
             {
-                mvc = [[MapViewController alloc]init];
-                NSString* keyForRight = [self genKey:index+1 andVcType:ViewControllerMap andSubType:self.currentFilter];
-                OrgDetailViewController* ovc = [self.rightViewController objectForKey:keyForRight];
-                if (nil == ovc)
+                NSString* key = [self genKey:index andVcType:currentVcType andSubType:currentFilter];
+                OrgDetailViewController* odv = [self.rightViewController objectForKey:key];
+                if (nil == odv)
                 {
-                    ovc = [[OrgDetailViewController alloc] initWithNibName:@"OrgDetailTableView" bundle:nil];
+                    odv = [[OrgDetailViewController alloc] init];//initWithNibName:@"PsDetailViewController" bundle:nil];
+                    //gen the product VC at the left side
+                    NSString* keyForLeft = [self genKey:index - 1 andVcType:currentVcType andSubType:currentFilter];
+                    MapPsViewController* mpvc = [self.leftViewController objectForKey:keyForLeft];
+                    if ( nil == mpvc)
+                    {
+                        mpvc = [[MapPsViewController alloc]initProductViewControllerWithTitle:@"分店介绍" fromIndex:fromIndex endIndex:toIndex withDetailViewController:odv];
+                        mpvc.rootViewController = self.rootViewController;
+                        [mpvc setPageCount:pageCount];
+                        [self.leftViewController setObject:mpvc forKey:keyForLeft];
+                        
+                    }
+                    else
+                    {
+                        mpvc.detailViewController = odv;
+                    }
+                    odv.psViewController = mpvc;
+                    [self.rightViewController setObject:odv forKey:key];
+                    [self.leftViewController setObject:mpvc forKey:keyForLeft];
+                    
                 }
-                [self.rightViewController setObject:ovc forKey:keyForRight];
-                mvc.detailOnMap = ovc;
-
+                return odv;
             }
-            [self.leftViewController setObject:mvc forKey:key];
-            return mvc;
+            else //left side
+            {
+                NSString* key = [self genKey:index andVcType:currentVcType andSubType:currentFilter];
+                MapPsViewController* mpvc = [self.leftViewController objectForKey:key];
+                if (nil == mpvc)
+                {
+                    NSString* keyForRight = [self genKey:index + 1 andVcType:currentVcType andSubType:currentFilter];
+                    OrgDetailViewController *odv = [self.rightViewController objectForKey:keyForRight];
+                    if ( nil == odv)
+                    {
+                        odv = [[OrgDetailViewController alloc] init];//initWithNibName:@"OrgDetailTableView" bundle:nil];
+                    }
+                    mpvc = [[MapPsViewController alloc]initProductViewControllerWithTitle:@"分店介绍" fromIndex:fromIndex endIndex:toIndex withDetailViewController:odv];
+                    [mpvc setPageCount:pageCount];
+                    odv.psViewController = mpvc;
+                    mpvc.rootViewController = self.rootViewController;
+                    
+                    [self.rightViewController setObject:odv forKey:keyForRight];
+                    [self.leftViewController setObject:mpvc forKey:key];
+                }
+                return mpvc;
+            }
+        }
+    }
+    else if (ViewControllerShoppingCart == currentVcType)
+    {
+        if (index % 2) //right side
+        {
+            NSString* key = [self genKey:index andVcType:currentVcType andSubType:currentFilter];
+            DetailViewController* dvc = [self.rightViewController objectForKey:key];
+            if (nil == dvc)
+            {
+                dvc = [[DetailViewController alloc]init];
+                dvc.rootViewController = self.rootViewController;
+                //gen the product VC at the left side
+                NSString* keyForLeft = [self genKey:index - 1 andVcType:currentVcType andSubType:currentFilter];
+                ProductViewController* pvc = [self.leftViewController objectForKey:keyForLeft];
+                if ( nil == pvc)
+                {
+                    pvc = [[ProductViewController alloc]initProductViewControllerFromIndex:fromIndex endIndex:toIndex withDetailViewController:dvc];
+                    pvc.rootViewController = self.rootViewController;
+                    [self.leftViewController setObject:pvc forKey:keyForLeft];
+                    
+                }
+                else
+                {
+                    pvc.detailViewController = dvc;
+                }
+                dvc.productViewController = pvc;
+                [self.rightViewController setObject:dvc forKey:key];
+                [self.leftViewController setObject:pvc forKey:keyForLeft];
+                
+            }
+            return dvc;
+        }
+        else //left side
+        {
+            NSString* key = [self genKey:index andVcType:currentVcType andSubType:currentFilter];
+            ProductViewController* pvc = [self.leftViewController objectForKey:key];
+            if (nil == pvc)
+            {
+                NSString* keyForRight = [self genKey:index + 1 andVcType:currentVcType andSubType:currentFilter];
+                DetailViewController *dvc = [self.rightViewController objectForKey:keyForRight];
+                if ( nil == dvc)
+                {
+                    dvc = [[DetailViewController alloc]init];
+                    dvc.rootViewController = self.rootViewController;
+                    
+                }
+                pvc = [[ProductViewController alloc]initProductViewControllerFromIndex:fromIndex endIndex:toIndex withDetailViewController:dvc];
+                [pvc setPageCount:pageCount];
+                dvc.productViewController = pvc;
+                pvc.rootViewController = self.rootViewController;
+                
+                [self.rightViewController setObject:dvc forKey:keyForRight];
+                [self.leftViewController setObject:pvc forKey:key];
+            }
+            else
+            {
+                [pvc setRangWithFromIndex:fromIndex toIndex:toIndex];
+                [pvc reloadData];
+            }
+            return pvc;
+        }
+    }
+    else if (ViewControllerPolicy == currentVcType)
+    {
+        recodeCount = [[DataAdapter shareInstance].discountCards count];
+        fromIndex = index / 2 * itemsPerPage;
+        toIndex = fromIndex + itemsPerPage - 1;
+        toIndex = toIndex >= recodeCount ? recodeCount - 1 : toIndex;
+        NSLog(@"record count[%d], page count[%d], current page[%d], record from[%d], to[%d], index[%d]", recodeCount, pageCount, currentPage, fromIndex, toIndex, index);
+        if (index % 2) //right side
+        {
+            NSString* key = [self genKey:index andVcType:currentVcType andSubType:currentFilter];
+            DiscountCardDetailViewController* ddvc = [self.rightViewController objectForKey:key];
+            if (nil == ddvc)
+            {
+                ddvc = [[DiscountCardDetailViewController alloc] init];
+                NSString* keyForLeft = [self genKey:index - 1 andVcType:currentVcType andSubType:currentFilter];
+                DiscountPsViewController* dpvc = [self.leftViewController objectForKey:keyForLeft];
+                if ( nil == dpvc)
+                {
+                    dpvc = [[DiscountPsViewController alloc]initProductViewControllerWithTitle:@"会员优惠" fromIndex:fromIndex endIndex:toIndex withDetailViewController:ddvc];
+                    dpvc.rootViewController = self.rootViewController;
+                    [dpvc setPageCount:pageCount];
+                    [self.leftViewController setObject:dpvc forKey:keyForLeft];
+                    
+                }
+                else
+                {
+                    dpvc.detailViewController = ddvc;
+                }
+                ddvc.psViewController = dpvc;
+                [self.rightViewController setObject:ddvc forKey:key];
+                [self.leftViewController setObject:dpvc forKey:keyForLeft];
+                
+            }
+            return ddvc;
+        }
+        else //left side
+        {
+            NSString* key = [self genKey:index andVcType:currentVcType andSubType:currentFilter];
+            DiscountPsViewController* dpvc = [self.leftViewController objectForKey:key];
+            if (nil == dpvc)
+            {
+                NSString* keyForRight = [self genKey:index + 1 andVcType:currentVcType andSubType:currentFilter];
+                DiscountCardDetailViewController *ddvc = [self.rightViewController objectForKey:keyForRight];
+                if ( nil == ddvc)
+                {
+                    ddvc = [[DiscountCardDetailViewController alloc] init];
+                }
+                dpvc = [[DiscountPsViewController alloc]initProductViewControllerWithTitle:@"会员优惠" fromIndex:fromIndex endIndex:toIndex withDetailViewController:ddvc];
+                [dpvc setPageCount:pageCount];
+                ddvc.psViewController = dpvc;
+                dpvc.rootViewController = self.rootViewController;
+                
+                [self.rightViewController setObject:ddvc forKey:keyForRight];
+                [self.leftViewController setObject:dpvc forKey:key];
+            }
+            return dpvc;
         }
     }
 }
 
 - (NSUInteger)indexOfViewController:(UIViewController *)viewController
-{   
-     // Return the index of the given data view controller.
-     // For simplicity, this implementation uses a static array of model objects and the view controller stores the model object; you can therefore use the model object to identify the index.
+{
+    // Return the index of the given data view controller.
+    // For simplicity, this implementation uses a static array of model objects and the view controller stores the model object; you can therefore use the model object to identify the index.
     if ([viewController isKindOfClass:[DetailViewController class]])
     {
         return [((DetailViewController*)viewController) indexInPage];
@@ -170,15 +352,46 @@
     {
         return [((ProductViewController*)viewController) indexInPage];
     }
+    else if ([viewController isKindOfClass:[MapViewController class]])
+    {
+        if ([[self currentSubType] isEqualToString:MAP_SUBTYPE_LIST])
+        {
+            return [((MapPsViewController*)viewController) indexInPage];
+        }
+        else
+        {
+            return 0;
+        }
+    }
+    else if ([viewController isKindOfClass:[OrgDetailViewController class]])
+    {
+        if ([[self currentSubType] isEqualToString:MAP_SUBTYPE_LIST])
+        {
+            return [((OrgDetailViewController*)viewController) indexInPage];
+        }
+        else
+        {
+            return 1;
+        }
+    }
+    else if ([viewController isKindOfClass:[PsViewController class]])
+    {
+        return [((PsViewController*)viewController) indexInPage];
+    }
+    else if ([viewController isKindOfClass:[PsDetailViewController class]])
+    {
+        return [((PsDetailViewController*)viewController) indexInPage];
+    }
     return 0;
 }
+
 
 #pragma mark - Page View Controller Data Source
 
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController
 {
     NSUInteger index = [self indexOfViewController:viewController];
-    if ((index == 0) || (index == NSNotFound)) {
+    if ((index <= 0) || (index == NSNotFound)) {
         return nil;
     }
     
@@ -189,9 +402,9 @@
 
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController
 {
-//    [((DetailViewController*)viewController) fillData:nil];
+    //    [((DetailViewController*)viewController) fillData:nil];
     NSUInteger index = [self indexOfViewController:viewController];
-    if ((index == 0) || (index == NSNotFound) || index > (pageCount - 1) * 2 )
+    if ((index <= 0) || (index == NSNotFound) || index > (pageCount - 1) * 2 )
     {
         return nil;
     }
@@ -209,14 +422,17 @@
         case ViewControllerProduct:
             key = [NSString stringWithFormat:@"Product%@%d", subType == nil ? @"ALL" : subType, pageIndex];
             break;
-            case ViewControllerDetail:
+        case ViewControllerDetail:
             key = [NSString stringWithFormat:@"Detail%@%d", subType == nil ? @"ALL" : subType, pageIndex];
             break;
-            case ViewControllerMap:
-            key = [NSString stringWithFormat:@"Map%d", pageIndex];
+        case ViewControllerMap:
+            key = [NSString stringWithFormat:@"Map%@%d", subType, pageIndex];
             break;
-            case ViewControllerPolicy:
+        case ViewControllerPolicy:
             key = [NSString stringWithFormat:@"Policy%d", pageIndex];
+            break;
+        case ViewControllerShoppingCart:
+            key = [NSString stringWithFormat:@"ShoppingCart%d", pageIndex];
             break;
         default:
             break;
@@ -237,11 +453,29 @@
     }
     else if (currentVcType == ViewControllerMap)
     {
-        pageCount = 2;
+        if ([subType isEqualToString:MAP_SUBTYPE_LIST])
+        {
+            int recodeCount = [[DataAdapter shareInstance].organizations count];
+            pageCount = recodeCount / itemsPerPage;
+            pageCount = pageCount % itemsPerPage == 0 ? pageCount : pageCount + 1;
+        }
+        else
+        {
+            pageCount = 0;
+        }
     }
     else if (currentVcType == ViewControllerPolicy)
     {
-        pageCount = 2;
+        int recodeCount = [[DataAdapter shareInstance].discountCards count];
+        pageCount = recodeCount / itemsPerPage;
+        pageCount = pageCount % itemsPerPage == 0 ? pageCount : pageCount + 1;
+    }
+    else if (currentVcType == ViewControllerShoppingCart)
+    {
+        [[DataAdapter shareInstance]setFilterByTypeId:STRING_FOR_SHOPPING_CART_FILTER];
+        int recodeCount = [[DataAdapter shareInstance] count];
+        pageCount = recodeCount / itemsPerPage;
+        pageCount = pageCount % itemsPerPage == 0 ? pageCount : pageCount + 1;
     }
 }
 
@@ -249,4 +483,17 @@
 {
     return pageCount;
 }
+
+
+
+
+- (enumViewControllerType)currentVCType
+{
+    return currentVcType;
+}
+- (NSString*)currentSubType
+{
+    return self.currentFilter;
+}
+
 @end

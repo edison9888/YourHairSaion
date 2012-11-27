@@ -20,9 +20,9 @@
 @synthesize productPics;
 @synthesize productTypes;
 @synthesize organizations;
-@synthesize productBasesWithFilter;
-@synthesize filterFlag;
-@synthesize productsToBuy;
+@synthesize productBasesWithFilter, productBasesInShoppingCart;
+@synthesize filterType;
+@synthesize productsToBuy, discountCards;
 
 + (DataAdapter*)shareInstance;
 {
@@ -55,7 +55,7 @@
 
 - (BOOL)loadData
 {
-    self.filterFlag = NO;
+    self.filterType = FILTER_TYPE_NO;
     DBManager* dbManager = [DBManager shareInstance];
     self.productBases = [dbManager getAll:@"ProductBase"];
     if (nil == self.productBases || [self.productBases count] <= 0)
@@ -96,6 +96,8 @@
     
     self.organizations = [dbManager getAll:@"Organization"];
     
+    self.discountCards = [dbManager getAll:@"DiscountCard"];
+
     return [self mergeData];
 }
 
@@ -152,59 +154,58 @@
             
         }
 
-    for (Organization* org in self.organizations)
+        for (Organization* org in self.organizations)
         {
-    if ([org.orgId isEqualToString:productBase.orgId])
+            if ([org.orgId isEqualToString:productBase.orgId])
+            {
+                productBase.org = org;
+                break;
+            }
+            
+        }
+        
+    }
+for (DiscountCard* dc in self.discountCards)
+{
+    for (ProductPricing* productPricing in self.productPricings)
     {
-        productBase.org = org;
-        break;
+        if ([dc.cardId isEqualToString:productPricing.productId])
+        {
+            dc.productPricing = productPricing;
+            break;
+        }
     }
-    
 }
-    }
     return YES;
 }
 
 - (int)count
 {
-    if (self.filterFlag)
+    switch (self.filterType)
     {
-        return [self.productBasesWithFilter count];
+        case FILTER_TYPE_NO:
+            return [self.productBases count];
+        case FILTER_TYPE_PRODUCT_TYPE:
+            return [self.productBasesWithFilter count];
+        case FILTER_TYPE_SHOPPING_CART:
+            return [self.productBasesInShoppingCart count];
     }
-    return [self.productBases count];
+    return 0;
 }
 
 - (NSString*)captionAtIndex:(NSInteger)index
 {
-    if (self.filterFlag)
-    {
-        return ((ProductBase*)[self.productBasesWithFilter objectAtIndex:index]).productName;
-
-    }
-    return ((ProductBase*)[self.productBases objectAtIndex:index]).productName;
+    return [self objectAtIndex:index].productName;
 }
 
 - (NSString*)detailAtIndex:(NSInteger)index
 {
-    if (self.filterFlag)
-    {
-        return ((ProductBase*)[self.productBasesWithFilter objectAtIndex:index]).productDetail;
-    }
-    return ((ProductBase*)[self.productBases objectAtIndex:index]).productDetail;
+    return [self objectAtIndex:index].productDetail;
 }
 
 - (NSString*)ImageLinkAtIndex:(NSInteger)index andType:(NSNumber *)type
 {
-    ProductBase* productBase = nil;
-    if (self.filterFlag)
-    {
-        productBase = [self.productBasesWithFilter objectAtIndex:index];
-        
-    }
-    else
-    {
-        productBase = [self.productBases objectAtIndex:index];
-    }
+    ProductBase* productBase = [self objectAtIndex:index];
     for (ProductPic* pic in productBase.productPics)
     {
         if ([pic.picType isEqualToNumber:type])
@@ -217,36 +218,24 @@
 
 - (NSNumber*)priceAtIndex:(NSInteger)index
 {
-    if (self.filterFlag)
-    {
-        return ((ProductBase*)[self.productBasesWithFilter objectAtIndex:index]).productPrice;
-    }
-    return ((ProductBase*)[self.productBases objectAtIndex:index]).productPrice;
+    return [self objectAtIndex:index].productPrice;
 }
 
 - (NSNumber*)amountAtIndex:(NSInteger)index
 {
-    if (self.filterFlag)
-    {
-        return ((ProductBase*)[self.productBasesWithFilter objectAtIndex:index]).productAmount.amount;
-    }
-    return ((ProductBase*)[self.productBases objectAtIndex:index]).productAmount.amount;
+    return [self objectAtIndex:index].productAmount.amount;
 
 }
 
 - (NSString*)ProductIdAtIndex:(NSInteger)index
 {
-    if (self.filterFlag)
-    {
-        return ((ProductBase*)[self.productBasesWithFilter objectAtIndex:index]).productId;
-    }
-    return ((ProductBase*)[self.productBases objectAtIndex:index]).productId;
+    return [self objectAtIndex:index].productId;
     
 }
 
 - (NSArray*)productFilterByType:(NSString *)type
 {
-    self.filterFlag = YES;
+    self.filterType = FILTER_TYPE_PRODUCT_TYPE;
     NSMutableArray* result = [[NSMutableArray alloc]init];
     for (ProductBase* product in self.productBases)
     {
@@ -261,12 +250,12 @@
     return result;
 }
 
-
+//根据类型设置过滤标志
 - (void)setFilter:(ProductType *)productType
 {
     if (nil == productType)
     {
-        self.filterFlag = NO;
+        self.filterType = FILTER_TYPE_NO;
     }
     else
     {
@@ -275,11 +264,11 @@
         [self setCurrentFilter:productType];
         if (0 == [self.currentFilterLink count])
         {
-            self.filterFlag = NO;
+            self.filterType = FILTER_TYPE_NO;
             return;
         }
         
-        self.filterFlag = YES;
+        self.filterType = FILTER_TYPE_PRODUCT_TYPE;
         result = self.productBases;
         for (ProductType* type in self.currentFilterLink)
         {
@@ -292,9 +281,22 @@
 
 - (void)setFilterByTypeId:(NSString *)productTypeId
 {
+    
     if (nil == productTypeId)
     {
         [self setFilter:nil];
+    }
+    //产生productInshoppingcart队列
+    else if ([productTypeId isEqualToString:STRING_FOR_SHOPPING_CART_FILTER])
+    {
+        self.filterType = FILTER_TYPE_SHOPPING_CART;
+        NSArray* productIdArray = [self.productsToBuy allKeys];
+        NSMutableArray *products = [[NSMutableArray alloc]init];
+        for (NSString* productId in productIdArray)
+        {
+            [products addObject:[self productBaseByProduceId:productId]];
+        }
+        self.productBasesInShoppingCart = [NSArray arrayWithArray:products];
     }
     else
     {
@@ -311,41 +313,58 @@
 
 - (ProductBase*)objectAtIndex:(NSInteger)index
 {
-    if (self.filterFlag)
+    switch (self.filterType)
     {
-        return (ProductBase*)[self.productBasesWithFilter objectAtIndex:index];
+        case FILTER_TYPE_NO:
+            return [self.productBases objectAtIndex:index];
+        case FILTER_TYPE_PRODUCT_TYPE:
+            return [self.productBasesWithFilter objectAtIndex:index];
+        case FILTER_TYPE_SHOPPING_CART:
+            return [self.productBasesInShoppingCart objectAtIndex:index];
     }
-    return (ProductBase*)[self.productBases objectAtIndex:index];
+    return[self.productBases objectAtIndex:index];
 }
 
 - (NSArray*)pricingsAtIndex:(NSInteger)index
 {
-    if (self.filterFlag)
-    {
-        return ((ProductBase*)[self.productBasesWithFilter objectAtIndex:index]).productPricings;
-    }
-    return ((ProductBase*)[self.productBases objectAtIndex:index]).productPricings;
+
+    return [self objectAtIndex:index].productPricings;
 }
 
 - (void)addProductToBuy:(NSString *)productId
 {
-    //若id已经存在，则删除
+    //若id已经存在，则购买数量加1
     if ([self productIsInShoppingCart:productId])
     {
-        [self.productsToBuy removeObjectForKey:productId];
+        NSNumber* count = [self.productsToBuy objectForKey:productId];
+        int icount = [count intValue];
+        icount ++;
+        count = [[NSNumber alloc]initWithInt:icount];
+        [self.productsToBuy setObject:count forKey:productId];
     }
-    //否则，增加
+    //否则，增加购买物品
     else
     {
-    for (ProductBase* product in self.productBases)
+        NSNumber* count = [[NSNumber alloc]initWithInt:1];
+        [self.productsToBuy setObject:count forKey:productId];
+    }
+}
+
+- (void)reduceProductToBuy:(NSString *)productId
+{
+    //若id已经存在，则购买数量-1
+    if ([self productIsInShoppingCart:productId])
     {
-        if ([productId isEqualToString:product.productId])
+        NSNumber* count = [self.productsToBuy objectForKey:productId];
+        int icount = [count intValue];
+        icount --;
+        if (icount >= 0)
         {
-            [self.productsToBuy setObject:product forKey:productId];
-            break;
+            count = [[NSNumber alloc]initWithInt:icount];
+            [self.productsToBuy setObject:count forKey:productId];
         }
     }
-    }
+
 }
 
 - (BOOL)productIsInShoppingCart:(NSString *)productId
@@ -356,7 +375,17 @@
     }
     return YES;
 }
-
+//返回该产品在购物车中的数量
+- (NSUInteger)numInShoppingCart:(NSString *)productId
+{
+    if ([self productIsInShoppingCart:productId])
+    {
+        NSNumber* count = [self.productsToBuy objectForKey:productId];
+        return (NSUInteger)[count intValue];
+    }
+    return 0;
+}
+//设置当前过滤链
 - (void)setCurrentFilter:(ProductType*)type
 {
     int count = [self.currentFilterLink count];
@@ -391,6 +420,7 @@
     
 }
 
+//在指定product array里查找符合类型type的集合
 - (NSArray*)productsInType:(NSArray *)products filterByType:(ProductType *)type
 {
     NSMutableArray* result = [[NSMutableArray alloc]init];
@@ -409,6 +439,7 @@
     return result;
 }
 
+//查找以productTypeid为父类的类型
 - (NSArray*)productTypeForParent:(NSString *)productTypeId
 {
     NSMutableArray* resutl = [[NSMutableArray alloc]init];
@@ -422,4 +453,21 @@
     }
     return resutl;
 }
+
+- (ProductBase*)productBaseByProduceId:(NSString *)productId
+{
+    for (ProductBase* productBase in self.productBases)
+    {
+        if ([productBase.productId isEqualToString:productId])
+        {
+            return productBase;
+        }
+    }
+}
+
+- (NSString*)currentFilter
+{
+    return ((ProductType*)[self.currentFilterLink lastObject]).productType;
+}
+
 @end

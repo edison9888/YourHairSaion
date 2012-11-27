@@ -7,10 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "PsDetailViewController.h"
 
 @class OrganizationItem;
-
-@interface OrgDetailViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate> {
+@class MapPsViewController;
+@interface OrgDetailViewController : PsDetailViewController/*UIViewController <UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate> {
 	UITableView *table;
 	OrganizationItem *orgItem;
 
@@ -20,5 +21,8 @@
 
 @property (nonatomic, retain) IBOutlet UITableView *table;
 @property (nonatomic, retain) OrganizationItem *orgItem;
+@property (nonatomic, strong) MapPsViewController* mapPsViewController;
 
+- (NSUInteger)indexInPage;
+*/
 @end

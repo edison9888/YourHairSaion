@@ -17,6 +17,7 @@
 #import "ProductAmount.h"
 #import "ProductPricing.h"
 #import "Organization.h"
+#import "DiscountCard.h"
 
 
 //for product type
@@ -34,6 +35,10 @@
 //for org type
 #define ORG_TYPE_ROOT_FAXING ([NSNumber numberWithInt:0])
 #define ORG_ROOT @"root"
+
+//for discount overlay type
+#define DISCOUNT_CARD_NO_OVERLAY ([NSNumber numberWithInt:0])
+#define DISCOUNT_CARD_CAN_OVERLAY ([NSNumber numberWithInt:1])
 
 
 @interface DBManager : NSObject
@@ -57,6 +62,8 @@
 - (void)insertNewProductAmount:(NSString*)productId andAmount:(NSNumber*)amount;
 - (void)insertNewProductPricing:(NSString*)productId andProductType:(NSString*)productType andDiscountType:(NSNumber*)discountType andDiscountName:(NSString*)discountName andCalcValue:(NSString*)calcValue;
 - (NSString*)insertNewOrganization:(NSString*)orgName andOrgType:(NSNumber*)orgType andOrgDetail:(NSString*)orgDetail andParent:(NSString*)parent andStreet:(NSString*)street andCity:(NSString*)city andState:(NSString*)state andZip:(NSString*)zip andLatitude:(NSNumber*)latitude andLongitude:(NSNumber*)longitude andPhone:(NSString*)phone andWebsite:(NSString*)webSite andEmail:(NSString*)email andImgLink:(NSString*)imgLink;
+
+- (NSString*)insertNewDiscountCard:(NSString*)name andType:(NSNumber*)type andDetail:(NSString*)detail andOverlay:(NSNumber*)overlay andImgLink:(NSString*)imgLink;
 
 - (NSArray*) getAll:(NSString*) entityName;
 

@@ -44,7 +44,7 @@
     return self;
 }
 
-- (id)initAll:(CGRect)frame andVcType:(enumViewControllerType)enumVcType andSubType:(NSString *)subType andTitle:(NSString *)title andStyle:(MyUIButtonStyle)style andImgName:(NSString *)imgName andRvc:(RootViewController *)rvc
+- (UIButton*)initAll:(CGRect)frame andVcType:(enumViewControllerType)enumVcType andSubType:(NSString *)subType andTitle:(NSString *)title andStyle:(MyUIButtonStyle)style andImgName:(NSString *)imgName andRvc:(RootViewController *)rvc
 {
     self = [self initWithFrame:frame];
     if (self)
@@ -76,13 +76,13 @@
 }
 
 /*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
-{
-    // Drawing code
-}
-*/
+ // Only override drawRect: if you perform custom drawing.
+ // An empty implementation adversely affects performance during animation.
+ - (void)drawRect:(CGRect)rect
+ {
+ // Drawing code
+ }
+ */
 - (void)layoutSubviews
 {
     [super layoutSubviews];
@@ -96,35 +96,38 @@
             self.titleLabel.frame = CGRectMake(self.titleLabel.frame.origin.x+Label_Offset, self.titleLabel.frame.origin.y, self.titleLabel.frame.size.width, self.titleLabel.frame.size.height);
             break;
             /*
-        case MyUIButtonStyleTop:
-            self.titleLabel.frame = CGRectMake(self.titleLabel.frame.origin.x+Label_Offset, self.titleLabel.frame.origin.y, self.titleLabel.frame.size.width, self.titleLabel.frame.size.height);
-            break;
-        case MyUIButtonStyleButtom:
-            self.titleLabel.frame = CGRectMake(self.titleLabel.frame.origin.x+Label_Offset, self.titleLabel.frame.origin.y, self.titleLabel.frame.size.width, self.titleLabel.frame.size.height);
-            break;
+             case MyUIButtonStyleTop:
+             self.titleLabel.frame = CGRectMake(self.titleLabel.frame.origin.x+Label_Offset, self.titleLabel.frame.origin.y, self.titleLabel.frame.size.width, self.titleLabel.frame.size.height);
+             break;
+             case MyUIButtonStyleButtom:
+             self.titleLabel.frame = CGRectMake(self.titleLabel.frame.origin.x+Label_Offset, self.titleLabel.frame.origin.y, self.titleLabel.frame.size.width, self.titleLabel.frame.size.height);
+             break;
              */
             
         default:
             break;
-    }    
+    }
 }
 
 - (void)onTouchUp:(id)sender
 {
-    [self.rvc setVcType:vcType andSubType:self.subType];
-    for (UIView* view in self.rvc.view.subviews)
+    if (self.vcType != [self.rvc currentVCType] || ![self.subType isEqualToString:[self.rvc currentSubType]])
     {
-        if ([view isKindOfClass:[MyUIButton class]])
+        [self.rvc setVcType:vcType andSubType:self.subType];
+        for (UIView* view in self.rvc.view.subviews)
         {
-            [self.rvc.view sendSubviewToBack:view];
-            //self.titleLabel.textColor = [UIColor whiteColor];
-            
+            if ([view isKindOfClass:[MyUIButton class]])
+            {
+                [self.rvc.view sendSubviewToBack:view];
+                //self.titleLabel.textColor = [UIColor whiteColor];
+                
+            }
         }
+        [self.rvc.view bringSubviewToFront:self];
     }
-    [self.rvc.view bringSubviewToFront:self];
     //self.titleLabel.textColor = [UIColor blackColor];
     //self.tintColor = [UIColor blackColor];
-
+    
 }
 
 

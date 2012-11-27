@@ -10,8 +10,8 @@
 #import "NGTabBarController.h"
 #import "MyTabBarViewController.h"
 #import "ProductViewController.h"
-@class MyToolBar;
 @class DetailViewController;
+@class ImgFullViewController;
 typedef enum {
     LeftTabBarViewControllerProduct = 0,
     LeftTabBarViewControllerPolicy,
@@ -24,16 +24,16 @@ typedef enum {
 #define SPLIT_POSITION_RIGHT_END 1024.0f
 
 
-@interface RootViewController : UIViewController <UIPageViewControllerDelegate>
+@interface RootViewController : UIViewController <UIPageViewControllerDelegate, UIGestureRecognizerDelegate>
 
 @property (strong, nonatomic) UIPageViewController *pageViewController;
-@property (nonatomic, strong) MyTabBarViewController* leftTabBarController;
-@property (nonatomic, strong) MyTabBarViewController* rightTabBarController;
 @property (nonatomic, strong) ProductViewController* productViewController;
 @property (nonatomic, strong) DetailViewController* detailViewController;
-@property (nonatomic, strong) MyToolBar* leftToolBar;
-
+@property (nonatomic, strong) NSMutableArray* l1Btns;
+@property (nonatomic, strong) ImgFullViewController* imgFullViewController;
 
 
 - (void)setVcType:(enumViewControllerType)enumVcType andSubType:(NSString*)subType;
+- (enumViewControllerType)currentVCType;
+- (NSString*)currentSubType;
 @end

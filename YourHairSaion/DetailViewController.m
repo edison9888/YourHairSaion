@@ -7,10 +7,11 @@
 //
 
 #import "DetailViewController.h"
-#import "DetailView.h"
-#import "MyToolBar.h"
+//#import "MyToolBar.h"
 #import "ShoppingCartViewController.h"
 #import "ProductViewController.h"
+#import "RootViewController.h"
+#import "ImgFullViewController.h"
 
 
 #define FRAME_Detail_IMG_X 0
@@ -23,16 +24,16 @@
 
 @interface DetailViewController ()
 - (void)configView;
-@property (nonatomic, retain)MyToolBar* toolBar;
+//@property (nonatomic, retain)MyToolBar* toolBar;
 @property (nonatomic, retain)DetailView* detailView;
 @property (nonatomic, strong)NSString* currentProductId;
-- (void)scaleToolbarItem;
+//- (void)scaleToolbarItem;
 @end
 
 @implementation DetailViewController
 @synthesize detailView = _detailView;
 @synthesize currentProductId;
-@synthesize toolBar = _toolBar;
+//@synthesize toolBar = _toolBar;
 @synthesize rootViewController, productViewController;
 @synthesize dataObject;
 
@@ -71,16 +72,16 @@
 - (void)configView
 {
     self.detailView = [[DetailView alloc]initWithFrame:CGRectMake(0, 0, FRAME_W, FRAME_H)];
-    self.detailView.detailViewController = self;
+    self.detailView.delegate = self;
     [self.view addSubview:self.detailView];
     
-    self.toolBar = [[MyToolBar alloc]initWithFrame:CGRectMake(FRAME_W-50 , FRAME_H - 50, 50, 50)];
-    self.toolBar.barStyle = UIBarStyleBlackTranslucent;
+//    self.toolBar = [[MyToolBar alloc]initWithFrame:CGRectMake(FRAME_W-50 , FRAME_H - 50, 50, 50)];
+ //   self.toolBar.barStyle = UIBarStyleBlackTranslucent;
  
     UIBarButtonItem *buyItem = [[UIBarButtonItem alloc]initWithTitle:@"BUY" style:UIBarButtonSystemItemBookmarks target:self action:@selector(addProduct2Buy:)];
     NSMutableArray* items = [[NSMutableArray alloc]initWithObjects:buyItem, nil];
-    [self.toolBar setItems:items animated:YES];
-    [self.view addSubview:self.toolBar];
+ //   [self.toolBar setItems:items animated:YES];
+  //  [self.view addSubview:self.toolBar];
 }
 
 - (void)fillData:(ProductShowingDetail *)psd
@@ -88,13 +89,13 @@
     self.navigationItem.title = psd.productName;
     [self.detailView fillData:psd];
     self.currentProductId = psd.productId;
-    [self scaleToolbarItem];
+//    [self scaleToolbarItem];
 }
 
 - (void)addProduct2Buy:(id)sender
 {
     [[DataAdapter shareInstance]addProductToBuy:self.currentProductId];
-    [self scaleToolbarItem];
+   // [self scaleToolbarItem];
     /*
     NGTabBarController* leftTabBarController = self.rootViewController.leftTabBarController;
     if (leftTabBarController.selectedIndex == LeftTabBarViewControllerShoppingCart)
@@ -104,7 +105,7 @@
     }
      */
 }
-
+/*
 - (void)scaleToolbarItem
 {
     UIBarButtonItem* item = self.toolBar.items[0];
@@ -117,6 +118,7 @@
         item.title = @"BUY";
     }
 }
+ */
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
 {
@@ -129,4 +131,11 @@
     return [self.productViewController indexInPage] + 1;
 }
 
+
+- (void)ViewOnTouch:(UIScrollView *)view andData:(ProductShowingDetail *)psd
+{
+    self.rootViewController.navigationController.navigationBarHidden = NO;
+    [self.rootViewController.imgFullViewController setData:psd];
+    [self.rootViewController.navigationController pushViewController:self.rootViewController.imgFullViewController animated:YES];
+}
 @end

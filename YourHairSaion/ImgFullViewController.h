@@ -7,11 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
-
+@class ProductShowingDetail;
 @interface ImgFullViewController : UIViewController <UIScrollViewDelegate>
 
 
 @property (nonatomic, strong)IBOutlet UIScrollView* mainScrollView;
 @property (nonatomic, assign)NSInteger lastPage;
 
+- (ImgFullViewController*)initWithObject:(ProductShowingDetail*)psd;
+- (void)setData:(ProductShowingDetail*)psd;
 @end

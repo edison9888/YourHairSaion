@@ -17,6 +17,7 @@
 @interface DetailView()
 @property (nonatomic, retain) UIImageView *imageView;
 @property (nonatomic, retain) UILabel *captionLabel;
+@property (nonatomic, strong) ProductShowingDetail* psd;
 - (void)formatLabel:(ProductShowingDetail*)psd;
 - (void)imgTouchInside:(id)sender;
 @end
@@ -92,6 +93,7 @@ captionLabel = _captionLabel;
 */
 - (void)fillData:(ProductShowingDetail *)psd
 {
+    self.psd = psd;
     [self formatLabel:psd];
     self.imageView.image = [UIImage imageWithContentsOfFile:psd.fullFileName];
     [self layoutSubviews];
@@ -104,9 +106,7 @@ captionLabel = _captionLabel;
 
 - (void)imgTouchInside:(id)sender
 {
-    self.detailViewController.rootViewController.navigationController.navigationBarHidden = NO;
-
-    [self.detailViewController.rootViewController.navigationController pushViewController:[[ImgFullViewController alloc]init] animated:YES];
+    [self.delegate ViewOnTouch:self andData:self.psd];
 }
 
 @end

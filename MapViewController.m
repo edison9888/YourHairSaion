@@ -59,7 +59,7 @@
 	// Our superclass needs access to the data for the custom callout without knowing implementation details.
 	self.detailDataSource = self;
 	
-	OrgDetailViewController *controller = [[OrgDetailViewController alloc] initWithNibName:@"OrgDetailTableView" bundle:nil];
+	OrgDetailViewController *controller = [[OrgDetailViewController alloc] init];//initWithNibName:@"OrgDetailTableView" bundle:nil];
 	self.calloutDetailController = controller;
 	
 	[self showAnnotations];
@@ -88,8 +88,8 @@
 
 // Data object for the detail view of the callout.
 - (void)detailController:(UIViewController *)detailController detailForAnnotation:(id)annotation {
-	[(OrgDetailViewController *)detailController setOrgItem:[(OrgAnnotation *)annotation orgItem]];
-    [self.detailOnMap setOrgItem:[(OrgAnnotation *)annotation orgItem]];
+	[(OrgDetailViewController *)detailController setItem:[(OrgAnnotation *)annotation orgItem]];
+    [self.detailOnMap setItem:[(OrgAnnotation *)annotation orgItem]];
 }
 
 

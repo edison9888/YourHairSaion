@@ -22,5 +22,11 @@
 
 - (void)prepareToBuy;
 - (void)finishToBuy;
+- (void)productAdd;
+- (void)productReduct;
+- (void)reflash;
+
+- (CGPoint)realImgViewCenter;
+- (UIImageView*)imageViewCopy;
 @end
 

@@ -11,7 +11,7 @@
 
 @implementation OrganizationItem
 
-@synthesize name, street, city, state, zip, phone, url, imgLink;
+@synthesize street, city, state, zip, phone, url;
 @synthesize latitude, longitude;
 
 - (id)initWithObject:(Organization*)org
@@ -19,14 +19,14 @@
     self = [super init];
     if (self)
     {
-        name = org.orgName;
+        self.name = org.orgName;
         street = org.street;
         city = org.city;
         state = org.state;
         zip = org.zip;
         phone = org.phone;
         url = org.website;
-        imgLink = org.imgLink;
+        self.imgLink = org.imgLink;
         latitude = [org.latitude doubleValue];
         longitude = [org.longitude doubleValue];
     }
