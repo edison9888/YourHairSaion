@@ -37,44 +37,12 @@ static BOOL isDeviceIPad() {
 }
 
 @interface ProductViewController ()
-{
-    int fromIndex;
-    int toIndex;
-}
-@property (nonatomic, strong) NSMutableArray *items;
-@property (nonatomic, strong) PSCollectionView *collectionView;
-@property (nonatomic, assign) NSInteger lastSelectedIndex;
-@property (nonatomic, strong) UIColor* selectedColor;
-@property (nonatomic, strong) UILabel* labelTitle;
-@property (nonatomic, strong) UIImageView* buttomImageView;
-
-
-- (void)restoreSelected:(PSCollectionView *)collectionView;
-- (void)setupNavBar;
-- (void)filterByType:(id)sender;
-- (void)loadFooter;
 - (void)imageViewDidStop:(NSString *)paraAnimationId finished:(NSString *)paraFinished context:(void *)paraContext;
 - (void)doAnimationMoveToShoppingCart:(PSBroView*)cell;
 @end
 
 @implementation ProductViewController
-
-@synthesize
-items = _items,
-collectionView = _collectionView;
-@synthesize lastSelectedIndex;
-@synthesize selectedColor;
-@synthesize rootViewController, labelTitle, buttomImageView, detailViewController, pageCount;
-
-#pragma mark - Init
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        self.items = [NSMutableArray array];
-    }
-    return self;
-}
-
+/*
 - (void)viewDidUnload {
     [super viewDidUnload];
     
@@ -84,18 +52,7 @@ collectionView = _collectionView;
     
     self.collectionView = nil;
 }
-/*
-- (void)dealloc {
-    self.collectionView.delegate = nil;
-    self.collectionView.collectionViewDelegate = nil;
-    self.collectionView.collectionViewDataSource = nil;
-    
-    self.collectionView = nil;
-    self.items = nil;
-    
-    [super dealloc];
-}
-*/
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.clipsToBounds = YES;
@@ -132,17 +89,22 @@ collectionView = _collectionView;
     self.selectedColor = [UIColor colorWithRed:0.65098041296005249 green:0.90196084976196289 blue:0.92549026012420654 alpha:1];
     
     
-    
+    self.pc = [[UIPageControl alloc]initWithFrame:CGRectZero];
+    [self.view addSubview:self.pc];
+
+    [self loadFooter];
     [self loadDataSource];
    // [self setupNavBar];
 
 }
+*/
+
 
 - (void)loadDataSource {
     [self.items removeAllObjects];
     DataAdapter* dataAdapter = [DataAdapter shareInstance];
     int count = [dataAdapter  count];
-    for (int i = fromIndex; i <= toIndex; i++)
+    for (int i = self.fromIndex; i <= self.toIndex; i++)
     {
         ProductShowingDetail* item = [ProductShowingDetail initByIndex:i];
         [self.items addObject:item];
@@ -159,17 +121,9 @@ collectionView = _collectionView;
 
 }
 
-- (void)dataSourceDidLoad {
-    [self.collectionView reloadData];
-}
-
-- (void)dataSourceDidError {
-    [self.collectionView reloadData];
-}
-
 #pragma mark - PSCollectionViewDelegate and DataSource
 - (NSInteger)numberOfViewsInCollectionView:(PSCollectionView *)collectionView {
-    return toIndex - fromIndex + 1;//[self.items count];
+    return self.toIndex - self.fromIndex + 1;//[self.items count];
 }
 
 - (PSCollectionViewCell *)collectionView:(PSCollectionView *)collectionView viewAtIndex:(NSInteger)index {
@@ -193,19 +147,11 @@ collectionView = _collectionView;
 
 - (void)collectionView:(PSCollectionView *)collectionView didSelectView:(PSCollectionViewCell *)view atIndex:(NSInteger)index {
 
-    [self restoreSelected:collectionView];
-    [view setBackgroundColor:selectedColor];
-    self.lastSelectedIndex = index;
+    [super collectionView:collectionView didSelectView:view atIndex:index];
     if ([self canBuy:view])
     {
         [self prepareToBuy:view];
     }
-    //NGTabBarController* tarBarControllerRight =     rootview.viewControllers[1];
-    //UINavigationController* nav1 = tarBarControllerRight.viewControllers[0];
-    ProductShowingDetail* is = [self.items objectAtIndex:index];
-    //nav1.title = is.productName;
-    [self.detailViewController fillData:is];
-    //[self.detailViewController.view drawRect:self.detailViewController.view.frame];
 }
 
 - (void)restoreSelected:(PSCollectionView *)collectionView
@@ -230,33 +176,7 @@ collectionView = _collectionView;
      */
     
 }
-
-- (void)setupNavBar
-{
-    NSMutableArray* leftBarItems = [NSMutableArray arrayWithArray:self.navigationItem.rightBarButtonItems];
-    UIBarButtonItem* itemAll = [[UIBarButtonItem alloc]initWithTitle:@"所有" style:UIBarButtonItemStylePlain target:self action:@selector(filterByType:)];
-    itemAll.tag = -1;
-    [leftBarItems addObject:itemAll];
-    DataAdapter* dataAdapter = [DataAdapter shareInstance];
-    NSLog(@"productType count=%d", [dataAdapter.productTypes count]);
-    int count = 0;
-    for (ProductType* productType in dataAdapter.productTypes)
-    {
-        UIBarButtonItem* item = [[UIBarButtonItem alloc]initWithTitle:productType.typeName style:UIBarButtonItemStylePlain target:self action:@selector(filterByType:)];
-        item.tag = count++;
-        [leftBarItems addObject:item];
-    }
-    NSLog(@"itemcount=%d", [leftBarItems count]);
-    //self.navigationItem.rightBarButtonItems = leftBarItems;
-    self.navigationItem.leftBarButtonItems = leftBarItems;
-    /*UIToolbar *mycustomToolBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0f, 0.0f,320.0f, 44.0f)];
-    //mycustomToolBar.center = CGPointMake(160.0f,200.0f);
-    mycustomToolBar.barStyle = UIBarStyleBlackTranslucent;
-    [mycustomToolBar setItems:leftBarItems animated:YES];
-    [mycustomToolBar sizeToFit];
-    [self.view addSubview:mycustomToolBar];*/
-}
-
+/*
 - (void)filterByType:(id)sender
 {
     UIBarButtonItem* item = sender;
@@ -275,13 +195,8 @@ collectionView = _collectionView;
     [self loadDataSource];
     [self restoreSelected:self.collectionView];
 }
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
-{
-    //return toInterfaceOrientation == UIInterfaceOrientationLandscapeLeft || toInterfaceOrientation == UIInterfaceOrientationLandscapeRight;
-    return UIInterfaceOrientationIsLandscape(toInterfaceOrientation);
-}
-
+*/
+/*
 - (id)initProductViewControllerFromIndex:(NSUInteger)beginIndex endIndex:(NSUInteger)endIndex withDetailViewController:(DetailViewController*)detailViewController
 {
     self = [super init];
@@ -293,45 +208,7 @@ collectionView = _collectionView;
     }
     return self;
 }
-
-- (NSUInteger)indexInPage
-{
-    if (toIndex < 0)
-    {
-        return 0;
-    }
-    int index = (toIndex + 1) / ITEMS_PER_PAGE;
-    if (index*ITEMS_PER_PAGE <= toIndex)
-    {
-        return index * 2;
-    }
-    else
-    {
-        return (index - 1)*2;
-    }
-}
-
-- (void)setPageCount:(NSUInteger)count
-{
-    pageCount = count;
-    [self loadFooter];
-    
-}
-
-- (void)loadFooter
-{
-    int currentPage = [self indexInPage] / 2;
-
-    UIPageControl *pc = [[UIPageControl alloc]initWithFrame:CGRectMake(FRAME_Buttom_X , FRAME_Buttom_Y, FRAME_Buttom_W+300, FRAME_Buttom_H)];
-    pc.numberOfPages = self.pageCount;
-    pc.currentPage = currentPage;
-    pc.backgroundColor = [UIColor blueColor];
-    //pc.center = CGPointMake(self.view.center.x, FRAME_Buttom_Y);
-    //NSLog(@"center x[%f], y[%f]", (FRAME_Buttom_W+FRAME_Buttom_X)/2, FRAME_Buttom_Y);
-    [self.view addSubview:pc];
-    [self.view setNeedsDisplay];
-}
-
+*/
 
 - (BOOL)canBuy:(PSCollectionViewCell *)cell
 {
@@ -353,7 +230,6 @@ collectionView = _collectionView;
 {
     if ([[DataAdapter shareInstance] numInShoppingCart:((ProductShowingDetail*)((PSBroView*)cell).object).productId] > 0)
     {
-    
         [[DataAdapter shareInstance]reduceProductToBuy:((ProductShowingDetail*)((PSBroView*)cell).object).productId];
         [((PSBroView*)cell) productReduct];
     }
@@ -376,16 +252,6 @@ collectionView = _collectionView;
     }
 }
 
-- (void)reloadData
-{
-    [self loadDataSource];
-}
-
-- (void)setRangWithFromIndex:(NSUInteger)from toIndex:(NSUInteger)to
-{
-    fromIndex = from;
-    toIndex = to;
-}
 
 - (void)imageViewDidStop:(NSString *)paraAnimationId finished:(NSString *)paraFinished context:(void *)paraContext
 {

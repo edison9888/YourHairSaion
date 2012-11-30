@@ -12,9 +12,6 @@
 
 @interface PsItemView ()
 
-@property (nonatomic, strong) UIImageView *imageView;
-@property (nonatomic, strong) UILabel *captionLabel;
-
 @end
 
 @implementation PsItemView
@@ -99,5 +96,4 @@ captionLabel = _captionLabel;
     
     return height;
 }
-
 @end

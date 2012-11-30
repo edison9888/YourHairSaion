@@ -50,6 +50,9 @@
 - (void)reduceProductToBuy:(NSString*)productId;
 - (ProductBase*)productBaseByProduceId:(NSString*)productId;
 - (NSUInteger)numInShoppingCart:(NSString*)productId;
+- (NSUInteger)totalNumInShoppingCart;
+- (CGFloat)totalPriceInShoppingCart;
 - (NSString*)currentFilter;
+- (NSString*)currentFilterLinkString;
 
 @end

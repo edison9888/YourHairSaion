@@ -28,8 +28,9 @@
     this.index = index;
     //this.productDetail = [da detailAtIndex:index];
     //[UIImage imageWithContentsOfFile:<#(NSString *)#>]
-    
-    this.uiImg = [UIImage imageWithContentsOfFile:[da ImageLinkAtIndex:index andType:PRODUCT_PIC_TYPE_THUMB]];
+    this.imgLink = [da ImageLinkAtIndex:index andType:PRODUCT_PIC_TYPE_THUMB];
+    this.name = [da captionAtIndex:index];
+    this.uiImg = [UIImage imageWithContentsOfFile:this.imgLink];
     this.fullFileName = [da ImageLinkAtIndex:index andType:PRODUCT_PIC_TYPE_FULL];
     this.price = [da priceAtIndex:index];
     
@@ -63,12 +64,15 @@
         if ([pic.picType isEqualToNumber:PRODUCT_PIC_TYPE_THUMB])
         {
             this.uiImg = [UIImage imageNamed:pic.picLink];
+            this.imgLink = pic.picLink;
+
         }
         else if([pic.picType isEqualToNumber:PRODUCT_PIC_TYPE_FULL])
         {
             this.fullFileName = pic.picLink;
         }
     }
+    this.name = productBase.productName;
     this.price = productBase.productPrice;
     
     ProductPricing* pricing = (productBase.productPricings[0]);

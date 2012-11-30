@@ -11,6 +11,7 @@
 @interface DataAdapter()
 - (void)setCurrentFilter:(ProductType*)type;
 - (NSArray*)productsInType:(NSArray*)products filterByType:(ProductType*)type;
+- (void)generateProductsInShoppingCart;
 @end
 @implementation DataAdapter
 @synthesize productPricings;
@@ -290,13 +291,8 @@ for (DiscountCard* dc in self.discountCards)
     else if ([productTypeId isEqualToString:STRING_FOR_SHOPPING_CART_FILTER])
     {
         self.filterType = FILTER_TYPE_SHOPPING_CART;
-        NSArray* productIdArray = [self.productsToBuy allKeys];
-        NSMutableArray *products = [[NSMutableArray alloc]init];
-        for (NSString* productId in productIdArray)
-        {
-            [products addObject:[self productBaseByProduceId:productId]];
-        }
-        self.productBasesInShoppingCart = [NSArray arrayWithArray:products];
+        [self generateProductsInShoppingCart];
+
     }
     else
     {
@@ -358,10 +354,15 @@ for (DiscountCard* dc in self.discountCards)
         NSNumber* count = [self.productsToBuy objectForKey:productId];
         int icount = [count intValue];
         icount --;
-        if (icount >= 0)
+        if (icount > 0)
         {
             count = [[NSNumber alloc]initWithInt:icount];
             [self.productsToBuy setObject:count forKey:productId];
+        }
+        else
+        {
+            [self.productsToBuy removeObjectForKey:productId];
+            [self generateProductsInShoppingCart];
         }
     }
 
@@ -468,6 +469,50 @@ for (DiscountCard* dc in self.discountCards)
 - (NSString*)currentFilter
 {
     return ((ProductType*)[self.currentFilterLink lastObject]).productType;
+}
+
+- (NSUInteger)totalNumInShoppingCart
+{
+    NSUInteger total = 0;
+    for (ProductBase* product in self.productBasesInShoppingCart)
+    {
+        total =  total + [self numInShoppingCart:product.productId];
+    }
+    return total;
+}
+
+- (CGFloat)totalPriceInShoppingCart
+{
+    CGFloat total = 0.0f;
+    for (ProductBase* product in self.productBasesInShoppingCart)
+    {
+        total += [self numInShoppingCart:product.productId] * [product.productPrice floatValue];
+    }
+    return total;
+}
+
+- (void)generateProductsInShoppingCart
+{
+    NSArray* productIdArray = [self.productsToBuy allKeys];
+    NSMutableArray *products = [[NSMutableArray alloc]init];
+    for (NSString* productId in productIdArray)
+    {
+        [products addObject:[self productBaseByProduceId:productId]];
+    }
+    self.productBasesInShoppingCart = [NSArray arrayWithArray:products];
+}
+
+- (NSString*)currentFilterLinkString
+{
+    NSMutableString *result = [[NSMutableString alloc]init];
+    for(ProductType* type in self.currentFilterLink)
+    {
+        [result appendFormat:@"%@ - ", type.typeName];
+    }
+    NSLog(@"currentFilterLinkString:%@", result);
+[result deleteCharactersInRange:NSMakeRange(result.length -3, 3)];
+NSLog(@"currentFilterLinkString:%@", result);
+return result;
 }
 
 @end

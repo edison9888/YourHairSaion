@@ -58,8 +58,8 @@
 
 - (void)onTouchUp:(id)sender
 {
-if (self.vcType != [self.rvc currentVCType] || ![self.subType isEqualToString:[self.rvc currentSubType]])
-{
+    if (self.vcType != [self.rvc currentVCType] || ![self.subType isEqualToString:[self.rvc currentSubType]])
+    {
         [self.rvc setVcType:self.vcType andSubType:self.subType];
         for (UIView* view in self.rvc.view.subviews)
         {

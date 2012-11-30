@@ -8,8 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import "DataAdapter.h"
+#import "PsDataItem.h"
 
-@interface ProductShowingDetail : NSObject
+@interface ProductShowingDetail : PsDataItem
 @property (nonatomic, strong) NSString* productId;
 @property (nonatomic, strong) NSString* productName;
 @property (nonatomic, strong) NSString* productDetail;

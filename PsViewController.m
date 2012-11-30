@@ -10,15 +10,16 @@
 #import "PsItemView.h"
 #import "DataAdapter.h"
 #import "RootViewController.h"
-#import "PsDetailViewController.h"
+#import "PsDetailViewControllerBase.h"
 
 @interface PsViewController ()
 
-@property (nonatomic, strong) PSCollectionView *collectionView;
 @property (nonatomic, assign) NSInteger lastSelectedIndex;
 @property (nonatomic, strong) UIColor* selectedColor;
 @property (nonatomic, strong) UILabel* labelTitle;
 @property (nonatomic, strong) NSString* titleStr;
+@property (nonatomic, strong) UIPageControl* pc;
+
 
 
 - (void)restoreSelected:(PSCollectionView *)collectionView;
@@ -35,7 +36,7 @@ items = _items,
 collectionView = _collectionView;
 @synthesize lastSelectedIndex;
 @synthesize selectedColor;
-@synthesize rootViewController, labelTitle, detailViewController, pageCount, titleStr, fromIndex, toIndex;
+@synthesize rootViewController, labelTitle, detailViewController, pageCount, titleStr, fromIndex, pc, toIndex;
 
 #pragma mark - Init
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
@@ -46,7 +47,7 @@ collectionView = _collectionView;
     return self;
 }
 
-- (id)initProductViewControllerWithTitle:(NSString*)title fromIndex:(NSUInteger)beginIndex endIndex:(NSUInteger)endIndex withDetailViewController:(DetailViewController*)detailViewController
+- (id)initProductViewControllerWithTitle:(NSString*)title fromIndex:(NSUInteger)beginIndex endIndex:(NSUInteger)endIndex withDetailViewController:(PsDetailViewControllerBase*)detailViewController
 {
     self = [super init];
     if (self) {
@@ -96,6 +97,12 @@ collectionView = _collectionView;
     self.collectionView.loadingView = loadingLabel;
     self.lastSelectedIndex = 0;
     self.selectedColor = [UIColor colorWithRed:0.65098041296005249 green:0.90196084976196289 blue:0.92549026012420654 alpha:1];
+    
+    self.pc = [[UIPageControl alloc]initWithFrame:CGRectZero];
+    [self.view addSubview:self.pc];
+    
+    [self loadFooter];
+
     [self loadDataSource];
     
 }
@@ -217,14 +224,22 @@ collectionView = _collectionView;
 
 - (void)loadFooter
 {
-    int currentPage = [self indexInPage] / 2;
-    
-    UIPageControl *pc = [[UIPageControl alloc]initWithFrame:CGRectMake(FRAME_Buttom_X , FRAME_Buttom_Y, FRAME_Buttom_W+300, FRAME_Buttom_H)];
-    pc.numberOfPages = self.pageCount;
-    pc.currentPage = currentPage;
-    pc.backgroundColor = [UIColor blueColor];
-    [self.view addSubview:pc];
-    [self.view setNeedsDisplay];
+    if (nil != self.pc)
+    {
+        if (pageCount > 1)
+        {
+            self.pc.hidden = NO;
+            int currentPage = [self indexInPage] / 2;
+            self.pc.numberOfPages = self.pageCount;
+            self.pc.currentPage = currentPage;
+            //self.pc.frame = CGRectMake(FRAME_Buttom_X , FRAME_Buttom_Y, FRAME_Buttom_W+300, FRAME_Buttom_H);
+            self.pc.backgroundColor = [UIColor blackColor];
+        }
+        else
+        {
+            self.pc.hidden = YES;
+        }
+    }
 }
 
 
@@ -232,6 +247,8 @@ collectionView = _collectionView;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    self.pc.frame = CGRectMake(FRAME_Buttom_X , FRAME_Buttom_Y, FRAME_Buttom_W + 350, FRAME_Buttom_H);
+    self.pc.center = CGPointMake(self.view.center.x, self.pc.center.y);
 }
 
 - (void)reloadData
@@ -243,5 +260,11 @@ collectionView = _collectionView;
 {
     fromIndex = from;
     toIndex = to;
+    [self reloadData];
+}
+
+- (void)setTitleStr:(NSString *)title
+{
+    self.labelTitle.text = title;
 }
 @end

@@ -33,4 +33,6 @@ typedef enum {
 - (NSUInteger)pageCount;
 - (enumViewControllerType)currentVCType;
 - (NSString*)currentSubType;
+
++ (NSInteger)calcPageCount:(NSInteger)itemCount;
 @end

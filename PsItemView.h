@@ -9,5 +9,6 @@
 #import "PSCollectionViewCell.h"
 
 @interface PsItemView : PSCollectionViewCell
-
+@property (nonatomic, strong) UIImageView *imageView;
+@property (nonatomic, strong) UILabel *captionLabel;
 @end

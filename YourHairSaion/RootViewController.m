@@ -13,7 +13,6 @@
 #import "DetailViewController.h"
 #import "ProductViewController.h"
 #import "DetailViewController.h"
-#import "ShoppingCartViewController.h"
 #import "MapViewController.h"
 #import "MyTabBarViewController.h"
 #import "MyUIButton.h"
@@ -21,6 +20,7 @@
 #import "L1Button.h"
 #import "L2Button.h"
 #import "L1MapButton.h"
+#import "StatementViewController.h"
 
 
 #define FRAME_LSide_ToolBar_W 35
@@ -43,12 +43,13 @@
 @implementation RootViewController
 
 @synthesize modelController = _modelController;
-@synthesize l1Btns, imgFullViewController;
+@synthesize l1Btns, imgFullViewController,statementViewController;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
     self.imgFullViewController = [[ImgFullViewController alloc]init];
+    self.statementViewController = [[StatementViewController alloc]init];
     /*
     DetailViewController *detailViewController= [[DetailViewController alloc]init];
     ProductViewController* productViewController = [[ProductViewController alloc]initProductViewControllerFromIndex:0 endIndex:ITEMS_PER_PAGE-1 withDetailViewController:detailViewController];
@@ -124,20 +125,15 @@
 
 - (UIPageViewControllerSpineLocation)pageViewController:(UIPageViewController *)pageViewController spineLocationForInterfaceOrientation:(UIInterfaceOrientation)orientation
 {
-    if (UIInterfaceOrientationIsPortrait(orientation)) {
-        return nil;
-    }
-
     [self setVcType:ViewControllerProduct andSubType:((ProductType*)[DataAdapter shareInstance].productTypes[0]).productType];
     DetailViewController *detailViewController= [[DetailViewController alloc]init];
-    ProductViewController* productViewController = [[ProductViewController alloc]initProductViewControllerFromIndex:0 endIndex:ITEMS_PER_PAGE - 1 withDetailViewController:detailViewController];
-    detailViewController.rootViewController = self;
+    ProductViewController* productViewController = [[ProductViewController alloc]initProductViewControllerWithTitle:@"女士发型" fromIndex:0 endIndex:ITEMS_PER_PAGE - 1 withDetailViewController:detailViewController];
     productViewController.rootViewController = self;
-    detailViewController.productViewController = productViewController;
+    detailViewController.psViewController = productViewController;
     productViewController.detailViewController = detailViewController;
     
     [productViewController setPageCount:[self.modelController pageCount]];
-    detailViewController.productViewController = productViewController;
+    detailViewController.psViewController = productViewController;
     [self.pageViewController setViewControllers:@[productViewController, detailViewController] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:NULL];
     
     return UIPageViewControllerSpineLocationMid;
@@ -218,5 +214,19 @@
 - (NSString*)currentSubType
 {
     return [self.modelController currentSubType];
+}
+
+- (void)setPage:(NSInteger)leftPageIndex animated:(BOOL)animated
+{
+    UIViewController* vc1 = [self.modelController viewControllerAtIndex:leftPageIndex storyboard:self.storyboard];
+    UIViewController* vc2 = [self.modelController viewControllerAtIndex:leftPageIndex+1 storyboard:self.storyboard];
+    [self.pageViewController setViewControllers:@[vc1, vc2] direction:UIPageViewControllerNavigationDirectionForward animated:animated completion:^(BOOL finished)
+     {
+     }];
+}
+
+- (UIViewController*)page:(NSInteger)index
+{
+    return [self.modelController viewControllerAtIndex:index storyboard:self.storyboard];
 }
 @end

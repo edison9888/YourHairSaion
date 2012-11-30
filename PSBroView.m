@@ -21,18 +21,10 @@
 
 @interface PSBroView ()
 
-@property (nonatomic, retain) UIImageView *imageView;
-@property (nonatomic, retain) UILabel *captionLabel;
-
 @property (nonatomic, strong) UIButton *btnAdd;
 @property (nonatomic, strong) UIButton *btnReduct;
 @property (nonatomic, strong) UIButton *btnNum;
 @property (nonatomic, strong) UIView* content;
-
-
-@property (nonatomic, strong) UIView* buyNumberView;
-@property (nonatomic, strong) UILabel* buyNumberLabel;
-@property (nonatomic, strong) UIImageView* buyNumberIv;
 
 
 - (void)contentOnTap:(id)sender;
@@ -41,15 +33,15 @@
 @end
 
 @implementation PSBroView
-
-@synthesize
-imageView = _imageView,
-captionLabel = _captionLabel;
-@synthesize btnAdd, btnReduct, content, buyNumberView,buyNumberLabel,buyNumberIv;
+@synthesize btnAdd, btnReduct, content;
 
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
+        
+        [self.imageView removeFromSuperview];
+        [self.captionLabel removeFromSuperview];
+        
         self.backgroundColor = [UIColor clearColor];
         self.content = [[UIView alloc]init];
         self.content.backgroundColor = [UIColor whiteColor];
@@ -88,26 +80,6 @@ captionLabel = _captionLabel;
         [self.btnNum setTitle:@"0" forState:UIControlStateNormal];
         self.btnNum.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"imgNum.png"]];
         [self addSubview:self.btnNum];
-        //display the number had buy
-        self.buyNumberView = [[UIView alloc]init];
-        self.buyNumberView.clipsToBounds = YES;
-        self.buyNumberView.backgroundColor = [UIColor greenColor];
-        self.buyNumberView.frame = CGRectMake(self.frame.size.width-FRAME_BUTTON_W, 0, FRAME_BUTTON_W, FRAME_BUTTON_H);
-        
-        self.buyNumberIv = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"imgNum.png"]];
-        //[self.buyNumberIv sizeToFit];
-        self.buyNumberIv.frame = CGRectZero;
-        self.buyNumberIv.clipsToBounds = YES;
-        
-        self.buyNumberLabel = [[UILabel alloc]init];
-        self.buyNumberLabel.backgroundColor = [UIColor clearColor];
-        self.buyNumberLabel.font = [UIFont boldSystemFontOfSize:14.0];
-        self.buyNumberLabel.numberOfLines = 1;
-        
-        [self.buyNumberView addSubview:self.buyNumberIv];
-        //[self.buyNumberView addSubview:self.buyNumberLabel];
-        //[self addSubview:self.buyNumberView];
-        
         
     }
     return self;

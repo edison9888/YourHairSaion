@@ -151,15 +151,9 @@ typedef enum {
 #pragma mark Accessors
 
 - (void)setItem:(PsDataItem *)dataItem {
-    _item = dataItem;
+    [super setItem:dataItem];
 	[self.table reloadData];
     [self.table setNeedsDisplay];
-}
-
-
-- (NSUInteger)indexInPage
-{
-    return [self.psViewController indexInPage] + 1;
 }
 
 @end

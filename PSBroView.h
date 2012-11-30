@@ -7,6 +7,7 @@
 //
 
 #import "PSCollectionViewCell.h"
+#import "PsItemView.h"
 @protocol ProductBuyingDelegate <NSObject>
 
 @required
@@ -17,7 +18,7 @@
 - (void)finishToBuy:(PSCollectionViewCell *)cell;
 @end
 
-@interface PSBroView : PSCollectionViewCell
+@interface PSBroView : PsItemView
 @property (nonatomic, strong) id<ProductBuyingDelegate> productBuyingDelegate;
 
 - (void)prepareToBuy;

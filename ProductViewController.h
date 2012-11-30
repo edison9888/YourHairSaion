@@ -9,20 +9,10 @@
 
 #import <UIKit/UIKit.h>
 #import "ModelController.h"
-#import "PSCollectionView.h"
 #import "DetailViewController.h"
+#import "PsViewController.h"
+#import "PSBroView.h"
 @protocol ProductBuyingDelegate;
-@class RootViewController;
-@interface ProductViewController : UIViewController <PSCollectionViewDelegate, PSCollectionViewDataSource, ProductBuyingDelegate>
-@property (nonatomic, strong)RootViewController* rootViewController;
-
-@property (nonatomic, strong) DetailViewController* detailViewController;
-@property (nonatomic, assign) NSUInteger pageCount;
-- (id)initProductViewControllerFromIndex:(NSUInteger)beginIndex endIndex:(NSUInteger)endIndex withDetailViewController:(DetailViewController*)detailViewController;
-
-- (NSUInteger)indexInPage;
-
-- (void)reloadData;
-- (void)setRangWithFromIndex:(NSUInteger)from toIndex:(NSUInteger)to;
+@interface ProductViewController : PsViewController<ProductBuyingDelegate>
 
 @end

@@ -12,6 +12,7 @@
 #import "ProductViewController.h"
 @class DetailViewController;
 @class ImgFullViewController;
+@class StatementViewController;
 typedef enum {
     LeftTabBarViewControllerProduct = 0,
     LeftTabBarViewControllerPolicy,
@@ -31,9 +32,12 @@ typedef enum {
 @property (nonatomic, strong) DetailViewController* detailViewController;
 @property (nonatomic, strong) NSMutableArray* l1Btns;
 @property (nonatomic, strong) ImgFullViewController* imgFullViewController;
+@property (nonatomic, strong) StatementViewController* statementViewController;
 
 
 - (void)setVcType:(enumViewControllerType)enumVcType andSubType:(NSString*)subType;
 - (enumViewControllerType)currentVCType;
 - (NSString*)currentSubType;
+- (void)setPage:(NSInteger)leftPageIndex animated:(BOOL)animated;
+- (UIViewController*)page:(NSInteger)index;
 @end

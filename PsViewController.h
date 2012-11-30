@@ -11,23 +11,25 @@
 #import "PSCollectionView.h"
 #import "PsDataItem.h"
 @class RootViewController;
-@class PsDetailViewController;
+@class PsDetailViewControllerBase;
 
 @interface PsViewController : UIViewController <PSCollectionViewDelegate, PSCollectionViewDataSource>
 @property (nonatomic, strong)RootViewController* rootViewController;
 
-@property (nonatomic, strong) PsDetailViewController* detailViewController;
+@property (nonatomic, strong) PsDetailViewControllerBase* detailViewController;
+@property (nonatomic, strong) PSCollectionView *collectionView;
 @property (nonatomic, assign) NSUInteger pageCount;
 @property (nonatomic, strong) NSMutableArray *items;
 @property (nonatomic, assign) int fromIndex;
 @property (nonatomic, assign) int toIndex;
 
 
-- (id)initProductViewControllerWithTitle:(NSString*)title fromIndex:(NSUInteger)beginIndex endIndex:(NSUInteger)endIndex withDetailViewController:(PsDetailViewController*)detailViewController;
+- (id)initProductViewControllerWithTitle:(NSString*)title fromIndex:(NSUInteger)beginIndex endIndex:(NSUInteger)endIndex withDetailViewController:(PsDetailViewControllerBase*)detailViewController;
 - (void)dataSourceDidLoad;
 - (NSUInteger)indexInPage;
 
 - (void)reloadData;
 - (void)setRangWithFromIndex:(NSUInteger)from toIndex:(NSUInteger)to;
+- (void)setTitleStr:(NSString *)title;
 
 @end

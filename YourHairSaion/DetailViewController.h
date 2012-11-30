@@ -9,16 +9,10 @@
 #import <UIKit/UIKit.h>
 #import "ProductShowingDetail.h"
 #import "DetailView.h"
+#import "PsDetailViewControllerBase.h"
 
 @class ProductViewController;
 @class RootViewController;
 
-@interface DetailViewController : UIViewController<DetailViewDelegate>
-@property (nonatomic, strong) RootViewController* rootViewController;
-@property (nonatomic, strong) ProductViewController* productViewController;
-- (void)fillData:(ProductShowingDetail*)psd;
-- (void)addProduct2Buy:(id)sender;
-@property (strong, nonatomic) id dataObject;
-
-- (NSUInteger)indexInPage;
+@interface DetailViewController : PsDetailViewControllerBase<DetailViewDelegate>
 @end
