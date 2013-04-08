@@ -69,12 +69,12 @@
 		if ([mapView.annotations indexOfObject:selectedAnnotation.callout] != NSNotFound) {
 			return;
 		}
-		
+        self.selectedAnnotationView = view;
+
 		GIKCalloutAnnotation *callout = [[GIKCalloutAnnotation alloc] initWithLocation:selectedAnnotation.coordinate];
 		selectedAnnotation.callout = callout;
 		[theMapView addAnnotation:callout];
 		
-		self.selectedAnnotationView = view;
 		[self.detailDataSource performSelector:@selector(detailController:detailForAnnotation:) 
 									withObject:self.calloutDetailController 
 									withObject:self.selectedAnnotationView.annotation];
@@ -107,7 +107,7 @@
 		
 		calloutView.parentAnnotationView = self.selectedAnnotationView;
 		calloutView.mapView = self.mapView;
-		
+
 		GIKCalloutContentView *calloutContentView = [GIKCalloutContentView viewWithLabelText:[(GIKAnnotation *)self.selectedAnnotationView.annotation title]];
 
 		calloutContentView.delegate = calloutView;

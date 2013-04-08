@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 
 #import "DBManager.h"
+#import "DataAdapter.h"
 
 @implementation AppDelegate
 @synthesize window;
@@ -16,8 +17,16 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
-    [DBManager test];
+    NSFileManager *fileMgr = [NSFileManager defaultManager];
+    //指向文件目录
+    NSString *documentsDirectory=[[[DBManager shareInstance] applicationDocumentsDirectory] path];
+    
+    //创建一个目录
+    [fileMgr createDirectoryAtPath: [NSString stringWithFormat:@"%@/IMG", documentsDirectory] attributes:nil];
+    [fileMgr createDirectoryAtPath: [NSString stringWithFormat:@"%@/IMG/Product", documentsDirectory] attributes:nil];
+    
+   // [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+    //[[DBManager shareInstance] test];
    // window.rootViewController = splitViewController;
     //[window makeKeyAndVisible];
     // Override point for customization after application launch.
@@ -36,6 +45,7 @@
         controller.managedObjectContext = [[DBManager shareInstance] managedObjectContext];
          */
     //}
+    [self.window makeKeyAndVisible];
     return YES;
 }
 							
@@ -66,5 +76,6 @@
     // Saves changes in the application's managed object context before the application terminates.
     [[DBManager shareInstance] saveContext];
 }
+
 
 @end

@@ -7,6 +7,7 @@
 //
 
 #import "DiscountPsViewController.h"
+#import "DiscountCardItemView.h"
 
 @interface DiscountPsViewController ()
 
@@ -26,7 +27,15 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
 	// Do any additional setup after loading the view.
+}
+
+- (void)setCollectionViewColum
+{
+    self.collectionView.numColsPortrait = 3;
+    self.collectionView.numColsLandscape = 3;
+
 }
 
 - (void)didReceiveMemoryWarning
@@ -45,6 +54,25 @@
     }
     [self dataSourceDidLoad];
     
+    
+}
+
+
+- (PsItemView*)createNewItemViewWithIndex:(NSInteger)index
+{    NSLog(@"%s", __FUNCTION__);
+    
+    PsDataItem* item = [self.items objectAtIndex:index];
+    
+    PsItemView* cell = [[DiscountCardItemView alloc] initWithFrame:CGRectZero];
+    [cell setTag:TAG_PSVIEW_BASE+index];
+    [cell fillViewWithObject:item];
+    return cell;
+}
+
+
+- (CGFloat)heightForViewAtIndex:(NSInteger)index
+{
+    return [DiscountCardItemView heightForViewWithObject:self.items[index] inColumnWidth:self.collectionView.colWidth];
 }
 
 

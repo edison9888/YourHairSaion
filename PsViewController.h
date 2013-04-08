@@ -10,8 +10,15 @@
 #import "ModelController.h"
 #import "PSCollectionView.h"
 #import "PsDataItem.h"
+
+#define TAG_PSVIEW_BASE 2000
+
+
+
 @class RootViewController;
 @class PsDetailViewControllerBase;
+@class PsItemView;
+@class BasePagePolicy;
 
 @interface PsViewController : UIViewController <PSCollectionViewDelegate, PSCollectionViewDataSource>
 @property (nonatomic, strong)RootViewController* rootViewController;
@@ -22,14 +29,21 @@
 @property (nonatomic, strong) NSMutableArray *items;
 @property (nonatomic, assign) int fromIndex;
 @property (nonatomic, assign) int toIndex;
+@property (nonatomic, assign) NSInteger lastSelectedIndex;
+@property (nonatomic, strong) BasePagePolicy* pagePolicy;
 
 
-- (id)initProductViewControllerWithTitle:(NSString*)title fromIndex:(NSUInteger)beginIndex endIndex:(NSUInteger)endIndex withDetailViewController:(PsDetailViewControllerBase*)detailViewController;
+
+- (id)initProductViewControllerWithTitle:(NSString*)title fromIndex:(NSUInteger)beginIndex endIndex:(NSUInteger)endIndex withDetailViewController:(PsDetailViewControllerBase*)dvc;
 - (void)dataSourceDidLoad;
 - (NSUInteger)indexInPage;
 
 - (void)reloadData;
 - (void)setRangWithFromIndex:(NSUInteger)from toIndex:(NSUInteger)to;
 - (void)setTitleStr:(NSString *)title;
+- (PsItemView*)createNewItemViewWithIndex:(NSInteger)index;
+- (void)restoreSelected:(PSCollectionView *)collectionView;
+- (void)setCollectionViewColum;
+
 
 @end

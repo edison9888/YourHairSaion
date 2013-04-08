@@ -24,7 +24,9 @@
 #import "PSCollectionView.h"
 #import "PSCollectionViewCell.h"
 
-#define kMargin 20.0
+#define kMargin 8.0f
+#define sideMargin 1.0f
+#define midMargin 1.0f
 
 static inline NSString * PSCollectionKeyForIndex(NSInteger index) {
     return [NSString stringWithFormat:@"%d", index];
@@ -37,6 +39,8 @@ static inline NSInteger PSCollectionIndexForKey(NSString *key) {
 #pragma mark - UIView Category
 
 @interface UIView (PSCollectionView)
+{
+}
 
 @property(nonatomic, assign) CGFloat left;
 @property(nonatomic, assign) CGFloat top;
@@ -218,7 +222,7 @@ indexToRectMap = _indexToRectMap;
 
 - (void)layoutSubviews {
     [super layoutSubviews];
-    
+    self.alwaysBounceVertical = NO;
     UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
     if (self.orientation != orientation) {
         self.orientation = orientation;
@@ -282,7 +286,7 @@ indexToRectMap = _indexToRectMap;
                 }
             }
             
-            CGFloat left = kMargin + (col * kMargin) + (col * self.colWidth);
+            CGFloat left = kMargin + (col * midMargin) + (col * self.colWidth);
             CGFloat top = [[colOffsets objectAtIndex:col] floatValue];
             CGFloat colHeight = [self.collectionViewDataSource heightForViewAtIndex:i];
             if (colHeight == 0) {
@@ -294,7 +298,7 @@ indexToRectMap = _indexToRectMap;
             }
             
             CGRect viewRect = CGRectMake(left, top, self.colWidth, colHeight);
-            
+            NSLog(@"cell.w =%f, h=%f ", self.colWidth, colHeight);
             // Add to index rect map
             [self.indexToRectMap setObject:NSStringFromCGRect(viewRect) forKey:key];
             
@@ -406,11 +410,13 @@ indexToRectMap = _indexToRectMap;
 #pragma mark - Reusing Views
 
 - (PSCollectionViewCell *)dequeueReusableView {
+    
     PSCollectionViewCell *view = [self.reuseableViews anyObject];
     if (view) {
         // Found a reusable view, remove it from the set
         [self.reuseableViews removeObject:view];
     }
+    
     
     return view;
 }

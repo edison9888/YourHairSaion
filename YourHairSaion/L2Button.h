@@ -7,7 +7,8 @@
 //
 
 #import "MyUIButton.h"
-
+#import "L1Button.h"
+@class L1Button;
 @interface L2Button : MyUIButton
-
+@property (nonatomic, strong)L1Button* l1Btn;
 @end

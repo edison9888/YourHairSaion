@@ -6,8 +6,8 @@
 //  Copyright (c) 2012年 chen loman. All rights reserved.
 //
 
-#import "L1Button.h"
+#import "L1RightButton.h"
 
-@interface L1MapButton : L1Button
+@interface L1MapButton : L1RightButton
 
 @end

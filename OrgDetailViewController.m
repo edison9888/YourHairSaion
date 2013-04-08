@@ -10,9 +10,9 @@
 #import "OrganizationItem.h"
 #import "ImageTableCell.h"
 #import "MapPsViewController.h"
+#import "TitleView.h"
 
 typedef enum {
-    kImage,
 //	kDirections,
 	kPhone,
 	kURL,
@@ -36,6 +36,17 @@ typedef enum {
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+//    UIImageView* iv = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"shop_title.png"]];
+//    iv.contentMode = UIViewContentModeScaleAspectFit;
+    //[self.viewTitle addSubview:iv];
+    //iv.frame = CGRectMake(0, 0, 130, 16);
+    TitleView* titleView = [[TitleView alloc]initWithTitleInCHS:@"分店简介" andTitleInENG:@""];
+    [self.viewTitle addSubview:titleView];
+    CGRect rect = titleView.frame;
+    rect.origin.y = 4;
+    titleView.frame = rect;
+
+    
 }
 
 
@@ -43,18 +54,17 @@ typedef enum {
 #pragma mark UITableViewDelegate methods
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (indexPath.section == kAddress) {
-		return 80.0f;
-	}
-    if (indexPath.section == kImage)
-    {
-        UITableViewCell* cell =  [self tableView:self.table cellForRowAtIndexPath:indexPath];
-        if ([cell isKindOfClass:[ImageTableCell class]])
-        {
-            return [((ImageTableCell*)cell) height];
-        }
-    }
-	return 44.0f;
+//    if (indexPath.section == kImage)
+//    {
+//        UITableViewCell* cell =  [self tableView:self.table cellForRowAtIndexPath:indexPath];
+//        if ([cell isKindOfClass:[ImageTableCell class]])
+//        {
+//            return [((ImageTableCell*)cell) height];
+//        }
+//    }
+    if (indexPath.section == kAddress)
+        return 20;
+	return 20;
 }
 
 #pragma mark -
@@ -62,15 +72,15 @@ typedef enum {
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	static NSString *kDirectionCellIdentifier = @"DirectionCellIdentifier";
-    static NSString* kImageCellIdentifier = @"ImageCellIdentifier";
+  //  static NSString* kImageCellIdentifier = @"ImageCellIdentifier";
 	static NSString *kOtherCellIdentifier = @"OtherCellIdentifier";
 	
 	NSString *workingCellIdentifier =nil;
     switch (indexPath.section)
     {
-        case kImage:
-            workingCellIdentifier = kImageCellIdentifier;
-            break;
+//        case kImage:
+//            workingCellIdentifier = kImageCellIdentifier;
+//            break;
         default:
             workingCellIdentifier = kOtherCellIdentifier;
             break;
@@ -80,19 +90,27 @@ typedef enum {
 		if ([workingCellIdentifier isEqualToString:kDirectionCellIdentifier]) {
 			cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:workingCellIdentifier];
 		}
-        else if ([workingCellIdentifier isEqualToString:kImageCellIdentifier])
-        {
-            cell = [[ImageTableCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kImageCellIdentifier];
-        }
+//        else if ([workingCellIdentifier isEqualToString:kImageCellIdentifier])
+//        {
+//            cell = [[ImageTableCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kImageCellIdentifier];
+//        }
 		else {
 			cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:workingCellIdentifier];
 		}
 	}
-	
+    cell.textLabel.font = [UIFont boldSystemFontOfSize:12];
+    cell.textLabel.textColor = [UIColor darkGrayColor];
+    cell.textLabel.textAlignment = UITextAlignmentLeft;
+    
+    
+    cell.detailTextLabel.font = [UIFont systemFontOfSize:11];
+    cell.detailTextLabel.textColor = [UIColor darkGrayColor];
+    cell.detailTextLabel.textAlignment = UITextAlignmentLeft;
+    
 	switch (indexPath.section) {
-        case kImage:
-            [((ImageTableCell*)cell) setImage:self.item.imgLink];
-            break;
+//        case kImage:
+//            [((ImageTableCell*)cell) setImage:self.item.imgLink];
+//            break;
             /*
 		case kDirections:
 			cell.textLabel.textAlignment = UITextAlignmentCenter;
@@ -101,24 +119,19 @@ typedef enum {
 			break;
              */
 		case kPhone:
-			cell.textLabel.text = @"phone";
+			cell.textLabel.text = @"电话";
 			cell.detailTextLabel.text = ((OrganizationItem*)self.item).phone;
 			break;
 		case kURL:
-			cell.textLabel.text = @"home page";
+			cell.textLabel.text = @"主页";
 			cell.detailTextLabel.text = ((OrganizationItem*)self.item).url;
 			break;
 		case kAddress:
-			cell.textLabel.text = @"address";
-			
+			cell.textLabel.text = @"地址";
 			cell.detailTextLabel.lineBreakMode = UILineBreakModeWordWrap;
-			cell.detailTextLabel.numberOfLines = 4;
-			cell.detailTextLabel.text = [NSString stringWithFormat:@"%@\n%@ %@\n%@",
-										 ((OrganizationItem*)self.item).street,
-										 ((OrganizationItem*)self.item).city,
-										 ((OrganizationItem*)self.item).state,
-										 ((OrganizationItem*)self.item).zip];
-			break;
+			cell.detailTextLabel.numberOfLines = 0;
+			cell.detailTextLabel.text = [((OrganizationItem*)self.item) address];
+            break;
 		default:
 			break;
 	}
@@ -134,7 +147,7 @@ typedef enum {
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	NSInteger rows = 0;
 	switch (section) {
-        case kImage:
+//        case kImage:
 		case kPhone:
 		case kURL:
 		case kAddress:

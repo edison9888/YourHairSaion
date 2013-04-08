@@ -2,231 +2,213 @@
 //  ShoppingCartViewController.m
 //  YourHairSaion
 //
-//  Created by chen loman on 12-11-13.
-//  Copyright (c) 2012年 chen loman. All rights reserved.
+//  Created by chen loman on 13-1-29.
+//  Copyright (c) 2013年 chen loman. All rights reserved.
 //
 
 #import "ShoppingCartViewController.h"
-#import "PSBroView.h"
-#import "ProductShowingDetail.h"
 #import "DataAdapter.h"
-#import "DetailViewController.h"
-
-
-/**
- Detect iPad
- */
-static BOOL isDeviceIPad() {
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 30200
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        return YES;
-    }
-#endif
-    return NO;
-}
-
-
+#import "ProductShowingDetail.h"
+#import "PsDetailViewControllerBase.h"
+#import "RootViewController.h"
+#import "StatementViewController2.h"
 @interface ShoppingCartViewController ()
-@property (nonatomic, strong) NSMutableArray *items;
-@property (nonatomic, strong) PSCollectionView *collectionView;
-@property (nonatomic, assign) NSInteger lastSelectedIndex;
-@property (nonatomic, strong) UIColor* selectedColor;
-
-- (void)restoreSelected:(PSCollectionView *)collectionView;
-- (void)setupNavBar;
-- (void)filterByType:(id)sender;
-- (void)payOff:(id)sender;
+- (IBAction)showStatement;
+@property (nonatomic, retain) IBOutlet UILabel *labelPage;
+@property (nonatomic, strong)UIImageView* ivBg;
 
 @end
 
 @implementation ShoppingCartViewController
 
-@synthesize
-items = _items,
-collectionView = _collectionView;
-@synthesize lastSelectedIndex;
-@synthesize selectedColor;
-@synthesize rootview;
 
-#pragma mark - Init
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        self.items = [NSMutableArray array];
-    }
-    return self;
-}
-
-- (void)viewDidUnload {
-    [super viewDidUnload];
-    
-    self.collectionView.delegate = nil;
-    self.collectionView.collectionViewDelegate = nil;
-    self.collectionView.collectionViewDataSource = nil;
-    
-    self.collectionView = nil;
-}
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
-    
-    self.view.backgroundColor = [UIColor lightGrayColor];
-    
-    self.collectionView = [[PSCollectionView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
-    [self.view addSubview:self.collectionView];
-    self.collectionView.collectionViewDelegate = self;
-    self.collectionView.collectionViewDataSource = self;
-    self.collectionView.backgroundColor = [UIColor clearColor];
-    self.collectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    
-    if (isDeviceIPad()) {
-        self.collectionView.numColsPortrait = 2;
-        self.collectionView.numColsLandscape = 2;
-    } else {
-        self.collectionView.numColsPortrait = 2;
-        self.collectionView.numColsLandscape = 3;
-    }
-    
-    UILabel *loadingLabel = [[UILabel alloc] initWithFrame:self.collectionView.bounds];
-    loadingLabel.text = @"Loading...";
-    loadingLabel.textAlignment = UITextAlignmentCenter;
-    self.collectionView.loadingView = loadingLabel;
-    self.lastSelectedIndex = 0;
-    self.selectedColor = [UIColor colorWithRed:0.65098041296005249 green:0.90196084976196289 blue:0.92549026012420654 alpha:1];
-    [self loadDataSource];
-    [self setupNavBar];
-    
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.view.clipsToBounds = YES;
+    self.view.backgroundColor = nil;
+    self.ivBg = [[UIImageView alloc]initWithFrame:self.view.bounds];
+    self.ivBg.image = [UIImage imageNamed:@"paper_left.png"];
+    self.ivBg.contentMode = UIViewContentModeScaleAspectFill;
+    [self.view insertSubview:self.ivBg atIndex:0];
+    [self reloadData];
+    self.labelPage.text = [NSString stringWithFormat:@"- PAGE %d -", [self indexInPage]+1];
+
+    // Uncomment the following line to preserve selection between presentations.
+    // self.clearsSelectionOnViewWillAppear = NO;
+ 
+    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
+    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
-- (void)loadDataSource {
-    [self.items removeAllObjects];
-    DataAdapter* dataAdapter = [DataAdapter shareInstance];
-    int count = [dataAdapter.productsToBuy count];
-    NSArray* products = [dataAdapter.productsToBuy allValues];
-    for (int i = 0; i < count; i++)
-    {
-        ProductShowingDetail* item = [ProductShowingDetail initByProductBase:[dataAdapter productBaseByProduceId:products[i]]];
-        [self.items addObject:item];
-    }
-    [self dataSourceDidLoad];
-    
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
 }
 
-- (void)dataSourceDidLoad {
-    [self.collectionView reloadData];
+#pragma mark - Table view data source
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+#warning Potentially incomplete method implementation.
+    // Return the number of sections.
+    return 1;
 }
 
-- (void)dataSourceDidError {
-    [self.collectionView reloadData];
-}
-
-#pragma mark - PSCollectionViewDelegate and DataSource
-- (NSInteger)numberOfViewsInCollectionView:(PSCollectionView *)collectionView {
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+#warning Incomplete method implementation.
+    // Return the number of rows in the section.
     return [self.items count];
 }
 
-- (PSCollectionViewCell *)collectionView:(PSCollectionView *)collectionView viewAtIndex:(NSInteger)index {
-    id item = [self.items objectAtIndex:index];
-    
-    PSBroView *v = (PSBroView *)[self.collectionView dequeueReusableView];
-    if (!v) {
-        v = [[PSBroView alloc] initWithFrame:CGRectZero];
-    }
-    
-    [v fillViewWithObject:item];
-    
-    return v;
-}
-
-- (CGFloat)heightForViewAtIndex:(NSInteger)index {
-    id item = [self.items objectAtIndex:index];
-    
-    return [PSBroView heightForViewWithObject:item inColumnWidth:self.collectionView.colWidth];
-}
-
-- (void)collectionView:(PSCollectionView *)collectionView didSelectView:(PSCollectionViewCell *)view atIndex:(NSInteger)index {
-    //    NSDictionary *item = [self.items objectAtIndex:index];
-    //self.parentViewController
-    // You can do something when the user taps on a collectionViewCell here
-    //PSCollectionViewCell* lastSelectView = collectionView.subviews[self.lastSelectedIndex];
-    //lastSelectView.backgroundColor = [UIColor whiteColor];
-    [self restoreSelected:collectionView];
-    view.backgroundColor = self.selectedColor;
-    self.lastSelectedIndex = index;
-    NGTabBarController* tarBarControllerRight =     rootview.viewControllers[1];
-    UINavigationController* nav1 = tarBarControllerRight.viewControllers[0];
-    DetailViewController* detailVC =  (DetailViewController*)nav1.topViewController;
-    ProductShowingDetail* is = [self.items objectAtIndex:index];
-    nav1.title = is.productName;
-    [detailVC fillData:is];
-    for (UIView* v in detailVC.view.subviews)
-    {
-        if ([v isKindOfClass:[UIImageView class]])
-        {
-            
-            ((UIImageView*)v).image = [UIImage imageNamed:is.fullFileName];
-        }
-        if ([v isKindOfClass:[UILabel class]])
-        {
-            ((UILabel*)v).text = is.productDetail;
-        }
-    }
-    
-    //UIImageView* imgV = [[UIImageView alloc] initWithImage:[UIImage imageNamed:is.fullFileName]];
-    //[detailVC.view addSubview:imgV];
-    //[detailVC updateViewConstraints];
-    //   [imgV drawRect:imgV.frame];
-    //[detailVC doSomething];
-    [nav1.view drawRect:nav1.view.frame];
-}
-
-- (void)restoreSelected:(PSCollectionView *)collectionView
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    for (PSCollectionViewCell* cell in collectionView.subviews)
+    static NSString *CellIdentifier = @"shoppingCartTableCell";
+    static BOOL nibsRegistered = NO;
+    if (!nibsRegistered)
     {
-        if (![cell.backgroundColor isEqual:[UIColor whiteColor]])
-        {
-            cell.backgroundColor = [UIColor whiteColor];
-        }
+        UINib *nib = [UINib nibWithNibName:@"ShoppingCartTableCell" bundle:nil];
+        [tableView registerNib:nib forCellReuseIdentifier:CellIdentifier];
+        nibsRegistered = YES;
     }
-}
-
-- (void)setupNavBar
-{
-    UIBarButtonItem* itemPayOff = [[UIBarButtonItem alloc]initWithTitle:@"结算" style:UIBarButtonItemStylePlain target:self action:@selector(payOff:)];
+    ShoppingCartTableCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil) {
+        cell = [[ShoppingCartTableCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+    }
+    cell.deleage = self;
+    [cell fillData:self.items[indexPath.row]];
     
-    self.navigationItem.rightBarButtonItem = itemPayOff;
+    
+    
+    // Configure the cell...
+    
+    return cell;
 }
 
-- (void)filterByType:(id)sender
+/*
+// Override to support conditional editing of the table view.
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UIBarButtonItem* item = sender;
-    DataAdapter* dataAdapter = [DataAdapter shareInstance];
-    if (item.tag < 0)
+    // Return NO if you do not want the specified item to be editable.
+    return YES;
+}
+*/
+
+/*
+// Override to support editing the table view.
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        // Delete the row from the data source
+        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    }   
+    else if (editingStyle == UITableViewCellEditingStyleInsert) {
+        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+    }   
+}
+*/
+
+/*
+// Override to support rearranging the table view.
+- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
+{
+}
+*/
+
+/*
+// Override to support conditional rearranging of the table view.
+- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // Return NO if you do not want the item to be re-orderable.
+    return YES;
+}
+*/
+
+#pragma mark - Table view delegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // Navigation logic may go here. Create and push another view controller.
+    /*
+     <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
+     // ...
+     // Pass the selected object to the new view controller.
+     [self.navigationController pushViewController:detailViewController animated:YES];
+     */
+    if (self.lastSelectedIndex != -1)
     {
-        [dataAdapter setFilter:nil];
-    }
-    else
-    {
-        ProductType* productType = dataAdapter.productTypes[item.tag];
-        NSLog(@"set filter----%@", productType.typeName);
-        [dataAdapter setFilter:productType];
+        ShoppingCartTableCell* cell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:self.lastSelectedIndex inSection:0]];
+        [cell setStateNormal];
         
     }
-    [self loadDataSource];
-    [self restoreSelected:self.collectionView];
+    self.lastSelectedIndex = indexPath.row;
+    ShoppingCartTableCell* cell = [tableView cellForRowAtIndexPath:indexPath];
+    [cell setStateSelected];
+    [self.detailViewController setItem:self.items[indexPath.row]];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    [self loadDataSource];
+    [super viewWillAppear:animated];
+    if ([self.items count] > 0 && self.lastSelectedIndex < 0)
+    {
+        [self.detailViewController setItem:self.items[0]];
+    }
 }
-- (void)payOff:(id)sender
+- (void)reloadData
 {
-    NSLog(@"go for pay off");
+    self.lastSelectedIndex = -1;
+    [self reloadCoreData];
+    [self.tableView reloadData];
 }
 
-- (void)refresh
+- (void)reloadCoreData
 {
-    [self loadDataSource];
+    self.items = [NSMutableArray array];
+    DataAdapter* da = [DataAdapter shareInstance];
+    [[DataAdapter shareInstance]setFilterByTypeId:STRING_FOR_SHOPPING_CART_FILTER];
+    int count = [da count];
+    for (int i = 0; i < count; i ++)
+    {
+        [self.items addObject:[ProductShowingDetail initByIndex:i]];
+    }
+}
+
+- (NSUInteger)indexInPage
+{
+    return 0;
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
+    CGRect rect = cell.frame;
+    rect = cell.bounds;
+    return cell.frame.size.height;
+}
+
+- (void)productReductTo0:(ProductShowingDetail *)psd
+{
+    [self reloadCoreData];
+    NSIndexPath* path = [NSIndexPath indexPathForRow:self.lastSelectedIndex inSection:0];
+    [self.tableView deleteRowsAtIndexPaths:@[path] withRowAnimation:UITableViewRowAnimationAutomatic];
+    path = [NSIndexPath indexPathForRow:0 inSection:0];
+    if ([self.tableView cellForRowAtIndexPath:path] != nil)
+    {
+        [self tableView:self.tableView didSelectRowAtIndexPath:path];
+    }
+    else
+    {
+        self.lastSelectedIndex = -1;
+    }
+}
+
+- (void)showStatement
+{
+    NSLog(@"%s", __FUNCTION__);
+    [self.rootViewController showStatement];
+    
 }
 @end

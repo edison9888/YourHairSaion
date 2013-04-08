@@ -6,13 +6,16 @@
 //  Copyright (c) 2012年 chen loman. All rights reserved.
 //
 
+
 #import <UIKit/UIKit.h>
 #import "ProductShowingDetail.h"
 #import "DetailView.h"
 #import "PsDetailViewControllerBase.h"
-
+#import "PopUpViewController.h"
 @class ProductViewController;
 @class RootViewController;
 
-@interface DetailViewController : PsDetailViewControllerBase<DetailViewDelegate>
+@interface DetailViewController : PsDetailViewControllerBase<UIImagePickerControllerDelegate, PopUpViewControllerDeleage>
+
+- (void)reset;
 @end

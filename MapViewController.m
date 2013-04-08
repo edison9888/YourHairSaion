@@ -6,24 +6,27 @@
 //  Copyright 2011 GeeksInKilts. All rights reserved.
 //
 
-#define MAGRIN 30
+#define MAGRIN 00
 
 #import "MapViewController.h"
 #import "OrganizationItem.h"
 #import "OrgAnnotation.h"
 #import "OrgDetailViewController.h"
 #import "DataAdapter.h"
+#import <MapKit/MapKit.h>
+#import "LCMapKits.h"
 
 @interface MapViewController ()
 @property (nonatomic, retain) NSArray *orgItems;
+@property (nonatomic, strong)UIView* content;
 - (void)showAnnotations;
-- (void)showOrganizations;
+//- (void)showOrganizations;
 @end
 
 
 @implementation MapViewController
 
-@synthesize orgItems, detailOnMap;
+@synthesize orgItems, detailOnMap,content;
 
 - (id)init {
 	if (!(self = [super initWithNibName:@"GIKMapView" bundle:nil])) {
@@ -38,9 +41,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self.view sizeToFit];
-    
-    
-	
+    self.mapView.frame = CGRectInset(self.view.frame, MAGRIN, MAGRIN);
+
 	
 }
 
@@ -50,12 +52,27 @@
     MKCoordinateRegion startupRegion;
 	
 	// Coordinates for part of downtown San Francisco - around Moscone West, no less.
-	startupRegion.center = CLLocationCoordinate2DMake(23.138597, 113.323141);
+    NSArray *organizations = [DataAdapter shareInstance].organizations;
+    if (organizations && [organizations count] > 1)
+    {
+        Organization* org = [organizations objectAtIndex:0];
+        startupRegion.center = CLLocationCoordinate2DMake([org.latitude doubleValue], [org.longitude doubleValue]);
+    }
+    else
+    {
+        startupRegion.center = CLLocationCoordinate2DMake(23.138597, 113.323141);
+    }
 	startupRegion.span = MKCoordinateSpanMake(0.105243, 0.070689);
-
+    NSMutableArray *toRemove = [NSMutableArray array];
+    for (id annotation in self.mapView.annotations)
+        if (annotation != self.mapView.userLocation)
+            [toRemove addObject:annotation];
+    [self.mapView removeAnnotations:toRemove];
+    
 	[self.mapView setRegion:startupRegion animated:YES];
 	[self.mapView setShowsUserLocation:NO];
-	
+	self.view.backgroundColor = nil;
+    self.mapView.backgroundColor = nil;
 	// Our superclass needs access to the data for the custom callout without knowing implementation details.
 	self.detailDataSource = self;
 	
@@ -63,13 +80,13 @@
 	self.calloutDetailController = controller;
 	
 	[self showAnnotations];
+    [LCMapKits zoomToFitMapAnnotations:self.mapView];
 }
 
 - (void)showAnnotations {
-	
     NSArray *organizations = [DataAdapter shareInstance].organizations;
     int count = [organizations count];
-    NSMutableArray *orgAnnotations = [[NSMutableArray alloc] initWithCapacity:count];
+    NSMutableArray *orgAnnotations = [NSMutableArray array];
     for (int i = 0; i < count; i++)
     {
         OrganizationItem* orgItem = [[OrganizationItem alloc]initWithObject:organizations[i]];
@@ -109,7 +126,9 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self showOrganizations];
+
+
+    [self showOrganizations];    /*
     UILabel *label1 = [[UILabel alloc]initWithFrame:CGRectMake(0,0,self.view.frame.size.width,MAGRIN)];
     label1.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:label1];
@@ -122,6 +141,7 @@
     UILabel *label4 = [[UILabel alloc]initWithFrame:CGRectMake(self.view.frame.size.width-MAGRIN,0,MAGRIN,self.view.frame.size.height)];
     label4.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:label4];
+     */
 }
 
 
@@ -150,5 +170,14 @@
 
 }
  */
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+   // self.content.frame = CGRectInset(self.view.frame, MAGRIN, MAGRIN);
+
+}
+
+
 
 @end

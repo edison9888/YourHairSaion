@@ -120,7 +120,10 @@
 - (void)loadImg:(NSUInteger)index
 {
     DataAdapter* da = [DataAdapter shareInstance];
-    
+    if (0 > index || index >= [da count])
+    {
+        return;
+    }
     NSString *key = [da ProductIdAtIndex:index];
     MyScrollView *ascrView = [self.imageDic objectForKey:key];
     if (nil == ascrView)

@@ -17,7 +17,10 @@
 #import "DiscountCardDetailViewController.h"
 #import "DiscountPsViewController.h"
 #import "PsDetailViewControllerBase.h"
-
+#import "BasePagePolicy.h"
+#import "ListMapPagePolicy.h"
+#import "MapPagePolicy.h"
+#import "ProductPagePolicy.h"
 typedef enum
 {
     ViewControllerSideLeft,
@@ -37,25 +40,25 @@ typedef enum
     int itemsPerPage;
     int pageCount;
     int currentPage;
-    enumViewControllerType currentVcType;
+//    enumViewControllerType currentVcType;
 }
 
-@property (nonatomic, strong) NSString* currentFilter;
+//@property (nonatomic, strong) NSString* currentFilter;
 @property (nonatomic, strong) NSMutableDictionary* leftViewController;
 @property (nonatomic, strong) NSMutableDictionary* rightViewController;
+@property (nonatomic, strong) BasePagePolicy* pagePolicy;
 
 @property (readonly, strong, nonatomic) NSArray *pageData;
 - (void)loadViewControllers;
-@property (nonatomic, strong) DetailViewController* nextDetailViewController;
 
-- (NSString*)genKey:(NSUInteger)pageIndex andVcType:(enumViewControllerType)vcType andSubType:(NSString*)subType;
+//- (NSString*)genKey:(NSUInteger)pageIndex andVcType:(enumViewControllerType)vcType andSubType:(NSString*)subType;
 - (UIViewController*)viewControllerForKey:(NSString *)key andSide:(enumViewControllerSide)side andIndex:(NSInteger)index;
 - (UIViewController*)createVcPairAtIndex:(NSInteger)index;
 - (NSString*)genTitle;
 @end
 
 @implementation ModelController
-@synthesize rootViewController, leftViewController, rightViewController, currentFilter;
+@synthesize rootViewController, leftViewController, rightViewController, pagePolicy;
 - (id)init
 {
     self = [super init];
@@ -63,19 +66,14 @@ typedef enum
         // Create the data model.
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
         _pageData = [[dateFormatter monthSymbols] copy];
-        itemsPerPage = ITEMS_PER_PAGE;
-        pageCount = 0;
-        currentPage = 0;
-        self.leftViewController = [[NSMutableDictionary alloc]init];
-        self.rightViewController = [[NSMutableDictionary alloc]init];
-        currentVcType = ViewControllerProduct;
-        self.currentFilter = nil;
+        [self reset];
     }
     return self;
 }
 //创建vc对，同时返回左边vc
 - (UIViewController*)createVcPairAtIndex:(NSInteger)index
 {
+    /*
     NSString *keyForLeft = [self genKey:index andVcType:currentVcType andSubType:currentFilter];
     NSString* keyForRight = [self genKey:index+1 andVcType:currentVcType andSubType:currentFilter];
     
@@ -136,8 +134,15 @@ typedef enum
     [self.rightViewController setObject:rvc forKey:keyForRight];
     [self.leftViewController setObject:lvc forKey:keyForLeft];
     return lvc;
-
-
+     */
+    
+    UIViewController* rvc = [self.pagePolicy createRightVC];
+    UIViewController* lvc = [self.pagePolicy createLeftVCwithDetailVc:(PsDetailViewControllerBase*)rvc andIndex:index andRvc:self.rootViewController];
+    [self.pagePolicy bindVcPair:rvc withLvc:lvc];
+    [self.pagePolicy loadData:(PsViewController*)lvc];
+    [self.rightViewController setObject:rvc forKey:[self.pagePolicy genKey4Index:index+1]];
+    [self.leftViewController setObject:lvc forKey:[self.pagePolicy genKey4Index:index]];
+    return lvc;
 }
 - (UIViewController*)viewControllerForKey:(NSString *)key andSide:(enumViewControllerSide)side andIndex:(NSInteger)index
 {
@@ -156,16 +161,18 @@ typedef enum
         }
         else
         {
-            if (ViewControllerShoppingCart == currentVcType)
-            {
+            if ([self.pagePolicy need2RefreshWhenAppear])
+            {/*
                 int recodeCount = [[DataAdapter shareInstance] count];
                 int fromIndex = index / 2 * itemsPerPage;
                 int toIndex = fromIndex + itemsPerPage - 1;
                 toIndex = toIndex >= recodeCount ? recodeCount - 1 : toIndex;
-                NSLog(@"record count[%d], page count[%d], current page[%d], record from[%d], to[%d], index[%d]", recodeCount, pageCount, currentPage, fromIndex, toIndex, index);
+                NSLog(@"record count[%d], page count[%d], current page[%d], record from[%d], to[%d], index[%d]", recodeCount, [self pageCount], currentPage, fromIndex, toIndex, index);
                 PsViewController* pvc = (PsViewController*)lvc;
-                [pvc setPageCount:self.pageCount];
+                [pvc setPageCount:[self pageCount]];
                 [pvc setRangWithFromIndex:fromIndex toIndex:toIndex];
+              */
+                [self.pagePolicy reloadData:lvc];
             }
         }
         return lvc;
@@ -176,7 +183,7 @@ typedef enum
 - (UIViewController *)viewControllerAtIndex:(NSUInteger)index storyboard:(UIStoryboard *)storyboard
 {
     UIViewController* uvc = nil;
-    NSString* key = [self genKey:index andVcType:self.currentVCType andSubType:self.currentFilter];
+    NSString* key = [self.pagePolicy genKey4Index:index];//[self genKey:index andVcType:self.currentVCType andSubType:self.currentFilter];
     //右边页面
     if (index%2)
     {
@@ -452,7 +459,7 @@ typedef enum
     }
     else if ([viewController isKindOfClass:[MapViewController class]])
     {
-        if ([[self currentSubType] isEqualToString:MAP_SUBTYPE_LIST])
+        if ([self.pagePolicy isKindOfClass:[ListMapPagePolicy class]])
         {
             return [((MapPsViewController*)viewController) indexInPage];
         }
@@ -463,7 +470,7 @@ typedef enum
     }
     else if ([viewController isKindOfClass:[OrgDetailViewController class]])
     {
-        if ([[self currentSubType] isEqualToString:MAP_SUBTYPE_LIST])
+        if ([self.pagePolicy isKindOfClass:[ListMapPagePolicy class]])
         {
             return [((OrgDetailViewController*)viewController) indexInPage];
         }
@@ -502,7 +509,7 @@ typedef enum
 {
     //    [((DetailViewController*)viewController) fillData:nil];
     NSUInteger index = [self indexOfViewController:viewController];
-    if ((index <= 0) || (index == NSNotFound) || index > (pageCount - 1) * 2 )
+    if ((index <= 0) || (index == NSNotFound) || index > ([self pageCount] - 1) * 2 )
     {
         return nil;
     }
@@ -512,9 +519,11 @@ typedef enum
     return [self viewControllerAtIndex:index storyboard:viewController.storyboard];
 }
 
+/*
 
 - (NSString*)genKey:(NSUInteger)pageIndex andVcType:(enumViewControllerType)vcType andSubType:(NSString *)subType
 {
+    return [self.pagePolicy genKey4Index:pageIndex];
     NSString* key = nil;
     switch (vcType) {
         case ViewControllerProduct:
@@ -532,12 +541,18 @@ typedef enum
         case ViewControllerShoppingCart:
             key = [NSString stringWithFormat:@"ShoppingCart%d", pageIndex];
             break;
+        case ViewControllerShoppingCart:
+            key = [NSString stringWithFormat:@"ShoppingCart%d", pageIndex];
+            break;
         default:
             break;
     }
     return key;
+     
+    
 }
-
+*/
+/*
 - (void)setVcType:(enumViewControllerType)enumVcType andSubType:(NSString *)subType
 {
     currentVcType = enumVcType;
@@ -567,24 +582,21 @@ typedef enum
         [[DataAdapter shareInstance]setFilterByTypeId:STRING_FOR_SHOPPING_CART_FILTER];
         pageCount = [ModelController calcPageCount:[[DataAdapter shareInstance] count]];
     }
+    else if (currentVcType == ViewControllerSearch)
+    {
+        [[DataAdapter shareInstance]setCurrentSearchKey:currentFilter];
+        [[DataAdapter shareInstance]setFilterByTypeId:STRING_FOR_SEARCH_FILTER];
+        pageCount = [ModelController calcPageCount:[[DataAdapter shareInstance] count]];
+    }
 }
+ */
 
 - (NSUInteger)pageCount
 {
-    return pageCount;
+    return [self.pagePolicy calcPageCount];
 }
 
 
-
-
-- (enumViewControllerType)currentVCType
-{
-    return currentVcType;
-}
-- (NSString*)currentSubType
-{
-    return self.currentFilter;
-}
 
 + (NSInteger)calcPageCount:(NSInteger)itemCount
 {
@@ -592,6 +604,17 @@ typedef enum
     pageCount = itemCount - (pageCount*ITEMS_PER_PAGE) > 0  ? pageCount+1 : pageCount;
     return pageCount;
 }
+/*
+ 
+ - (enumViewControllerType)currentVCType
+ {
+ return currentVcType;
+ }
+ - (NSString*)currentSubType
+ {
+ return self.currentFilter;
+ }
+ 
 
 - (NSString*)genTitle
 {
@@ -616,10 +639,28 @@ typedef enum
         }
         case ViewControllerShoppingCart:
             return @"已购产品";
+        case ViewControllerSearch:
+            return @"搜索结果";
         default:
             return nil;
     }
 }
 
+*/
 
+- (void)setPagePolicy:(BasePagePolicy *)basepagePolicy
+{
+    pagePolicy = basepagePolicy;
+    [pagePolicy setFilter];
+}
+
+- (void)reset
+{
+    itemsPerPage = ITEMS_PER_PAGE;
+    pageCount = 0;
+    currentPage = 0;
+    self.leftViewController = [[NSMutableDictionary alloc]init];
+    self.rightViewController = [[NSMutableDictionary alloc]init];
+    pagePolicy = nil;
+}
 @end

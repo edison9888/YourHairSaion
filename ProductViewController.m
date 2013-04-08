@@ -11,12 +11,14 @@
 
 
 #import "ProductViewController.h"
-#import "PSBroView.h"
+#import "ProductItemView.h"
 #import "ProductShowingDetail.h"
 #import "DataAdapter.h"
 #import "DetailViewController.h"
 #import "RootViewController.h"
 #import <QuartzCore/QuartzCore.h>
+#import "ShoppingCartPagePolicy.h"
+#import "PsItemView.h"
 
 
 
@@ -38,7 +40,7 @@ static BOOL isDeviceIPad() {
 
 @interface ProductViewController ()
 - (void)imageViewDidStop:(NSString *)paraAnimationId finished:(NSString *)paraFinished context:(void *)paraContext;
-- (void)doAnimationMoveToShoppingCart:(PSBroView*)cell;
+- (void)doAnimationMoveToShoppingCart:(ProductItemView*)cell;
 @end
 
 @implementation ProductViewController
@@ -101,9 +103,9 @@ static BOOL isDeviceIPad() {
 
 
 - (void)loadDataSource {
+    NSLog(@"%s", __FUNCTION__);
+
     [self.items removeAllObjects];
-    DataAdapter* dataAdapter = [DataAdapter shareInstance];
-    int count = [dataAdapter  count];
     for (int i = self.fromIndex; i <= self.toIndex; i++)
     {
         ProductShowingDetail* item = [ProductShowingDetail initByIndex:i];
@@ -113,19 +115,14 @@ static BOOL isDeviceIPad() {
     
 }
 
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    [super viewWillAppear:animated];
-    NSLog(@"ProductFrame!!!x=%f, y=%f, w=%f, h=%f", self.view.bounds.origin.x, self.view.bounds.origin.y, self.view.bounds.size.width, self.view.bounds.size.height);
+//- (void)viewDidAppear:(BOOL)animated
+//{
+//    [super viewDidAppear:animated];
+//    NSLog(@"ProductFrame!!!x=%f, y=%f, w=%f, h=%f", self.view.bounds.origin.x, self.view.bounds.origin.y, self.view.bounds.size.width, self.view.bounds.size.height);
+//}
 
-}
 
-#pragma mark - PSCollectionViewDelegate and DataSource
-- (NSInteger)numberOfViewsInCollectionView:(PSCollectionView *)collectionView {
-    return self.toIndex - self.fromIndex + 1;//[self.items count];
-}
-
+/*
 - (PSCollectionViewCell *)collectionView:(PSCollectionView *)collectionView viewAtIndex:(NSInteger)index {
     id item = [self.items objectAtIndex:index];
     
@@ -133,19 +130,40 @@ static BOOL isDeviceIPad() {
     if (!v) {
         v = [[PSBroView alloc] initWithFrame:CGRectZero];
     }
+    else
+    {
+        NSLog(@"ddododododo");
+    }
     v.productBuyingDelegate = self;
     [v fillViewWithObject:item];
     
     return v;
 }
+ */
+
+- (PsItemView*)createNewItemViewWithIndex:(NSInteger)index
+{
+    NSLog(@"%s", __FUNCTION__);
+
+    ProductShowingDetail* item = [self.items objectAtIndex:index];
+    ProductItemView* cell = [[ProductItemView alloc] initWithFrame:CGRectZero];
+    cell.productBuyingDelegate = self;
+    [cell setTag:TAG_PSVIEW_BASE+index ];
+    [cell fillViewWithObject:item];
+    return cell;
+}
 
 - (CGFloat)heightForViewAtIndex:(NSInteger)index {
+    NSLog(@"%s", __FUNCTION__);
+
     id item = [self.items objectAtIndex:index];
     
-    return [PSBroView heightForViewWithObject:item inColumnWidth:self.collectionView.colWidth];
+    return [ProductItemView heightForViewWithObject:item inColumnWidth:self.collectionView.colWidth];
 }
 
 - (void)collectionView:(PSCollectionView *)collectionView didSelectView:(PSCollectionViewCell *)view atIndex:(NSInteger)index {
+
+    NSLog(@"%s", __FUNCTION__);
 
     [super collectionView:collectionView didSelectView:view atIndex:index];
     if ([self canBuy:view])
@@ -155,122 +173,95 @@ static BOOL isDeviceIPad() {
 }
 
 - (void)restoreSelected:(PSCollectionView *)collectionView
-{
-    
-    for (UIView* cell in collectionView.subviews)
-    {
-        if ([cell isKindOfClass:[PSBroView class]])
-        {
-            if (![((PSBroView*)cell).backgroundColor isEqual:[UIColor whiteColor]])
-            {
-                [((PSBroView*)cell) setBackgroundColor:[UIColor whiteColor]];
-                [((PSBroView*)cell) finishToBuy];
-            }
-        }
-    }
-    
-    /*
-    PSBroView* cell = [self collectionView:self.collectionView viewAtIndex:self.lastSelectedIndex];
-    [cell setBackgroundColor:[UIColor whiteColor]];
-    [cell finishToBuy];
-     */
-    
-}
-/*
-- (void)filterByType:(id)sender
-{
-    UIBarButtonItem* item = sender;
-    DataAdapter* dataAdapter = [DataAdapter shareInstance];
-    if (item.tag < 0)
-    {
-        [dataAdapter setFilter:nil];
-    }
-    else
-    {
-        ProductType* productType = dataAdapter.productTypes[item.tag];
-        NSLog(@"set filter----%@", productType.typeName);
-        [dataAdapter setFilter:productType];
+{    NSLog(@"%s", __FUNCTION__);
 
+    [super restoreSelected:collectionView];
+    ProductItemView* cell = [self collectionView:self.collectionView viewAtIndex:self.lastSelectedIndex];
+
+    if ([self canBuy:(ProductItemView*)cell])
+    {
+        [self finishToBuy:(ProductItemView*)cell];
     }
-    [self loadDataSource];
-    [self restoreSelected:self.collectionView];
+    
 }
-*/
-/*
-- (id)initProductViewControllerFromIndex:(NSUInteger)beginIndex endIndex:(NSUInteger)endIndex withDetailViewController:(DetailViewController*)detailViewController
-{
-    self = [super init];
-    if (self) {
-        fromIndex = beginIndex;
-        toIndex = endIndex;
-        self.items = [NSMutableArray arrayWithCapacity:(endIndex - beginIndex + 1)];
-        self.detailViewController = detailViewController;
-    }
-    return self;
-}
-*/
+
 
 - (BOOL)canBuy:(PSCollectionViewCell *)cell
-{
-    return YES;
+{    NSLog(@"%s", __FUNCTION__);
+    return NO;
 }
 - (void)prepareToBuy:(PSCollectionViewCell *)cell
-{
-    [((PSBroView*)cell) prepareToBuy];
+{    NSLog(@"%s", __FUNCTION__);
+
+    [((ProductItemView*)cell) prepareToBuy];
 }
 - (void)productAdd:(PSCollectionViewCell *)cell
-{
-    [[DataAdapter shareInstance]addProductToBuy:((ProductShowingDetail*)((PSBroView*)cell).object).productId];
-    [((PSBroView*)cell) productAdd];
+{    NSLog(@"%s", __FUNCTION__);
+
+    [[DataAdapter shareInstance]addProductToBuy:((ProductShowingDetail*)((ProductItemView*)cell).object).productId];
+    [((ProductItemView*)cell) productAdd];
     
-    [self doAnimationMoveToShoppingCart:(PSBroView*)cell];
+    [self doAnimationMoveToShoppingCart:(ProductItemView*)cell];
     
 }
+
+- (void)buyCurrentSelection
+{    NSLog(@"%s", __FUNCTION__);
+
+    [self productAdd:[self collectionView:self.collectionView viewAtIndex:self.lastSelectedIndex]];
+}
 - (void)productReduct:(PSCollectionViewCell *)cell
-{
-    if ([[DataAdapter shareInstance] numInShoppingCart:((ProductShowingDetail*)((PSBroView*)cell).object).productId] > 0)
+{    NSLog(@"%s", __FUNCTION__);
+
+    if ([[DataAdapter shareInstance] numInShoppingCart:((ProductShowingDetail*)((ProductItemView*)cell).object).productId] > 0)
     {
-        [[DataAdapter shareInstance]reduceProductToBuy:((ProductShowingDetail*)((PSBroView*)cell).object).productId];
-        [((PSBroView*)cell) productReduct];
+        [[DataAdapter shareInstance]reduceProductToBuy:((ProductShowingDetail*)((ProductItemView*)cell).object).productId];
+        [((ProductItemView*)cell) productReduct];
     }
     
 }
 - (void)finishToBuy:(PSCollectionViewCell *)cell
-{
-    [((PSBroView*)cell) prepareToBuy];
+{    NSLog(@"%s", __FUNCTION__);
+
+    [((ProductItemView*)cell) finishToBuy];
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    for (UIView* cell in self.collectionView.subviews)
-    {
-        if ([cell isKindOfClass:[PSBroView class]])
-        {
-            [((PSBroView*)cell) reflash];
-        }
-    }
-}
+//- (void)viewWillFAppear:(BOOL)animated
+//{
+//    [super viewWillAppear:animated];
+//    /*
+//    for (UIView* cell in self.collectionView.subviews)
+//    {
+//        if ([cell isKindOfClass:[PSBroView class]])
+//        {
+//            [((PSBroView*)cell) reflash];
+//        }
+//    }
+//     */
+//}
 
 
 - (void)imageViewDidStop:(NSString *)paraAnimationId finished:(NSString *)paraFinished context:(void *)paraContext
-{
+{    NSLog(@"%s", __FUNCTION__);
+
     [((__bridge UIImageView*)paraContext) removeFromSuperview];
+    paraContext = nil;
 }
 
-- (void)doAnimationMoveToShoppingCart:(PSBroView *)cell
-{    
+- (void)doAnimationMoveToShoppingCart:(ProductItemView *)cell
+{        NSLog(@"%s", __FUNCTION__);
+
     UIImageView* tmp = [cell imageViewCopy];
     [self.rootViewController.view addSubview:tmp];
-    [UIView beginAnimations:@"animationID" context:nil];
+    [UIView beginAnimations:@"animationID" context:(__bridge void *)(tmp)];
     [UIView setAnimationDuration:1]; //动画时长
     [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
     [UIView setAnimationTransition: UIViewAnimationTransitionFlipFromLeft forView:tmp cache:YES];
     [UIView setAnimationDidStopSelector:@selector(imageViewDidStop:finished:context:)];
     [UIView setAnimationDelegate:self];
-    tmp.frame = CGRectMake(900, 600, tmp.frame.size.width, tmp.frame.size.width);
+    tmp.frame = CGRectMake(FRAME_DETAILVIEW_SHOPPING_CART_X+500, FRAME_DETAILVIEW_SHOPPING_CART_Y, tmp.frame.size.width, tmp.frame.size.width);
     tmp.alpha = 0;
-    tmp.transform = CGAffineTransformMakeScale(0.3, 0.3);
+    tmp.transform = CGAffineTransformMakeScale(0.1, 0.1);
     [UIView commitAnimations];
 }
 @end

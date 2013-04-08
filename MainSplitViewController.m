@@ -15,7 +15,7 @@
 #import "DetailViewController.h"
 #import "ShoppingCartViewController.h"
 #import "MapViewController.h"
-
+#import "MyTabBarViewController.h"
 
 
 @interface MainSplitViewController ()
@@ -64,10 +64,13 @@
 }
 - (void)loadTabbarControllerLeft
 {
-    self.leftTabBarController = [[NGTabBarController alloc ]initWithDelegate:self];
+    self.leftTabBarController = [[MyTabBarViewController alloc ]initWithDelegate:self];
+    [self.leftTabBarController.tabBar setTintColor:[UIColor whiteColor]];
+    self.leftTabBarController.tabBar.frame = CGRectMake(0,0,300,768);
+    //self.leftTabBarController.tabBarController.view.backgroundColor = [UIColor clearColor];
     ProductViewController *tbc1 = [[ProductViewController alloc] init];
     UINavigationController *nav1 = [[UINavigationController alloc]initWithRootViewController:tbc1];
-    tbc1.rootview = self;
+    tbc1.rootViewController = self;
     nav1.ng_tabBarItem = [NGTabBarItem itemWithTitle:@"发型选择" image:[UIImage imageNamed:@"myradio.png"]];
     
     

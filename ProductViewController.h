@@ -11,8 +11,10 @@
 #import "ModelController.h"
 #import "DetailViewController.h"
 #import "PsViewController.h"
-#import "PSBroView.h"
+#import "ProductItemView.h"
 @protocol ProductBuyingDelegate;
 @interface ProductViewController : PsViewController<ProductBuyingDelegate>
+
+- (void)buyCurrentSelection;
 
 @end

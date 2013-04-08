@@ -8,19 +8,25 @@
 
 #import "MyUIButton.h"
 #import "RootViewController.h"
+#import "BasePagePolicy.h"
+#import "OperationNode.h"
 
 #define Label_Offset 5
+
+static int idTag = 100;
+
 @interface MyUIButton()
-- (void)onTouchUp:(id)sender;
+{
 
+}
 @property (nonatomic, assign) MyUIButtonStyle myUIButtonStyle;
-
 - (void)setTitle:(NSString*)title;
 - (NSString*)convertStringToVertical:(NSString*)string;
+- (void)onTouchUpBase:(id)sender;
 @end
 
 @implementation MyUIButton
-@synthesize subType, rvc, vcType, myUIButtonStyle;
+@synthesize rvc, myUIButtonStyle;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -36,22 +42,23 @@
         self.titleLabel.center = self.center;
         self.titleLabel.lineBreakMode = NSLineBreakByCharWrapping;
         self.titleLabel.textColor = [UIColor blackColor];
-        self.titleLabel.font = [UIFont boldSystemFontOfSize:20];
+        self.titleLabel.font = [UIFont boldSystemFontOfSize:28];
         [self.titleLabel sizeToFit];
-        [self addTarget:self action:@selector(onTouchUp:) forControlEvents:UIControlEventTouchUpInside];
+        [self addTarget:self action:@selector(onTouchUpBase:) forControlEvents:UIControlEventTouchUpInside];
+        [self setTag:idTag++];
+
         
     }
     return self;
 }
 
-- (UIButton*)initAll:(CGRect)frame andVcType:(enumViewControllerType)enumVcType andSubType:(NSString *)subType andTitle:(NSString *)title andStyle:(MyUIButtonStyle)style andImgName:(NSString *)imgName andRvc:(RootViewController *)rvc
+- (UIButton*)initAll:(CGRect)frame andPagePolicy:(BasePagePolicy*)pagePolicy andTitle:(NSString*)title andStyle:(MyUIButtonStyle)style andImgName:(NSString*)imgName andRvc:(RootViewController*)rootViewController
 {
     self = [self initWithFrame:frame];
     if (self)
     {
-        self.rvc = rvc;
-        self.vcType = enumVcType;
-        self.subType = subType;
+        self.rvc = rootViewController;
+        self.pagePolicy = pagePolicy;
         self.myUIButtonStyle = style;
         [self setTitle:title];
         self.backgroundColor = [[UIColor alloc]initWithPatternImage:[UIImage imageNamed:imgName]];
@@ -109,26 +116,14 @@
     }
 }
 
-- (void)onTouchUp:(id)sender
+- (void)onTouchUpBase:(id)sender
 {
-    if (self.vcType != [self.rvc currentVCType] || ![self.subType isEqualToString:[self.rvc currentSubType]])
-    {
-        [self.rvc setVcType:vcType andSubType:self.subType];
-        for (UIView* view in self.rvc.view.subviews)
-        {
-            if ([view isKindOfClass:[MyUIButton class]])
-            {
-                [self.rvc.view sendSubviewToBack:view];
-                //self.titleLabel.textColor = [UIColor whiteColor];
-                
-            }
-        }
-        [self.rvc.view bringSubviewToFront:self];
-    }
-    //self.titleLabel.textColor = [UIColor blackColor];
-    //self.tintColor = [UIColor blackColor];
-    
+    [self.rvc opMark:[[OperationNode alloc]initWithPagePolicy:self.pagePolicy andPageIndex:self.tag]];
+    [self onTouchUp:sender];
 }
 
+- (void)onTouchUp:(id)sender
+{
+}
 
 @end

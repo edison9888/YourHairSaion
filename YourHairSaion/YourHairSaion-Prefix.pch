@@ -14,10 +14,5 @@
     #import <CoreData/CoreData.h>
 #endif
 
-#define SCREEN_W 1024
-#define SCREEN_H 768
-#define RECT_INSET_W 90
-#define RECT_INSET_H 50
-#define FRAME_W (SCREEN_W/2 - RECT_INSET_W)
-#define FRAME_H (SCREEN_H - RECT_INSET_H*2)
+#import "LCDefined.h"
 

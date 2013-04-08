@@ -13,6 +13,7 @@
 	NSArray *orgItems;
 }
 @property (nonatomic, strong)OrgDetailViewController* detailOnMap;
+- (void)showOrganizations;
 @end
 
 

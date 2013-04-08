@@ -70,7 +70,19 @@
         <attribute name="typeParent" attributeType="String" defaultValueString="root" syncable="YES"/>
         <attribute name="typePricingId" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
+    <entity name="SysConf" representedClassName="SysConf" syncable="YES">
+        <attribute name="key" attributeType="String" syncable="YES"/>
+        <attribute name="value" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="UpdateHistory" representedClassName="UpdateHistory" syncable="YES">
+        <attribute name="date" attributeType="String" syncable="YES"/>
+        <attribute name="result" attributeType="String" syncable="YES"/>
+        <attribute name="reverse" attributeType="String" syncable="YES"/>
+        <attribute name="serialNo" attributeType="String" syncable="YES"/>
+        <attribute name="server" attributeType="String" syncable="YES"/>
+    </entity>
     <elements>
+        <element name="DiscountCard" positionX="160" positionY="192" width="128" height="135"/>
         <element name="Organization" positionX="367" positionY="237" width="128" height="270"/>
         <element name="ProductAmount" positionX="475" positionY="456" width="128" height="75"/>
         <element name="ProductAttr" positionX="160" positionY="192" width="128" height="120"/>
@@ -78,6 +90,7 @@
         <element name="ProductPic" positionX="259" positionY="-72" width="128" height="105"/>
         <element name="ProductPricing" positionX="529" positionY="261" width="128" height="120"/>
         <element name="ProductType" positionX="160" positionY="192" width="128" height="105"/>
-        <element name="DiscountCard" positionX="160" positionY="192" width="128" height="135"/>
+        <element name="SysConf" positionX="160" positionY="192" width="128" height="75"/>
+        <element name="UpdateHistory" positionX="160" positionY="192" width="128" height="120"/>
     </elements>
 </model>
